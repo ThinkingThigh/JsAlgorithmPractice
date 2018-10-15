@@ -1,0 +1,33 @@
+<!-- 冒泡排序 -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script>
+        function insertionSort(arr) {
+            var len = arr.length;
+            var preIndex, current;
+            for (var i = 1; i < len; i++) {
+                preIndex = i - 1;
+                current = arr[i];
+                while (preIndex >= 0 && arr[preIndex] > current) {
+                    arr[preIndex + 1] = arr[preIndex];
+                    preIndex--;
+                }
+                arr[preIndex + 1] = current;
+            }
+            return arr;
+        }
+        console.log(insertionSort([4, 3, 5, 12, 7, 66, 81]))
+    </script>
+</head>
+
+<body>
+
+</body>
+
+</html>
