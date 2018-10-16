@@ -1,0 +1,39 @@
+<!-- 希尔排序 -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script>
+
+        function shellSort(arr) {
+            var len = arr.length;
+            for (var gap = Math.floor(arr.length / 2); gap > 0; gap = Math.floor(gap / 2)) {
+                for (var i = 0; i < gap; i++) {//i表示被分成了几组
+                    var j = i;
+                    while (j < arr.length - gap) {
+                        var k = j;
+                        while (arr[k + gap] < arr[k] && k >= 0) {
+                            var temp = arr[k + gap];
+                            arr[k + gap] = arr[k];
+                            arr[k] = temp;
+                            k = k - gap;
+                        }
+                        j = j + gap;
+                    }
+                }
+            }
+            return arr;
+        }
+        console.log(shellSort([4, 3, 5, 12, 7, 66, 81]))
+    </script>
+</head>
+
+<body>
+
+</body>
+
+</html>
