@@ -1,0 +1,775 @@
+<div class="detail-content-wrap">
+    <div class="detail-content js-lookimg">
+
+        <div>
+            <p>CSS网格布局（Grid）是一套二维的页面布局系统，它的出现将完全颠覆页面布局的传统方式。创建本教程的目的是为了帮助您更好地理解和学习网格布局（Grid）。</p>
+            <h2>1 网格容器</h2>
+            <p>将属性 <code>display</code> 值设为 <code>grid</code> 或 <code>inline-grid</code> 就创建了一个网格容器，所有容器直接子结点自动成为网格项目。
+            </p>
+            <h3>1.1 例1</h3>
+            <pre>grid&nbsp;&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;display:&nbsp;grid;
+｝</pre>
+            <p>网格项目按行排列，网格项目占用整个容器的宽度。</p>
+            <p><img alt="网格容器演示1" src="https://img.mukewang.com/5af17e5300010cd106000290.jpg"
+                    data-original="https://img.mukewang.com/5af17e5300010cd106000290.jpg" class=""
+                    style="cursor: pointer; display: block;"></p>
+            <p><a href="http://www.42du.cn/run/122">演示程序</a></p>
+            <h3>1.1 例2</h3>
+            <pre>grid&nbsp;&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;display:&nbsp;inline-grid;
+｝</pre>
+            <p>网格项目按行排列，网格项目宽度由自身宽度决定。</p>
+            <p><img alt="网格容器演示2" src="https://img1.mukewang.com/5af17e5300014eeb05920290.jpg"
+                    data-original="https://img1.mukewang.com/5af17e5300014eeb05920290.jpg" class=""
+                    style="cursor: pointer; display: block;"></p>
+            <p><a href="http://www.42du.cn/run/123">演示程序</a></p>
+            <h2>2 显示网格</h2>
+            <p>属性<code>grid-template-rows</code>和<code>grid-template-columns</code>用于显示定义网格，分别用于定义行轨道和列轨道。</p>
+            <h3>2.1 例3</h3>
+            <pre>grid&nbsp;&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;display:&nbsp;grid;&nbsp;&nbsp;&nbsp;&nbsp;grid-template-rows:&nbsp;50px&nbsp;100px；
+｝</pre>
+            <p>属性<code>grid-template-rows</code>用于定义行的尺寸，即轨道尺寸。轨道尺寸可以是任何非负的长度值（px，%，em，等）</p>
+            <p>网格项目1的行高是50px，网格项目2的行高是100px。</p>
+            <p>因为只定义了两个行高，网格项目3和4的行高取决于其本身的高度。</p>
+            <p><img alt="显示网格演示1" src="https://img4.mukewang.com/5af17e530001edae06010287.jpg"
+                    data-original="https://img4.mukewang.com/5af17e530001edae06010287.jpg" class=""
+                    style="cursor: pointer; display: block;"></p>
+            <p><a href="http://www.42du.cn/run/124">演示程序</a></p>
+            <h3>2.2 例4</h3>
+            <pre>grid&nbsp;&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;display:&nbsp;grid;&nbsp;&nbsp;&nbsp;&nbsp;grid-template-columns:&nbsp;90px&nbsp;50px&nbsp;120px；
+｝</pre>
+            <p>类似于行的定义，属性<code>grid-template-columns</code>用于定义列的尺寸。</p>
+            <p>因为定义中只有三列，所以项目4，5，6排在新的一行; 并因为它们位于第1，2，3列的轨道上，所以其宽度等于定义中第1，2，3列轨道的宽度。</p>
+            <p>网格项目的第1列，第2列，第3列的宽度分别是 90px, 50px 和 120px 。</p>
+            <p><img alt="显示网格演示2" src="https://img1.mukewang.com/5af17e53000135bf06010288.jpg"
+                    data-original="https://img1.mukewang.com/5af17e53000135bf06010288.jpg" class=""
+                    style="cursor: pointer; display: block;"></p>
+            <p><a href="http://www.42du.cn/run/125">演示程序</a></p>
+            <h3>2.3 例5</h3>
+            <pre>grid&nbsp;&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;display:&nbsp;grid;&nbsp;&nbsp;&nbsp;&nbsp;grid-template-columns:&nbsp;1fr&nbsp;1fr&nbsp;2fr；
+｝</pre>
+            <p>单位<code>fr</code>用于表示轨道尺寸配额，表示按配额比例分配可用空间。</p>
+            <p>本例中，项目1占 1/4 宽度，项目2占 1/4 宽度，项目3占 1/2 宽度。</p>
+            <p><img alt="显示网格演示3" src="https://img1.mukewang.com/5af17e530001178306010290.jpg"
+                    data-original="https://img1.mukewang.com/5af17e530001178306010290.jpg" class=""
+                    style="cursor: pointer; display: block;"></p>
+            <p><a href="http://www.42du.cn/run/126">演示程序</a></p>
+            <h3>2.4 例6</h3>
+            <pre>grid&nbsp;&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;display:&nbsp;grid;&nbsp;&nbsp;&nbsp;&nbsp;grid-template-columns:&nbsp;3rem&nbsp;25%&nbsp;1fr&nbsp;2fr；
+｝</pre>
+            <p>单位<code>fr</code>和其它长度单位混合使用时，<code>fr</code>的计算基于其它单位分配后的剩余空间。</p>
+            <p>本例中，<code>1fr = (容器宽度 - 3rem - 容器宽度的25%) / 3</code></p>
+            <p><img alt="显示网格演示4" src="https://img.mukewang.com/5af17e540001c27306010288.jpg"
+                    data-original="https://img.mukewang.com/5af17e540001c27306010288.jpg" class=""
+                    style="cursor: pointer; display: block;"></p>
+            <p><a href="http://www.42du.cn/run/127">演示程序</a></p>
+            <h2>3 轨道的最小最大尺寸设置</h2>
+            <p>函数<code>minmax()</code>用于定义轨道最小/最大边界值。</p>
+            <h3>3.1 例7</h3>
+            <pre>grid&nbsp;&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;display:&nbsp;grid;&nbsp;&nbsp;&nbsp;&nbsp;grid-template-rows:&nbsp;&nbsp;&nbsp;&nbsp;minmax(100px,&nbsp;auto);&nbsp;&nbsp;&nbsp;&nbsp;grid-template-columns:&nbsp;minmax(auto,&nbsp;50%)&nbsp;1fr&nbsp;3em;
+｝</pre>
+            <p>函数<code>minmax()</code>接收两个参数：第一个参数表示最小轨道尺寸，第二个参数表示最大轨道尺寸。长度值可以是auto，表示轨道尺寸可以根据内容大小进行伸长或收缩。</p>
+            <p>本例中，第一行最小高度设置成100px，但是最大高度设置成<code>auto</code>，表示行高可以根据内容伸长超过100px。</p>
+            <p>本例中，第一列宽度的最大值设置成50%，表示其宽度不能超过整个容器宽度的50%。</p>
+            <p><img alt="轨道的最小最大尺寸设置演示1" src="https://img1.mukewang.com/5af17e540001dfb106020363.jpg"
+                    data-original="https://img1.mukewang.com/5af17e540001dfb106020363.jpg" class=""
+                    style="cursor: pointer; display: block;"></p>
+            <p><a href="http://www.42du.cn/run/128">演示程序</a></p>
+            <h2>4 重复的网格轨道</h2>
+            <p>函数<code>repeat()</code>用来定义重复的网格轨道，尤其适用于有多个相同项目的情况下。</p>
+            <h3>4.1 例8</h3>
+            <pre>grid&nbsp;&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;display:&nbsp;grid;&nbsp;&nbsp;&nbsp;&nbsp;grid-template-rows:&nbsp;&nbsp;&nbsp;&nbsp;repeat(4,&nbsp;100px);&nbsp;&nbsp;&nbsp;&nbsp;grid-template-columns:&nbsp;repeat(3,&nbsp;1fr);
+｝</pre>
+            <p>函数<code>repeat()</code>接收两个参数：第一个参数表示重复的次数，第二个参数表示轨道尺寸。</p>
+            <p><img alt="重复的网格轨道演示1" src="https://img.mukewang.com/5af17e540001244606010417.jpg"
+                    data-original="https://img.mukewang.com/5af17e540001244606010417.jpg" class=""
+                    style="cursor: pointer; display: block;"></p>
+            <p><a href="http://www.42du.cn/run/129">演示程序</a></p>
+            <h3>4.2 例9</h3>
+            <pre>grid&nbsp;&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;display:&nbsp;grid;&nbsp;&nbsp;&nbsp;&nbsp;grid-template-columns:&nbsp;30px&nbsp;repeat(3,&nbsp;1fr)&nbsp;30px;
+｝</pre>
+            <p>函数<code>repeat()</code>可以用在轨道定义列表当中。</p>
+            <p>本例中，第1列和第5列的宽度是30px。函数<code>repeat()</code>创建了中间3列，每一列宽度都是<code>1fr</code>。</p>
+            <p><img alt="重复的网格轨道演示2" src="https://img.mukewang.com/5af17e540001c7b506020288.jpg"
+                    data-original="https://img.mukewang.com/5af17e540001c7b506020288.jpg" class=""
+                    style="cursor: pointer; display: block;"></p>
+            <p><a href="http://www.42du.cn/run/130">演示程序</a></p>
+            <h2>5 定义网格间隙</h2>
+            <p>属性<code>grid-column-gap</code> 和 <code>grid-row-gap</code>用于定义网格间隙。</p>
+            <p>网格间隙只创建在行列之间，项目与边界之间无间隙。</p>
+            <h3>5.1 例10</h3>
+            <pre>grid&nbsp;&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;display:&nbsp;grid;&nbsp;&nbsp;&nbsp;&nbsp;grid-row-gap:&nbsp;&nbsp;&nbsp;&nbsp;20px;&nbsp;&nbsp;&nbsp;&nbsp;grid-column-gap:&nbsp;5rem;
+｝</pre>
+            <p>间隙尺寸可以是任何非负的长度值（px，%，em等）。</p>
+            <p><img alt="定义网格间隙演示1" src="https://img1.mukewang.com/5af17e55000190fe06010287.jpg"
+                    data-original="https://img1.mukewang.com/5af17e55000190fe06010287.jpg" class=""
+                    style="cursor: pointer; display: block;"></p>
+            <p><a href="http://www.42du.cn/run/131">演示程序</a></p>
+            <h3>5.2 例11</h3>
+            <pre>grid&nbsp;&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;display:&nbsp;grid;&nbsp;&nbsp;&nbsp;&nbsp;grid-gap:&nbsp;100px&nbsp;1em;
+｝</pre>
+            <p>属性<code>grid-gap</code>是<code>grid-row-gap</code>和<code>grid-column-gap</code>的简写形式。</p>
+            <p>第一个值表示行间隙，第二个值表示列间隙。</p>
+            <p><img alt="定义网格间隙演示2" src="https://img4.mukewang.com/5af183100001cbb406000288.jpg"
+                    data-original="https://img4.mukewang.com/5af183100001cbb406000288.jpg" class=""
+                    style="cursor: pointer; display: block;"></p>
+            <p><a href="http://www.42du.cn/run/132">演示程序</a></p>
+            <h3>5.3 例12</h3>
+            <pre>grid&nbsp;&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;display:&nbsp;grid;&nbsp;&nbsp;&nbsp;&nbsp;grid-gap:&nbsp;2rem;
+｝</pre>
+            <p>如只有一个值，则其即表示行间隙，也表示列间隙。</p>
+            <p><img alt="定义网格间隙演示3" src="https://img3.mukewang.com/5af183100001928306010289.jpg"
+                    data-original="https://img3.mukewang.com/5af183100001928306010289.jpg" class=""
+                    style="cursor: pointer; display: block;"></p>
+            <p><a href="http://www.42du.cn/run/133">演示程序</a></p>
+            <h2>6 用网格线编号定位项目</h2>
+            <p>网格线本质上是用来表示网格轨道的开始和结束。</p>
+            <p>每一条网格线编号都以1开始，以1为步长向前编号，其中包括行列两组网格线。</p>
+            <h3>6.1 例13</h3>
+            <pre>.item1&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;grid-row-start:&nbsp;2;&nbsp;&nbsp;&nbsp;&nbsp;grid-row-end:&nbsp;3;&nbsp;&nbsp;&nbsp;&nbsp;grid-column-start:&nbsp;2;&nbsp;&nbsp;&nbsp;&nbsp;grid-column-end:&nbsp;3;
+}</pre>
+            <p>这是一个3行2列的网格，即在行上有4条网格线，在列上有3条网格线。项目1利用网格线编号定位在第2行第2列的位置上。</p>
+            <p>本例中，项目只跨越一行一列，则<code>grid-row-end</code>和<code>grid-column-end</code>的定义可以省略。</p>
+            <p><img alt="用网格线编号定位项目演示1" src="https://img1.mukewang.com/5af1831000015a0f06000352.jpg"
+                    data-original="https://img1.mukewang.com/5af1831000015a0f06000352.jpg" class=""
+                    style="cursor: pointer; display: block;"></p>
+            <p><a href="http://www.42du.cn/run/134">演示程序</a></p>
+            <h3>6.2 例14</h3>
+            <pre>.item1&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;grid-row:&nbsp;&nbsp;&nbsp;&nbsp;2;&nbsp;&nbsp;&nbsp;&nbsp;grid-column:&nbsp;3&nbsp;/&nbsp;4;
+}</pre>
+            <p>属性<code>grid-row</code> 是 <code>grid-row-start</code> 和 <code>grid-row-end</code>的简写形式。</p>
+            <p>属性<code>grid-column</code> 是 <code>grid-column-start</code> 和 <code>grid-column-end</code>的简写形式。</p>
+            <p>如果只指定一个值，它表示 <code>grid-row/column-start</code>。</p>
+            <p>如果两个值都指定，第一个表示 <code>grid-row/column-start</code>
+                ，第二个值表示<code>grid-row/column-end</code>。而且你必须用斜杠（/）分隔这两个值。</p>
+            <p><img alt="用网格线编号定位项目演示2" src="https://img3.mukewang.com/5af1831100013d3006020287.jpg"
+                    data-original="https://img3.mukewang.com/5af1831100013d3006020287.jpg" class=""
+                    style="cursor: pointer; display: block;"></p>
+            <p><a href="http://www.42du.cn/run/135">演示程序</a></p>
+            <h3>6.3 例15</h3>
+            <pre>.item1&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;grid-area:&nbsp;2&nbsp;/&nbsp;2&nbsp;/&nbsp;3&nbsp;/&nbsp;3;
+}</pre>
+            <p>属性<code>grid-area</code> 是 <code>grid-row-start</code>, <code>grid-column-start</code>,
+                <code>grid-row-end</code> 和 <code>grid-column-end</code>的简写形式。</p>
+            <p>如果四个值都指定，则第一个表示 <code>grid-row-start</code>, 第二个表示 <code>grid-column-start</code>, 第三个表示
+                <code>grid-row-end</code> ,第四个表示 <code>grid-column-end</code>。</p>
+            <p><img alt="用网格线编号定位项目演示3" src="https://img4.mukewang.com/5af183110001706206010286.jpg"
+                    data-original="https://img4.mukewang.com/5af183110001706206010286.jpg" class=""
+                    style="cursor: pointer; display: block;"></p>
+            <p><a href="http://www.42du.cn/run/136">演示程序</a></p>
+            <h2>7 网格项目跨越行列</h2>
+            <p>网格项目默认都占用一行和一列，但可以使用前一节中定位项目的属性来指定项目跨越多行或多列。</p>
+            <h3>7.1 例16</h3>
+            <pre>.item1&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;grid-column-start:&nbsp;1;&nbsp;&nbsp;&nbsp;&nbsp;grid-column-end:&nbsp;&nbsp;&nbsp;4;
+}</pre>
+            <p>通过<code>grid-column-start</code>和<code>grid-column-end</code>属性值的设置，使该网格项目跨越多列。</p>
+            <p><img alt="网格项目跨越行列演示1" src="https://img.mukewang.com/5af183110001459a06000289.jpg"
+                    data-original="https://img.mukewang.com/5af183110001459a06000289.jpg" class=""
+                    style="cursor: pointer; display: block;"></p>
+            <p><a href="http://www.42du.cn/run/137">演示程序</a></p>
+            <h3>7.2 例17</h3>
+            <pre>.item1&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;grid-row-start:&nbsp;1;&nbsp;&nbsp;&nbsp;&nbsp;grid-row-end:&nbsp;&nbsp;&nbsp;4;
+}</pre>
+            <p>通过<code>grid-row-start</code>和<code>grid-row-end</code>属性值的设置，使该网格项目跨越多行。</p>
+            <p><img alt="网格项目跨越行列演示2" src="https://img2.mukewang.com/5af183120001b86806010288.jpg"
+                    data-original="https://img2.mukewang.com/5af183120001b86806010288.jpg" class=""
+                    style="cursor: pointer; display: block;"></p>
+            <p><a href="http://www.42du.cn/run/138">演示程序</a></p>
+            <h3>7.3 例18</h3>
+            <pre>.item1&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;grid-row:&nbsp;&nbsp;&nbsp;&nbsp;2&nbsp;/&nbsp;5;&nbsp;&nbsp;&nbsp;&nbsp;grid-column:&nbsp;2&nbsp;/&nbsp;4;
+}</pre>
+            <p>简写属性 <code>grid-row</code> 和 <code>grid-column</code> 即能用来定位项目，也能用来使项目跨越多个行列。</p>
+            <p><img alt="网格项目跨越行列演示1" src="https://img4.mukewang.com/5af1831200017c6506000288.jpg"
+                    data-original="https://img4.mukewang.com/5af1831200017c6506000288.jpg" class=""
+                    style="cursor: pointer; display: block;"></p>
+            <p><a href="http://www.42du.cn/run/139">演示程序</a></p>
+            <h3>7.4 例19</h3>
+            <pre>.item1&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;grid-row:&nbsp;&nbsp;&nbsp;&nbsp;2&nbsp;/&nbsp;span&nbsp;3;&nbsp;&nbsp;&nbsp;&nbsp;grid-column:&nbsp;span&nbsp;2;
+}</pre>
+            <p>关键字 <code>span</code> 用来指定跨越行或列的数量。</p>
+            <p><img alt="网格项目跨越行列演示1" src="https://img2.mukewang.com/5af183120001bdc206010288.jpg"
+                    data-original="https://img2.mukewang.com/5af183120001bdc206010288.jpg" class=""
+                    style="cursor: pointer; display: block;"></p>
+            <p><a href="http://www.42du.cn/run/140">演示程序</a></p>
+            <h2>8 网格线命名</h2>
+            <p>当利用属性<code>grid-template-rows</code> 和
+                <code>grid-template-columns</code>定义网格时，可以同时定义网格线的名称。网格线名称可以用于定位网格项目。</p>
+            <h3>8.1 例20</h3>
+            <pre>grid&nbsp;&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;display:&nbsp;grid;&nbsp;&nbsp;&nbsp;&nbsp;grid-template-rows:&nbsp;&nbsp;&nbsp;&nbsp;[row-1-start]&nbsp;1fr&nbsp;[row-2-start]&nbsp;1fr&nbsp;[row-2-end];&nbsp;&nbsp;&nbsp;&nbsp;grid-template-columns:&nbsp;[col-1-start]&nbsp;1fr&nbsp;[col-2-start]&nbsp;1fr&nbsp;[col-3-start]&nbsp;1fr&nbsp;[col-3-end];
+｝</pre>
+            <p>用属性<code>grid-template-rows</code> 和 <code>grid-template-columns</code>定义网格，同时定义网格线名称。</p>
+            <p>为避免混淆，网格线名称应避免使用规范中的关键字（<code>span</code>等）。</p>
+            <p>定义网格线名称的方法是要将其放在中括号内（<code>[name-of-line]</code>），并要和网格轨道相对应。</p>
+            <p><img alt="网格线命名演示1" src="https://img1.mukewang.com/5af183130001884006000290.jpg"
+                    data-original="https://img1.mukewang.com/5af183130001884006000290.jpg" class=""
+                    style="cursor: pointer; display: block;"></p>
+            <h3>8.2 例21</h3>
+            <pre>grid&nbsp;&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;display:&nbsp;grid;&nbsp;&nbsp;&nbsp;&nbsp;grid-template-rows:&nbsp;&nbsp;&nbsp;&nbsp;[row-start&nbsp;row-1-start]&nbsp;1fr&nbsp;[row-1-end&nbsp;row-2-start]&nbsp;1fr&nbsp;[row-2-end&nbsp;row-end];&nbsp;&nbsp;&nbsp;&nbsp;grid-template-columns:&nbsp;[col-start]&nbsp;1fr&nbsp;[col-2-start]&nbsp;1fr&nbsp;[col-3-start]&nbsp;1fr&nbsp;[col-end];
+｝</pre>
+            <p>可以给同一网格线定义多个名称，方法就是在中括号内用空格将多个名称分开。</p>
+            <p>每一个网格线名都可以被引用，以用来定位网格项目。</p>
+            <p><img alt="网格线命名演示2" src="https://img.mukewang.com/5af1834c0001c43e06010289.jpg"
+                    data-original="https://img.mukewang.com/5af1834c0001c43e06010289.jpg" class=""
+                    style="cursor: pointer; display: block;"></p>
+            <h2>9 用网格线名定位项目</h2>
+            <p>利用命名的网格线，可以很方便地进行项目定位。</p>
+            <h3>9.1 例22</h3>
+            <pre>.item1&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;grid-row-start:&nbsp;&nbsp;&nbsp;&nbsp;row-2-start;&nbsp;&nbsp;&nbsp;&nbsp;grid-row-end:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;row-end;&nbsp;&nbsp;&nbsp;&nbsp;grid-column-start:&nbsp;col-2-start;&nbsp;&nbsp;&nbsp;&nbsp;grid-column-end:&nbsp;&nbsp;&nbsp;col-end;
+}</pre>
+            <p>引用网格线名称不用加中括号。</p>
+            <p><img alt="用网格线名定位项目演示1" src="https://img4.mukewang.com/5af1834c0001f01506000288.jpg"
+                    data-original="https://img4.mukewang.com/5af1834c0001f01506000288.jpg" class=""
+                    style="cursor: pointer; display: block;"></p>
+            <p><a href="http://www.42du.cn/run/141">演示程序</a></p>
+            <h3>9.2 例23</h3>
+            <pre>.item1&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;grid-row:&nbsp;&nbsp;&nbsp;&nbsp;row-2-start&nbsp;/&nbsp;row-end;&nbsp;&nbsp;&nbsp;&nbsp;grid-column:&nbsp;col-2-start&nbsp;/&nbsp;col-end;
+}</pre>
+            <p>简写属性<code>grid-row</code> 和 <code>grid-column</code>也可以利用网格线名称来定位项目。</p>
+            <p><img alt="用网格线名定位项目演示2" src="https://img4.mukewang.com/5af1834c0001048a06000288.jpg"
+                    data-original="https://img4.mukewang.com/5af1834c0001048a06000288.jpg" class=""
+                    style="cursor: pointer; display: block;"></p>
+            <p><a href="http://www.42du.cn/run/142">演示程序</a></p>
+            <h2>10 用同名网格线命名和定位项目</h2>
+            <p>函数<code>repeat()</code>可以定义同名网格线。这节省了给每条网格都命名的时间。</p>
+            <h3>10.1 例24</h3>
+            <pre>grid&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;display:&nbsp;grid;&nbsp;&nbsp;&nbsp;&nbsp;grid-template-rows:&nbsp;repeat(3,&nbsp;[row-start]&nbsp;1fr&nbsp;[row-end]);&nbsp;&nbsp;&nbsp;&nbsp;grid-template-columns:&nbsp;repeat(3,&nbsp;[col-start]&nbsp;1fr&nbsp;[col-end]);
+}</pre>
+            <p>函数<code>repeat()</code>可以用来定义同名网格线。 这样多个网格线拥有相同的名字。</p>
+            <p>同名网格线会被分配一个位置编号，做为其唯一标识。</p>
+            <p><img alt="用同名网格线命名和定位项目演示1" src="https://img1.mukewang.com/5af1834d0001a68d06010351.jpg"
+                    data-original="https://img1.mukewang.com/5af1834d0001a68d06010351.jpg" class=""
+                    style="cursor: pointer; display: block;"></p>
+            <h3>10.2 例25</h3>
+            <pre>.item1&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;grid-row:&nbsp;&nbsp;&nbsp;&nbsp;row-start&nbsp;2&nbsp;/&nbsp;row-end&nbsp;3;&nbsp;&nbsp;&nbsp;grid-column:&nbsp;col-start&nbsp;/&nbsp;col-start&nbsp;3;
+}</pre>
+            <p>用同名网格线来定位项目时，应注意在网格线名称和编号之间有一个空格。</p>
+            <p>本例中，项目1的行定位开始于第2条名称是<code>row-start</code>的网格线，结束于第3条名称是<code>row-end</code>的网格线；列定位开始于第1条名称是<code>col-start</code>的网格线，结束于第3条名称是<code>col-start</code>的网格线。
+            </p>
+            <p><img alt="用同名网格线命名和定位项目演示2" src="https://img4.mukewang.com/5af1834d0001f28e06010350.jpg"
+                    data-original="https://img4.mukewang.com/5af1834d0001f28e06010350.jpg" class=""
+                    style="cursor: pointer; display: block;"></p>
+            <p><a href="http://www.42du.cn/run/143">演示程序</a></p>
+            <h2>11 用网格区域命名和定位项目</h2>
+            <p>如同网格线命名，可以用属性<code>grid-template-areas</code>给网格区域命名。网格区域名称可以用来定位网格项目。</p>
+            <h3>11.1 例26</h3>
+            <pre>grid&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;display:&nbsp;grid;&nbsp;&nbsp;&nbsp;&nbsp;grid-template-areas:&nbsp;&nbsp;&nbsp;"header&nbsp;header"
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"content&nbsp;sidebar"
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"footer&nbsp;footer";&nbsp;&nbsp;&nbsp;&nbsp;grid-template-rows:&nbsp;&nbsp;&nbsp;&nbsp;150px&nbsp;1fr&nbsp;100px;&nbsp;&nbsp;&nbsp;&nbsp;grid-template-columns:&nbsp;1fr&nbsp;200px;
+}</pre>
+            <p>一组区域名称要放在单引号或双引号内，每一个名称之间以空格分隔。</p>
+            <p>每一组名称定义一行，每一个名称定义一列。</p>
+            <p><img alt="用网格区域命名和定位项目演示1" src="https://img1.mukewang.com/5af1834d0001d29506000314.jpg"
+                    data-original="https://img1.mukewang.com/5af1834d0001d29506000314.jpg" class=""
+                    style="cursor: pointer; display: block;"></p>
+            <h3>11.2 例27</h3>
+            <pre>header&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;grid-row-start:&nbsp;header;&nbsp;&nbsp;&nbsp;&nbsp;grid-row-end:&nbsp;header;&nbsp;&nbsp;&nbsp;&nbsp;grid-column-start:&nbsp;header;&nbsp;&nbsp;&nbsp;&nbsp;grid-column-end:&nbsp;header;
+}</pre>
+            <p>网格区域名称可以用在属性<code>grid-row-start</code>, <code>grid-row-end</code>, <code>grid-column-start</code>, 和
+                <code>grid-column-end</code>的值中，用来定位项目。</p>
+            <p><img alt="用网格区域命名和定位项目演示2" src="https://img.mukewang.com/5af1834d0001ceca06000280.jpg"
+                    data-original="https://img.mukewang.com/5af1834d0001ceca06000280.jpg" class=""
+                    style="cursor: pointer; display: block;"></p>
+            <h3>11.3 例28</h3>
+            <pre>footer&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;grid-row:&nbsp;footer;&nbsp;&nbsp;&nbsp;&nbsp;grid-column:&nbsp;footer;
+}</pre>
+            <p>网格区域名称也可以用于简写属性<code>grid-row</code> 和 <code>grid-column</code>的值中。</p>
+            <p><img alt="用网格区域命名和定位项目演示3" src="https://img.mukewang.com/5af1834d0001d0fd06000314.jpg"
+                    data-original="https://img.mukewang.com/5af1834d0001d0fd06000314.jpg" class=""
+                    style="cursor: pointer; display: block;"></p>
+            <h3>11.4 例29</h3>
+            <pre>aside&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;grid-area:&nbsp;sidebar;
+}</pre>
+            <p>网格区域名称也可以用于简写属性<code>grid-area</code>的值中。</p>
+            <p><img alt="用网格区域命名和定位项目演示4" src="https://img3.mukewang.com/5af1834e000151f906010313.jpg"
+                    data-original="https://img3.mukewang.com/5af1834e000151f906010313.jpg" class=""
+                    style="cursor: pointer; display: block;"></p>
+            <p><a href="http://www.42du.cn/run/144">演示程序</a></p>
+            <h2>12 隐式网格</h2>
+            <p>隐式网格用来在显式网格之外定位项目。有时在显示网格中没有足够的空间，或者是要在显示网格之外定位项目就要用到隐式网格。这时可以把这些项目放置在隐式网格中。</p>
+            <p>隐式网格可以通过属性 <code>grid-auto-rows</code>, <code>grid-auto-columns</code>, 和 <code>grid-auto-flow</code>
+                来定义。</p>
+            <h3>12.1 例30</h3>
+            <pre>grid&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;display&nbsp;:&nbsp;grid;&nbsp;&nbsp;&nbsp;&nbsp;grid-template-rows:&nbsp;&nbsp;&nbsp;&nbsp;70px;&nbsp;&nbsp;&nbsp;&nbsp;grid-template-columns:&nbsp;repeat(2,&nbsp;1fr);&nbsp;&nbsp;&nbsp;&nbsp;grid-auto-rows:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;140px;
+}</pre>
+            <p>本例中，只定一个行轨道，因此项目 1 和 2 高 70px 。</p>
+            <p>第2行轨道有隐式网格自动创建并为项目 3 和 4 分配了空间。 属性<code>grid-auto-rows</code> 定义了隐式网格的行轨道尺寸，即项目3和4的高度是 140px 。</p>
+            <p><img alt="隐式网格演示1" src="https://img.mukewang.com/5af1834e00012db906010288.jpg"
+                    data-original="https://img.mukewang.com/5af1834e00012db906010288.jpg" class=""
+                    style="cursor: pointer; display: block;"></p>
+            <p><a href="http://www.42du.cn/run/145">演示程序</a></p>
+            <h3>12.2 例31</h3>
+            <pre>grid&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;display&nbsp;:&nbsp;grid;&nbsp;&nbsp;&nbsp;&nbsp;grid-auto-flow:&nbsp;row;
+}</pre>
+            <p>缺省的网格布局方向是行的方向（<code>row</code>）。</p>
+            <p><img alt="隐式网格演示2" src="https://img2.mukewang.com/5af1835700013b9106010288.jpg"
+                    data-original="https://img2.mukewang.com/5af1835700013b9106010288.jpg" class=""
+                    style="cursor: pointer; display: block;"></p>
+            <h3>12.3 例32</h3>
+            <pre>grid&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;display&nbsp;:&nbsp;grid;&nbsp;&nbsp;&nbsp;&nbsp;grid-auto-flow:&nbsp;column;
+}</pre>
+            <p>网格的布局方向可以定义为列的方向（column）。</p>
+            <p><img alt="隐式网格演示3" src="https://img3.mukewang.com/5af1835700017f6006010289.jpg"
+                    data-original="https://img3.mukewang.com/5af1835700017f6006010289.jpg" class=""
+                    style="cursor: pointer; display: block;"></p>
+            <h3>12.4 例33</h3>
+            <pre>grid&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;display&nbsp;:&nbsp;grid;&nbsp;&nbsp;&nbsp;&nbsp;grid-template-columns:&nbsp;30px&nbsp;60px;&nbsp;&nbsp;&nbsp;&nbsp;grid-auto-flow:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;column;&nbsp;&nbsp;&nbsp;&nbsp;grid-auto-columns:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1fr;
+}</pre>
+            <p>本例中，我们只定义了两个列轨道的尺寸30px 和 60px。</p>
+            <p>隐式网格中自动创建其它列并给项目3，4，5分配空间；分配的空间尺寸是通过属性 <code>grid-auto-columns</code>定义的。</p>
+            <p><img alt="隐式网格演示4" src="https://img.mukewang.com/5af183570001a99f06020288.jpg"
+                    data-original="https://img.mukewang.com/5af183570001a99f06020288.jpg" class=""
+                    style="cursor: pointer; display: block;"></p>
+            <p><a href="http://www.42du.cn/run/146">演示程序</a></p>
+            <h2>13 隐式命名的网格区域</h2>
+            <p>网格线名称可以任意指定，但分配以 <code>-start</code> 和 <code>-end</code> 结尾的名字有额外的益处，这样隐式地创建了具名网格区域，该名称可以用于项目定位。</p>
+            <h3>13.1 例34</h3>
+            <pre>grid&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;display&nbsp;:&nbsp;grid;&nbsp;&nbsp;&nbsp;&nbsp;grid-template-rows:&nbsp;&nbsp;&nbsp;&nbsp;[outer-start]&nbsp;1fr&nbsp;[inner-start]&nbsp;1fr&nbsp;[inner-end]&nbsp;1fr&nbsp;[outer-end];&nbsp;&nbsp;&nbsp;&nbsp;grid-template-columns:&nbsp;[outer-start]&nbsp;1fr&nbsp;[inner-start]&nbsp;1fr&nbsp;[inner-end]&nbsp;1fr&nbsp;[outer-end];
+}</pre>
+            <p>本例中，行和列都有名为<code>inner-start</code> 和 <code>inner-end</code>的网格线，它们隐式地给网格区域分派了名称（<code>inner</code>）。</p>
+            <pre>item1&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;grid-area:&nbsp;inner;
+}</pre>
+            <p>这样我们就能够直接使用网格区域名来定位，而不需要再用网格线来定位项目了。</p>
+            <p><img alt="隐式命名的网格区域演示1" src="https://img3.mukewang.com/5af1835800019e3706000352.jpg"
+                    data-original="https://img3.mukewang.com/5af1835800019e3706000352.jpg" class=""
+                    style="cursor: pointer; display: block;"></p>
+            <p><a href="http://www.42du.cn/run/147">演示程序</a></p>
+            <h2>14 隐式命名的网格线</h2>
+            <p>隐式命名网格线和隐式命名的网格区域的工作原理刚好相反。</p>
+            <h3>14.1 例35</h3>
+            <pre>grid&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;display&nbsp;:&nbsp;grid;&nbsp;&nbsp;&nbsp;&nbsp;grid-template-areas:&nbsp;&nbsp;&nbsp;"header&nbsp;header"
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"content&nbsp;sidebar"
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"footer&nbsp;footer";&nbsp;&nbsp;&nbsp;&nbsp;grid-template-rows:&nbsp;&nbsp;&nbsp;&nbsp;80px&nbsp;1fr&nbsp;40px;&nbsp;&nbsp;&nbsp;&nbsp;grid-template-columns:&nbsp;1fr&nbsp;200px;
+}</pre>
+            <p>定义网格区域时隐式的命名了网格线的名称。这些网格线的名称是基于区域名加上<code>-start</code> 或 <code>-end</code>后缀组成的。</p>
+            <p><img alt="隐式命名的网格线演示1" src="https://img1.mukewang.com/5af1835800017e6106000288.jpg"
+                    data-original="https://img1.mukewang.com/5af1835800017e6106000288.jpg" class=""
+                    style="cursor: pointer; display: block;"></p>
+            <h3>14.2 例36</h3>
+            <pre>item1&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;grid-row-start:&nbsp;&nbsp;&nbsp;&nbsp;header-start;&nbsp;&nbsp;&nbsp;&nbsp;grid-row-end:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;content-start;&nbsp;&nbsp;&nbsp;&nbsp;grid-column-start:&nbsp;footer-start;&nbsp;&nbsp;&nbsp;&nbsp;grid-column-end:&nbsp;&nbsp;&nbsp;sidebar-end;
+}</pre>
+            <p>本例中，header是通过隐式网格线名称进行定位的。</p>
+            <p><img alt="隐式命名的网格线演示2" src="https://img.mukewang.com/5af183580001b4dc05920315.jpg"
+                    data-original="https://img.mukewang.com/5af183580001b4dc05920315.jpg" class=""
+                    style="cursor: pointer; display: block;"></p>
+            <p><a href="http://www.42du.cn/run/148">演示程序</a></p>
+            <h2>15 层叠网格项目</h2>
+            <p>通过项目定位可以使多个项目层叠在一起，属性<code>z-index</code>可以改变层叠项目的层次。</p>
+            <h3>15.1 例37</h3>
+            <pre>.item-1,&nbsp;.item-2&nbsp;{&nbsp;&nbsp;grid-row-start:&nbsp;&nbsp;1;&nbsp;&nbsp;grid-column-end:&nbsp;span&nbsp;2;
+}.item-1&nbsp;{&nbsp;grid-column-start:&nbsp;1;&nbsp;z-index:&nbsp;1;&nbsp;}.item-2&nbsp;{&nbsp;grid-column-start:&nbsp;2&nbsp;}</pre>
+            <p>本例中，项目1 和 2 行定位开始于第1条行网格线，并跨越两列。</p>
+            <p>两个项目都是用网格线编号进行定位。项目1起始于第1条列网格线，项目2起始于第2条列网格线，这使得两个项目在第一行中间列发生层叠。</p>
+            <p>缺省情况下，项目2将层叠于项目1之上；然而，给项目1设置属性<code>z-index: 1</code>就使得项目1层叠于项目2之上。</p>
+            <p><img alt="层叠网格项目演示1" src="https://img2.mukewang.com/5af183590001ff8c06020289.jpg"
+                    data-original="https://img2.mukewang.com/5af183590001ff8c06020289.jpg" class=""
+                    style="cursor: pointer; display: block;"></p>
+            <p><a href="http://www.42du.cn/run/149">演示程序</a></p>
+            <h3>15.2 例38</h3>
+            <pre>.overlay&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;grid-row-start:&nbsp;&nbsp;&nbsp;&nbsp;header-start;&nbsp;&nbsp;&nbsp;&nbsp;grid-row-end:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;content-end;&nbsp;&nbsp;&nbsp;&nbsp;grid-column-start:&nbsp;content-start;&nbsp;&nbsp;&nbsp;&nbsp;grid-column-end:&nbsp;&nbsp;&nbsp;sidebar-start;&nbsp;&nbsp;&nbsp;&nbsp;z-index:&nbsp;1;
+}</pre>
+            <p>本例中，利用在 <code>grid-template-areas</code> 定义中的隐式网格线名称，定位了一个网格项目（<code>overlay</code>），并将层叠于上层。</p>
+            <p><img alt="层叠网格项目演示2" src="https://img3.mukewang.com/5af18359000114ee06010315.jpg"
+                    data-original="https://img3.mukewang.com/5af18359000114ee06010315.jpg" class=""
+                    style="cursor: pointer; display: block;"></p>
+            <p><a href="http://www.42du.cn/run/150">演示程序</a></p>
+            <h2>16 网格项目的对齐方式</h2>
+            <p>CSS的 <a href="https://drafts.csswg.org/css-align/">盒模型对齐模块</a> 补充了CSS网格的内容，网格项目可以按行或列的轴线方向实现多种对齐方式。</p>
+            <p>属性<code>justify-items</code> 和 <code>justify-self</code> 以行轴为参照对齐项目，属性<code>align-items</code> 和
+                <code>align-self</code> 以列轴为参照对齐项目。</p>
+            <p>属性<code>justify-items</code> 和 <code>align-items</code> 是网格容器的属性，并支持如下这些值：</p>
+            <ul class=" list-paddingleft-2">
+                <li>
+                    <p>auto</p>
+                </li>
+                <li>
+                    <p>normal</p>
+                </li>
+                <li>
+                    <p>start</p>
+                </li>
+                <li>
+                    <p>end</p>
+                </li>
+                <li>
+                    <p>center</p>
+                </li>
+                <li>
+                    <p>stretch</p>
+                </li>
+                <li>
+                    <p>baseline</p>
+                </li>
+                <li>
+                    <p>first baseline</p>
+                </li>
+                <li>
+                    <p>last baseline</p>
+                </li>
+            </ul>
+            <h3>16.1 例39</h3>
+            <pre>.grid&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;grid-template-rows:&nbsp;80px&nbsp;80px;&nbsp;&nbsp;&nbsp;&nbsp;grid-template-columns:&nbsp;1fr&nbsp;1fr;&nbsp;&nbsp;&nbsp;&nbsp;grid-template-areas:&nbsp;"content&nbsp;content"
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"content&nbsp;content";
+}.item&nbsp;{&nbsp;grid-area:&nbsp;content&nbsp;}.grid&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;justify-items:&nbsp;start
+}</pre>
+            <p>在行的轴线起点处对齐。</p>
+            <p><img alt="网格项目的对齐方式演示1" src="https://img2.mukewang.com/5af18359000177ac06010289.jpg"
+                    data-original="https://img2.mukewang.com/5af18359000177ac06010289.jpg" class=""
+                    style="cursor: pointer; display: block;"></p>
+            <p><a href="http://www.42du.cn/run/151">演示程序</a></p>
+            <h3>16.2 例40</h3>
+            <pre>grid&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;justify-items:&nbsp;center;
+}</pre>
+            <p>在行的轴线中点处对齐。</p>
+            <p><img alt="网格项目的对齐方式演示2" src="https://img2.mukewang.com/5af183590001f60606010289.jpg"
+                    data-original="https://img2.mukewang.com/5af183590001f60606010289.jpg" class=""
+                    style="cursor: pointer; display: block;"></p>
+            <p><a href="http://www.42du.cn/run/152">演示程序</a></p>
+            <h3>16.3 例41</h3>
+            <pre>grid&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;justify-items:&nbsp;end;
+}</pre>
+            <p>在行的轴线终点处对齐。</p>
+            <p><img alt="网格项目的对齐方式演示3"
+                    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC"
+                    data-original="http://res.42du.cn/up/grid/align-i-3.jpg" class="lazyload" style="cursor: pointer;">
+            </p>
+            <p><a href="http://www.42du.cn/run/153">演示程序</a></p>
+            <h3>16.4 例42</h3>
+            <pre>grid&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;justify-items:&nbsp;stretch;
+}</pre>
+            <p>在行的轴线方向延伸并填满整个区域。<code>stretch</code>是缺省值。</p>
+            <p><img alt="网格项目的对齐方式演示4"
+                    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC"
+                    data-original="http://res.42du.cn/up/grid/align-i-4.jpg" class="lazyload" style="cursor: pointer;">
+            </p>
+            <p><a href="http://www.42du.cn/run/154">演示程序</a></p>
+            <h3>16.5 例43</h3>
+            <pre>grid&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;align-items:&nbsp;start;
+}</pre>
+            <p>在列的轴线起点处对齐。</p>
+            <p><img alt="网格项目的对齐方式演示5"
+                    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC"
+                    data-original="http://res.42du.cn/up/grid/align-i-5.jpg" class="lazyload" style="cursor: pointer;">
+            </p>
+            <p><a href="http://www.42du.cn/run/155">演示程序</a></p>
+            <h3>16.6 例44</h3>
+            <pre>grid&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;align-items:&nbsp;center;
+}</pre>
+            <p>在列的轴线中点处对齐。</p>
+            <p><img alt="网格项目的对齐方式演示6"
+                    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC"
+                    data-original="http://res.42du.cn/up/grid/align-i-6.jpg" class="lazyload" style="cursor: pointer;">
+            </p>
+            <p><a href="http://www.42du.cn/run/156">演示程序</a></p>
+            <h3>16.7 例45</h3>
+            <pre>grid&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;align-items:&nbsp;end;
+}</pre>
+            <p>在列的轴线终点处对齐。</p>
+            <p><img alt="网格项目的对齐方式演示7"
+                    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC"
+                    data-original="http://res.42du.cn/up/grid/align-i-7.jpg" class="lazyload" style="cursor: pointer;">
+            </p>
+            <p><a href="http://www.42du.cn/run/157">演示程序</a></p>
+            <h3>16.8 例46</h3>
+            <pre>grid&nbsp;&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;align-items:&nbsp;stretch;
+}</pre>
+            <p>在列的轴线方向延伸并填满整个区域。</p>
+            <p><img alt="网格项目的对齐方式演示8"
+                    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC"
+                    data-original="http://res.42du.cn/up/grid/align-i-8.jpg" class="lazyload" style="cursor: pointer;">
+            </p>
+            <p><a href="http://www.42du.cn/run/158">演示程序</a></p>
+            <h3>16.9 例47</h3>
+            <pre>grid&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;justify-items:&nbsp;center;&nbsp;&nbsp;&nbsp;&nbsp;align-items:&nbsp;&nbsp;&nbsp;center;
+}</pre>
+            <p>项目定位于行轴和列轴线的中间位置。</p>
+            <p><img alt="网格项目的对齐方式演示9"
+                    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC"
+                    data-original="http://res.42du.cn/up/grid/align-i-9.jpg" class="lazyload" style="cursor: pointer;">
+            </p>
+            <p><a href="http://www.42du.cn/run/159">演示程序</a></p>
+            <h2>17 网格项目的对齐方式2</h2>
+            <p>项目可以用属性align-self 和 justify-self定义自己的对齐方式，并支持如下这些属性值：</p>
+            <ul class=" list-paddingleft-2">
+                <li>
+                    <p>auto</p>
+                </li>
+                <li>
+                    <p>normal</p>
+                </li>
+                <li>
+                    <p>start</p>
+                </li>
+                <li>
+                    <p>end</p>
+                </li>
+                <li>
+                    <p>center</p>
+                </li>
+                <li>
+                    <p>stretch</p>
+                </li>
+                <li>
+                    <p>baseline</p>
+                </li>
+                <li>
+                    <p>first baseline</p>
+                </li>
+                <li>
+                    <p>last baseline</p>
+                </li>
+            </ul>
+            <h3>17.1 例48</h3>
+            <pre>.item1&nbsp;{&nbsp;justify-self:&nbsp;start&nbsp;}.item2&nbsp;{&nbsp;justify-self:&nbsp;center&nbsp;}.item3&nbsp;{&nbsp;justify-self:&nbsp;end&nbsp;}</pre>
+            <p>属性<code>justify-self</code> 在行的轴线方向定义对齐方式。</p>
+            <p><img alt="网格项目的对齐方式演示10"
+                    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC"
+                    data-original="http://res.42du.cn/up/grid/align-i-10.jpg" class="lazyload" style="cursor: pointer;">
+            </p>
+            <p><a href="http://www.42du.cn/run/160">演示程序</a></p>
+            <h3>17.2 例49</h3>
+            <pre>.item1&nbsp;{&nbsp;align-self:&nbsp;start&nbsp;}.item2&nbsp;{&nbsp;align-self:&nbsp;center&nbsp;}.item3&nbsp;{&nbsp;align-self:&nbsp;end&nbsp;}</pre>
+            <p>属性<code>align-self</code> 在列的轴线方向定义对齐方式。</p>
+            <p><img alt="网格项目的对齐方式演示11"
+                    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC"
+                    data-original="http://res.42du.cn/up/grid/align-i-11.jpg" class="lazyload" style="cursor: pointer;">
+            </p>
+            <p><a href="http://www.42du.cn/run/161">演示程序</a></p>
+            <h3>17.3 例50</h3>
+            <pre>.item1&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;justify-self:&nbsp;center
+&nbsp;&nbsp;&nbsp;&nbsp;align-self:&nbsp;&nbsp;&nbsp;center
+}</pre>
+            <p>项目1定位在行的轴线和列的轴线的中间位置。</p>
+            <p><img alt="网格项目的对齐方式演示12"
+                    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC"
+                    data-original="http://res.42du.cn/up/grid/align-i-12.jpg" class="lazyload" style="cursor: pointer;">
+            </p>
+            <p><a href="http://www.42du.cn/run/162">演示程序</a></p>
+            <h2>18 网格轨道的对齐方式</h2>
+            <p>在网格容器中，网格轨道延轴线方向有多种对齐方式。</p>
+            <p>属性<code>align-content</code>用于定义网格轨道延着行的轴线的对齐方式，而属性<code>justify-content</code>用于定义网格轨道沿着列的轴线的对齐方式。并分别支持如下属性：
+            </p>
+            <ul class=" list-paddingleft-2">
+                <li>
+                    <p>normal</p>
+                </li>
+                <li>
+                    <p>start</p>
+                </li>
+                <li>
+                    <p>end</p>
+                </li>
+                <li>
+                    <p>center</p>
+                </li>
+                <li>
+                    <p>stretch</p>
+                </li>
+                <li>
+                    <p>space-around</p>
+                </li>
+                <li>
+                    <p>space-between</p>
+                </li>
+                <li>
+                    <p>space-evenly</p>
+                </li>
+                <li>
+                    <p>baseline</p>
+                </li>
+                <li>
+                    <p>first baseline</p>
+                </li>
+                <li>
+                    <p>last baseline</p>
+                </li>
+            </ul>
+            <h3>18.1 &nbsp;例51</h3>
+            <pre>.grid&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;width:&nbsp;100%;&nbsp;&nbsp;&nbsp;&nbsp;height:&nbsp;300px;&nbsp;&nbsp;&nbsp;&nbsp;grid-template-columns:&nbsp;repeat(4,&nbsp;45px);&nbsp;&nbsp;&nbsp;&nbsp;grid-template-rows:&nbsp;repeat(4,&nbsp;45px);&nbsp;&nbsp;&nbsp;&nbsp;grid-gap:&nbsp;0.5em;&nbsp;&nbsp;&nbsp;&nbsp;justify-content:&nbsp;start;
+}</pre>
+            <p>列的轨道在行的轴线起点处对齐。<code>start</code> 是缺省值。</p>
+            <p><img alt="网格轨道的对齐方式演示1"
+                    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC"
+                    data-original="http://res.42du.cn/up/grid/align-t-1.jpg" class="lazyload" style="cursor: pointer;">
+            </p>
+            <p><a href="http://www.42du.cn/run/163">演示程序</a></p>
+            <h3>18.2 &nbsp;例52</h3>
+            <pre>.grid&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;justify-content:&nbsp;end;
+}</pre>
+            <p>列的轨道在行的轴线终点处对齐。</p>
+            <p><img alt="网格轨道的对齐方式演示2"
+                    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC"
+                    data-original="http://res.42du.cn/up/grid/align-t-2.jpg" class="lazyload" style="cursor: pointer;">
+            </p>
+            <p><a href="http://www.42du.cn/run/164">演示程序</a></p>
+            <h3>18.3 &nbsp;例53</h3>
+            <pre>.grid&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;justify-content:&nbsp;center;
+}</pre>
+            <p>列的轨道在行的轴线中间处对齐。</p>
+            <p><img alt="网格轨道的对齐方式演示3"
+                    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC"
+                    data-original="http://res.42du.cn/up/grid/align-t-3.jpg" class="lazyload" style="cursor: pointer;">
+            </p>
+            <p><a href="http://www.42du.cn/run/165">演示程序</a></p>
+            <h3>18.4 &nbsp;例54</h3>
+            <pre>.grid&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;justify-content:&nbsp;space-around;
+}</pre>
+            <p>在每一列的两侧平均分配额外空间。</p>
+            <p><img alt="网格轨道的对齐方式演示4"
+                    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC"
+                    data-original="http://res.42du.cn/up/grid/align-t-4.jpg" class="lazyload" style="cursor: pointer;">
+            </p>
+            <p><a href="http://www.42du.cn/run/166">演示程序</a></p>
+            <h3>18.5 &nbsp;例55</h3>
+            <pre>.grid&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;justify-content:&nbsp;space-between;
+}</pre>
+            <p>在列与列之间平均分配额外的空间。</p>
+            <p><img alt="网格轨道的对齐方式演示5"
+                    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC"
+                    data-original="http://res.42du.cn/up/grid/align-t-5.jpg" class="lazyload" style="cursor: pointer;">
+            </p>
+            <p><a href="http://www.42du.cn/run/167">演示程序</a></p>
+            <h3>18.6 &nbsp;例56</h3>
+            <pre>.grid&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;justify-content:&nbsp;space-evenly;
+}</pre>
+            <p>在列与列之间及列与边界之间平均分配额外空间。</p>
+            <p><img alt="网格轨道的对齐方式演示6"
+                    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC"
+                    data-original="http://res.42du.cn/up/grid/align-t-6.jpg" class="lazyload" style="cursor: pointer;">
+            </p>
+            <p><a href="http://www.42du.cn/run/168">演示程序</a></p>
+            <h3>18.7 例57</h3>
+            <pre>.grid&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;align-content:&nbsp;start;
+}</pre>
+            <p>行的轨道在列的轴线起点处对齐，属性<code>start</code>是缺省值。</p>
+            <p><img alt="网格轨道的对齐方式演示7"
+                    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC"
+                    data-original="http://res.42du.cn/up/grid/align-t-7.jpg" class="lazyload" style="cursor: pointer;">
+            </p>
+            <p><a href="http://www.42du.cn/run/169">演示程序</a></p>
+            <h3>18.8 例58</h3>
+            <pre>.grid&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;align-content:&nbsp;end;
+}</pre>
+            <p>行的轨道在列的轴线终点处对齐。</p>
+            <p><img alt="网格轨道的对齐方式演示8"
+                    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC"
+                    data-original="http://res.42du.cn/up/grid/align-t-8.jpg" class="lazyload" style="cursor: pointer;">
+            </p>
+            <p><a href="http://www.42du.cn/run/170">演示程序</a></p>
+            <h3>18.9 例59</h3>
+            <pre>.grid&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;align-content:&nbsp;center;
+}</pre>
+            <p>行的轨道在列的轴线中点处对齐。</p>
+            <p><img alt="网格轨道的对齐方式演示9"
+                    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC"
+                    data-original="http://res.42du.cn/up/grid/align-t-9.jpg" class="lazyload" style="cursor: pointer;">
+            </p>
+            <p><a href="http://www.42du.cn/run/171">演示程序</a></p>
+            <h3>18.10 例60</h3>
+            <pre>.grid&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;align-content:&nbsp;space-around;
+}</pre>
+            <p>每一行的两侧平均分配额外空间。</p>
+            <p><img alt="网格轨道的对齐方式演示10"
+                    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC"
+                    data-original="http://res.42du.cn/up/grid/align-t-10.jpg" class="lazyload" style="cursor: pointer;">
+            </p>
+            <p><a href="http://www.42du.cn/run/172">演示程序</a></p>
+            <h3>18.11 例61</h3>
+            <pre>.grid&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;align-content:&nbsp;space-between;
+}</pre>
+            <p>在行与行之间平均分配额外空间。</p>
+            <p><img alt="网格轨道的对齐方式演示11"
+                    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC"
+                    data-original="http://res.42du.cn/up/grid/align-t-11.jpg" class="lazyload" style="cursor: pointer;">
+            </p>
+            <p><a href="http://www.42du.cn/run/173">演示程序</a></p>
+            <h3>18.12 例62</h3>
+            <pre>.grid&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;align-content:&nbsp;space-evenly;
+}</pre>
+            <p>在行与行之间及行与边界之间平均分配额外空间。</p>
+            <p><img alt="网格轨道的对齐方式演示12"
+                    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC"
+                    data-original="http://res.42du.cn/up/grid/align-t-12.jpg" class="lazyload" style="cursor: pointer;">
+            </p>
+            <p><a href="http://www.42du.cn/run/174">演示程序</a></p>
+            <h2>结语</h2>
+            <p>本教程相对全面地介绍了网格的相关内容，但这并不是一个完整的技术文档。想更全面的学习相关内容，推荐访问 <a
+                    href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Grid_Layout">Mozilla开发者网络</a> 和 <a
+                    href="https://www.w3.org/TR/css3-grid-layout/">W3C</a> 的网格文档。</p>
+            <p>由于能力有限，翻译中难免错误较多，还请大家多多谅解！</p>
+            <p>十分感谢原文作者<a href="https://twitter.com/jonsuh">Jonathan Suh</a>在本文排版设计，示例制作，文字编辑等方面卓越的工作。</p>
+            <p>为了获得最佳的阅体验，请访问如下排版的教程：</p>
+            <p><a href="http://topic.42du.cn/grid">【示例版】学习CSS网</a></p>
+            <p><a title="译文出处"
+                    href="https://www.zcfy.cc/article/learn-css-grid-a-guide-to-learning-css-grid-jonathan-suh"
+                    target="_self">译文出处</a></p>
+            <p><br></p>
+        </div>
+        <div>
+            <div class=""></div>
+            <div class="showMore"><span>点击查看更多内容</span></div>
+        </div>
+    </div>
+    <!-- 标签 -->
+    <div class="cat-box">
+        <div class="cat-wrap clearfix">
+            <a class="cat l" href="/article/tag/5" target="_blank">Html/CSS</a>
+        </div>
+    </div>
+    <!-- 推荐 -->
+    <div class="praise-box">
+        <button id="js-praise"><span class="imv2-thumb_up"></span>
+            <div
+                style="position: absolute; top: 50%; left: 50%; width: 230px; height: 230px; margin-left: -115px; margin-top: -115px; opacity: 0.6; display: none; transform: rotate(0deg) translate(0px, 0px);">
+                <svg style="position: absolute; width: 100%; height: 100%;">
+                    <ellipse cy="0" cx="0" ry="15" rx="15" transform="rotate(0,0,0)" fill-opacity="1" stroke-linecap=""
+                        stroke-dashoffset="NaN " fill="#F9B552" stroke-dasharray="NaN " stroke-opacity="1"
+                        stroke-width="0" stroke="transparent" style="opacity: 1; display: none;"></ellipse>
+                    <ellipse cy="0" cx="0" ry="15" rx="15" transform="rotate(0,0,0)" fill-opacity="1" stroke-linecap=""
+                        stroke-dashoffset="NaN " fill="#F9B552" stroke-dasharray="NaN " stroke-opacity="1"
+                        stroke-width="0" stroke="transparent" style="opacity: 1; display: none;"></ellipse>
+                    <ellipse cy="0" cx="0" ry="15" rx="15" transform="rotate(0,0,0)" fill-opacity="1" stroke-linecap=""
+                        stroke-dashoffset="NaN " fill="#F9B552" stroke-dasharray="NaN " stroke-opacity="1"
+                        stroke-width="0" stroke="transparent" style="opacity: 1; display: none;"></ellipse>
+                    <ellipse cy="0" cx="0" ry="15" rx="15" transform="rotate(0,0,0)" fill-opacity="1" stroke-linecap=""
+                        stroke-dashoffset="NaN " fill="#F9B552" stroke-dasharray="NaN " stroke-opacity="1"
+                        stroke-width="0" stroke="transparent" style="opacity: 1; display: none;"></ellipse>
+                    <ellipse cy="0" cx="0" ry="15" rx="15" transform="rotate(0,0,0)" fill-opacity="1" stroke-linecap=""
+                        stroke-dashoffset="NaN " fill="#F9B552" stroke-dasharray="NaN " stroke-opacity="1"
+                        stroke-width="0" stroke="transparent" style="opacity: 1; display: none;"></ellipse>
+                    <ellipse cy="0" cx="0" ry="15" rx="15" transform="rotate(0,0,0)" fill-opacity="1" stroke-linecap=""
+                        stroke-dashoffset="NaN " fill="#F9B552" stroke-dasharray="NaN " stroke-opacity="1"
+                        stroke-width="0" stroke="transparent" style="opacity: 1; display: none;"></ellipse>
+                </svg></div>
+            <div
+                style="position: absolute; top: 50%; left: 50%; width: 180px; height: 180px; margin-left: -90px; margin-top: -90px; opacity: 0.6; display: none; transform: translate(0px, 0px);">
+                <svg style="position: absolute; width: 100%; height: 100%;">
+                    <ellipse cy="90" cx="90" ry="0" rx="0" transform="rotate(0,90,90)" fill-opacity="transparent"
+                        stroke-linecap="" stroke-dashoffset="" fill="transparent" stroke-dasharray="" stroke-opacity="1"
+                        stroke-width="20" stroke="#F9B552"></ellipse>
+                </svg></div>
+        </button>
+        <div class="num-person"><em class="num">6</em>人点赞</div>
+        <div class="praise-share icon-drop_up hide">
+            <div class="praise-share-box">
+                <p>若觉得本文不错，就分享一下吧！</p>
+                <div class="share-content bdsharebuttonbox bdshare-button-style0-16" data-bd-bind="1551940054810">
+                    <div class="icon-warp">
+                        <a onclick="_hmt.push(['_trackEvent', 'sjtj_top', 'share', 'wx'])" data-track="topshare-1-1"
+                            href="#" class="bds_weixin icon-nav imv2-weixin_c share-icon" data-cmd="weixin"
+                            title="分享到微信"></a>
+                    </div>
+                    <div class="icon-warp">
+                        <a onclick="_hmt.push(['_trackEvent', 'sjtj_top', 'share', 'wb'])" data-track="topshare-1-2"
+                            href="#" class="bds_tsina icon-nav imv2-weibo_c share-icon" data-cmd="tsina"
+                            title="分享到新浪微博"></a>
+                    </div>
+                    <div class="icon-warp">
+                        <a onclick="_hmt.push(['_trackEvent', 'sjtj_top', 'share', 'qq'])" data-track="topshare-1-3"
+                            href="#" class="bds_qzone icon-nav imv2-qq_c share-icon" data-cmd="qzone"
+                            title="分享到QQ空间"></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 推荐end -->
+</div>
