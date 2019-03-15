@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script>
+        var b;
+        void function () {
+            var env = { b: 1 };
+            b = 2;
+            console.log("In function b:", b);
+            with (env) {
+                var b = 3;
+                console.log("In with b:", b);
+            }
+        }();
+        console.log("Global b:", b);
+
+    </script>
+</head>
+
+<body>
+
+</body>
+
+</html>
