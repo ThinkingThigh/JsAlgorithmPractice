@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>demo</title>
+    <style>
+        ul,
+        li {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font: 14px/1.5 Arial;
+            color: #666;
+        }
+
+        #box {
+            position: relative;
+            width: 600px;
+            height: 400px;
+            border: 2px solid #000;
+            margin: 10px auto;
+            overflow: hidden;
+        }
+
+        #box ul {
+            list-style-position: inside;
+            margin: 10px;
+        }
+
+        #top,
+        #bottom {
+            color: #FFF;
+            width: 300px;
+            height: 400px;
+            overflow: hidden;
+        }
+
+        #top {
+            background: green;
+            float: left
+        }
+
+        #bottom {
+            background: skyblue;
+            float: right
+        }
+
+        #line {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            height: 100%;
+            width: 4px;
+            overflow: hidden;
+            background: red;
+            cursor: w-resize;
+        }
+    </style>
+    <script>
+        function $(id) {
+            return document.getElementById(id)
+        }
+        window.onload = function () {
+            var oBox = $("box"), oTop = $("top"), oBottom = $("bottom"), oLine = $("line");
+            oLine.onmousedown = function (e) {
+                var disX = (e || event).clientX;
+                oLine.left = oLine.offsetLeft;
+                document.onmousemove = function (e) {
+                    var iT = oLine.left + ((e || event).clientX - disX);
+                    var e = e || window.event, tarnameb = e.target || e.srcElement;
+                    var maxT = oBox.clientWight - oLine.offsetWidth;
+                    oLine.style.margin = 0;
+                    iT < 0 && (iT = 0);
+                    iT > maxT && (iT = maxT);
+                    oLine.style.left = oTop.style.width = iT + "px";
+                    oBottom.style.width = oBox.clientWidth - iT + "px";
+                    document.getElementById("msg").innerText = 'top.width:' + oLine.style.width + '---bottom.width:' + oBottom.style.width + '---oLine.offsetLeft:' + oLine.offsetLeft + '---disX:' + disX + '---tarnameb:' + tarnameb.tagName;
+                    return false
+                };
+                document.onmouseup = function () {
+                    document.onmousemove = null;
+                    document.onmouseup = null;
+                    oLine.releaseCapture && oLine.releaseCapture()
+                };
+                oLine.setCapture && oLine.setCapture();
+                return false
+            };
+        };
+    </script>
+</head>
+
+<body>
+    <center>左右拖动红条可改变显示区域宽度<span id="msg"></span></center>
+    <div id="box">
+        <div id="top">
+            左
+        </div>
+        <div id="bottom">
+            右
+        </div>
+        <div id="line"></div>
+    </div>
+</body>
+
+</html>

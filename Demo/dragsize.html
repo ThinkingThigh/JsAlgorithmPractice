@@ -1,0 +1,65 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>无标题文档</title>
+<style>
+#div1 {width: 100px; height: 100px; background: red; position: absolute; left: 500px; top: 200px;}
+</style>
+<script>
+window.onload = function() {
+    
+    var oDiv = document.getElementById('div1');
+    
+    oDiv.onmousedown = function(ev) { //拖拽函数开始
+        
+        var ev = ev || event;  //事件浏览器兼容性
+        
+        var disW = this.offsetWidth;  //元素的宽度
+        var disX = ev.clientX;  //鼠标距离屏幕左侧的距离
+        var disL = this.offsetLeft; //元素左侧距离屏幕左侧的距离
+        
+        var b = ''; //设置存取左边还是右边改变大小的变量
+        
+        if ( disX > disL + disW - 10 ) { //如果鼠标的位置在元素右侧小于10以内的位置，认为要改变元素右侧的大小
+            b = 'right';
+        }
+        if ( disX < disL + 10 ) {  //如果鼠标的距离在元素左侧大于10以内的距离说明要改变元素左侧的大小
+            b = 'left';
+        }
+        
+        document.onmousemove = function(ev) {  //鼠标移动事件
+            
+            var ev = ev || event; //事件的浏览器兼容性
+            
+            switch( b ) {  //判断要改变哪里的大小
+                
+                case 'left': //如果是左侧
+                    oDiv.style.width = disW - ( ev.clientX - disX ) + 'px';  //元素的宽度=元素原来的宽度-（当前鼠标的位置-原来鼠标的位置）
+                    oDiv.style.left = disL + ( ev.clientX - disX ) + 'px';  //元素左侧的距离=元素原来的距离+改变的距离
+                    break;  //执行完退出
+                    
+                case 'right':
+                    oDiv.style.width = disW + ( ev.clientX - disX ) + 'px';  //右侧元素的宽度=原来的宽度+改变的宽度
+                    break;
+                
+            }
+            
+        }
+        
+        document.onmouseup = function() {
+            document.onmousemove = document.onmouseup = null;  //清空移动的函数
+        }
+        
+        return false; //删除元素拖拽的默认事件
+        
+    }
+    
+}
+</script>
+</head>
+
+<body>
+    <div id="div1"></div>
+</body>
+</html>
