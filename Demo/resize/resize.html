@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        #box {
+            position: relative;
+            width: 1000px;
+            height: 400px;
+            border: 2px solid #000;
+            margin: 10px auto;
+            overflow: hidden;
+        }
+
+        #left {
+            background: white;
+            float: left;
+            color: black;
+            width: 300px;
+            height: 400px;
+            overflow: hidden;
+        }
+
+        #right {
+            background: white;
+            float: right;
+            color: black;
+            width: 700px;
+            height: 400px;
+            overflow: hidden;
+        }
+
+        #line {
+            position: absolute;
+            top: 0;
+            left: 300px; 
+            height: 100%;
+            width: 2px;
+            overflow: hidden;
+            background: gray;
+            cursor: e-resize;
+        }
+    </style>
+    <script src="resize.js"></script>
+    <script>
+        window.onload = function () {
+            let resizeConfig = {
+                containerID: "box",//外层id
+                leftID: "left",//左侧id
+                leftMinWidth: "200",//左侧最小宽度
+                rightID: "right",//右侧id
+                rightMinWidth: "600",//右侧最小宽度
+                lineID: "line",//线层id 
+            }
+            resize(resizeConfig);
+        };
+    </script>
+</head>
+
+<body>
+    <div id="box">
+        <div id="left">
+            <div>左左左左左左左左左左左左左左左左左左左左左左左左左左左左左左左左左左左左左左左左左左左左</div>
+
+        </div>
+        <div id="right">
+            <div>右右右右右右右右右右右右右右右右右右右右右右右右右右右右右右右右右右右右右右右右右右右右</div>
+
+        </div>
+        <div id="line">
+
+        </div>
+    </div>
+</body>
+
+</html>
