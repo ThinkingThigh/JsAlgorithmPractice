@@ -21,7 +21,7 @@
             float: left;
             color: black;
             width: 500px;
-            min-width: 300px;
+            /* min-width: 300px; */
             height: 400px;
             overflow: hidden;
         }
@@ -31,7 +31,7 @@
             float: right;
             color: black;
             width: 500px;
-            min-width: 300px;
+            /* min-width: 300px; */
             height: 400px;
             overflow: hidden;
         }
@@ -39,7 +39,7 @@
         #line {
             position: absolute;
             top: 0;
-            left: 500px;
+            left: 400px;
             height: 100%;
             width: 10px;
             overflow: hidden;
@@ -52,21 +52,17 @@
         function resize(resizeConfig) {
             var oBox = document.getElementById(resizeConfig.containerID), oTop = document.getElementById(resizeConfig.leftID), oBottom = document.getElementById(resizeConfig.rightID), oLine = document.getElementById(resizeConfig.lineID);
             oLine.onmousedown = function (e) {
-                // clientX 事件属性返回当事件被触发时鼠标指针相对于浏览器页面（或客户区）的水平坐标
                 var disX = (e || event).clientX;
                 oLine.left = oLine.offsetLeft;
                 document.onmousemove = function (e) {
                     var iT = oLine.left + ((e || event).clientX - disX);
                     var e = e || window.event, tarnameb = e.target || e.srcElement;
-                    //盒子宽度减去线宽
-                    // var maxT = oBox.clientWight - oLine.offsetWidth - 300;
-                    var maxT = 700;
+                    var maxT = resizeConfig.containerWidth-resizeConfig.rightMinWidth;
                     oLine.style.margin = 0;
-                    iT < 300 && (iT = 300);
+                    iT < resizeConfig.leftMinWidth && (iT = resizeConfig.leftMinWidth);
                     iT > maxT && (iT = maxT);
                     oLine.style.left = oTop.style.width = iT + "px";
                     oBottom.style.width = oBox.clientWidth - iT + "px";
-                    document.getElementById("msg").innerText = 'top.width:' + oLine.style.width + '---bottom.width:' + oBottom.style.width + '---oLine.offsetLeft:' + oLine.offsetLeft + '---disX:' + disX + '---tarnameb:' + tarnameb.tagName;
                     return false
                 };
                 document.onmouseup = function () {
@@ -80,10 +76,14 @@
         }
         window.onload = function () {
             let resizeConfig = {
-                containerID: "box",
-                leftID: "top",
-                rightID: "bottom",
-                lineID: "line"
+                containerID: "box",//外层id
+                containerWidth: "1000",//外层宽度
+                containerHight:"400",//整体高度
+                leftID: "top",//左侧id
+                leftMinWidth:"300",//左侧最小宽度
+                rightID: "bottom",//右侧id
+                rightMinWidth:"300",//右侧最小宽度
+                lineID: "line",//线层id 
             }
 
             resize(resizeConfig);
@@ -92,7 +92,6 @@
 </head>
 
 <body>
-    <center>左右拖动红条可改变显示区域宽度<span id="msg"></span></center>
     <div id="box">
         <div id="top">
             <div>左左左左左左左左左左左左左左左左左左左左左左左左左左左左左左左左左左左左左左左左左左左左</div>
