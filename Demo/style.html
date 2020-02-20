@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="id1" class="cl1">
+      <div id="id2" class="cl2">
+        <div id="id3" class="cl3">
+          <p class="cl4">我的颜色是什么？</p>
+        </div>
+      </div>
+    </div>
+    <style type="text/css">
+      #id1 {
+        color: black;
+      }
+      #id1.cl1 {
+        color: white;
+      }
+      #id2 #id3.cl3 .cl4 {
+        color: blue;
+      }
+      #id3.cl3 .cl4 {
+        color: brown;
+      }
+      #id1 #id2 .cl3 p {
+        color: crimson;
+      }
+      .cl4 {
+        color: aqua;
+      }
+      p {
+        color: coral;
+      }
+    </style>
+  </body>
+</html>
