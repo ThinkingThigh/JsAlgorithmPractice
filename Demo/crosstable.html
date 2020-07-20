@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Table_Highlight_Vertical_Horizontal_01</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <style type="text/css">
+      table {
+        border-collapse: collapse;
+      }
+      th {
+        text-align: left;
+      }
+
+      /*//////////////////////////////////////////////////////////////////
+[ RESTYLE TAG ]*/
+      * {
+        margin: 0px;
+        padding: 0px;
+        box-sizing: border-box;
+      }
+
+      body,
+      html {
+        height: 100%;
+        font-family: sans-serif;
+      }
+
+      /*//////////////////////////////////////////////////////////////////
+[ Table ]*/
+
+      .limiter {
+        width: 100%;
+        margin: 0 auto;
+      }
+
+      .container-table100 {
+        width: 100%;
+        min-height: 100vh;
+        background: #d1d1d1;
+
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -moz-box;
+        display: -ms-flexbox;
+        display: flex;
+        align-items: center; /* 屏幕居中 */
+        justify-content: center;
+        flex-wrap: wrap;
+        padding: 33px 30px;
+      }
+
+      .wrap-table100 {
+        width: 1300px;
+      }
+
+      /*//////////////////////////////////////////////////////////////////
+[ Table ]*/
+      table {
+        width: 100%;
+        background-color: #fff;
+      }
+
+      th,
+      td {
+        font-weight: unset;
+        padding-right: 10px;
+      }
+
+      .column100 {
+        width: 130px;
+        padding-left: 25px;
+      }
+
+      .column100.column1 {
+        width: 265px;
+        padding-left: 42px;
+      }
+
+      .row100.head th {
+        padding-top: 24px;
+        padding-bottom: 20px;
+      }
+
+      .row100 td {
+        padding-top: 18px;
+        padding-bottom: 14px;
+      }
+
+      /*==================================================================
+[ Ver1 ]*/
+      .table100.ver1 td {
+        font-family: Montserrat-Regular;
+        font-size: 14px;
+        color: #808080;
+        line-height: 1.4;
+      }
+
+      .table100.ver1 th {
+        font-family: Montserrat-Medium;
+        font-size: 12px;
+        color: #fff;
+        line-height: 1.4;
+        text-transform: uppercase;
+
+        background-color: #36304a;
+      }
+
+      .table100.ver1 .row100:hover {
+        background-color: #f2f2f2;
+      }
+
+      .table100.ver1 .hov-column-ver1 {
+        background-color: #f2f2f2;
+      }
+
+      .table100.ver1 .hov-column-head-ver1 {
+        background-color: #484848 !important;
+      }
+
+      .table100.ver1 .row100 td:hover {
+        background-color: #6c7ae0;
+        color: #fff;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="limiter">
+      <div class="container-table100">
+        <div class="wrap-table100">
+          <div class="table100 ver1 m-b-110">
+            <table data-vertable="ver1">
+              <thead>
+                <tr class="row100 head">
+                  <th class="column100 column1" data-column="column1"></th>
+                  <th class="column100 column2" data-column="column2">
+                    Sunday
+                  </th>
+                  <th class="column100 column3" data-column="column3">
+                    Monday
+                  </th>
+                  <th class="column100 column4" data-column="column4">
+                    Tuesday
+                  </th>
+                  <th class="column100 column5" data-column="column5">
+                    Wednesday
+                  </th>
+                  <th class="column100 column6" data-column="column6">
+                    Thursday
+                  </th>
+                  <th class="column100 column7" data-column="column7">
+                    Friday
+                  </th>
+                  <th class="column100 column8" data-column="column8">
+                    Saturday
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="row100">
+                  <td class="column100 column1" data-column="column1">
+                    Lawrence Scott
+                  </td>
+                  <td class="column100 column2" data-column="column2">
+                    8:00 AM
+                  </td>
+                  <td class="column100 column3" data-column="column3">--</td>
+                  <td class="column100 column4" data-column="column4">--</td>
+                  <td class="column100 column5" data-column="column5">
+                    8:00 AM
+                  </td>
+                  <td class="column100 column6" data-column="column6">--</td>
+                  <td class="column100 column7" data-column="column7">
+                    5:00 PM
+                  </td>
+                  <td class="column100 column8" data-column="column8">
+                    8:00 AM
+                  </td>
+                </tr>
+
+                <tr class="row100">
+                  <td class="column100 column1" data-column="column1">
+                    Jane Medina
+                  </td>
+                  <td class="column100 column2" data-column="column2">--</td>
+                  <td class="column100 column3" data-column="column3">
+                    5:00 PM
+                  </td>
+                  <td class="column100 column4" data-column="column4">
+                    5:00 PM
+                  </td>
+                  <td class="column100 column5" data-column="column5">--</td>
+                  <td class="column100 column6" data-column="column6">
+                    9:00 AM
+                  </td>
+                  <td class="column100 column7" data-column="column7">--</td>
+                  <td class="column100 column8" data-column="column8">--</td>
+                </tr>
+
+                <tr class="row100">
+                  <td class="column100 column1" data-column="column1">
+                    Billy Mitchell
+                  </td>
+                  <td class="column100 column2" data-column="column2">
+                    9:00 AM
+                  </td>
+                  <td class="column100 column3" data-column="column3">--</td>
+                  <td class="column100 column4" data-column="column4">--</td>
+                  <td class="column100 column5" data-column="column5">--</td>
+                  <td class="column100 column6" data-column="column6">--</td>
+                  <td class="column100 column7" data-column="column7">
+                    2:00 PM
+                  </td>
+                  <td class="column100 column8" data-column="column8">
+                    8:00 AM
+                  </td>
+                </tr>
+
+                <tr class="row100">
+                  <td class="column100 column1" data-column="column1">
+                    Beverly Reid
+                  </td>
+                  <td class="column100 column2" data-column="column2">--</td>
+                  <td class="column100 column3" data-column="column3">
+                    5:00 PM
+                  </td>
+                  <td class="column100 column4" data-column="column4">
+                    5:00 PM
+                  </td>
+                  <td class="column100 column5" data-column="column5">--</td>
+                  <td class="column100 column6" data-column="column6">
+                    9:00 AM
+                  </td>
+                  <td class="column100 column7" data-column="column7">--</td>
+                  <td class="column100 column8" data-column="column8">--</td>
+                </tr>
+
+                <tr class="row100">
+                  <td class="column100 column1" data-column="column1">
+                    Tiffany Wade
+                  </td>
+                  <td class="column100 column2" data-column="column2">
+                    8:00 AM
+                  </td>
+                  <td class="column100 column3" data-column="column3">--</td>
+                  <td class="column100 column4" data-column="column4">--</td>
+                  <td class="column100 column5" data-column="column5">
+                    8:00 AM
+                  </td>
+                  <td class="column100 column6" data-column="column6">--</td>
+                  <td class="column100 column7" data-column="column7">
+                    5:00 PM
+                  </td>
+                  <td class="column100 column8" data-column="column8">
+                    8:00 AM
+                  </td>
+                </tr>
+
+                <tr class="row100">
+                  <td class="column100 column1" data-column="column1">
+                    Sean Adams
+                  </td>
+                  <td class="column100 column2" data-column="column2">--</td>
+                  <td class="column100 column3" data-column="column3">
+                    5:00 PM
+                  </td>
+                  <td class="column100 column4" data-column="column4">
+                    5:00 PM
+                  </td>
+                  <td class="column100 column5" data-column="column5">--</td>
+                  <td class="column100 column6" data-column="column6">
+                    9:00 AM
+                  </td>
+                  <td class="column100 column7" data-column="column7">--</td>
+                  <td class="column100 column8" data-column="column8">--</td>
+                </tr>
+
+                <tr class="row100">
+                  <td class="column100 column1" data-column="column1">
+                    Rachel Simpson
+                  </td>
+                  <td class="column100 column2" data-column="column2">
+                    9:00 AM
+                  </td>
+                  <td class="column100 column3" data-column="column3">--</td>
+                  <td class="column100 column4" data-column="column4">--</td>
+                  <td class="column100 column5" data-column="column5">--</td>
+                  <td class="column100 column6" data-column="column6">--</td>
+                  <td class="column100 column7" data-column="column7">
+                    2:00 PM
+                  </td>
+                  <td class="column100 column8" data-column="column8">
+                    8:00 AM
+                  </td>
+                </tr>
+
+                <tr class="row100">
+                  <td class="column100 column1" data-column="column1">
+                    Mark Salazar
+                  </td>
+                  <td class="column100 column2" data-column="column2">
+                    8:00 AM
+                  </td>
+                  <td class="column100 column3" data-column="column3">--</td>
+                  <td class="column100 column4" data-column="column4">--</td>
+                  <td class="column100 column5" data-column="column5">
+                    8:00 AM
+                  </td>
+                  <td class="column100 column6" data-column="column6">--</td>
+                  <td class="column100 column7" data-column="column7">
+                    5:00 PM
+                  </td>
+                  <td class="column100 column8" data-column="column8">
+                    8:00 AM
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script type="text/javascript">
+      (function ($) {
+        "use strict";
+        $(".column100").on("mouseover", function () {
+          var table1 = $(this).parent().parent().parent();
+          var table2 = $(this).parent().parent();
+          var verTable = $(table1).data("vertable") + "";
+          var column = $(this).data("column") + "";
+
+          $(table2)
+            .find("." + column)
+            .addClass("hov-column-" + verTable);
+          $(table1)
+            .find(".row100.head ." + column)
+            .addClass("hov-column-head-" + verTable);
+        });
+
+        $(".column100").on("mouseout", function () {
+          var table1 = $(this).parent().parent().parent();
+          var table2 = $(this).parent().parent();
+          var verTable = $(table1).data("vertable") + "";
+          var column = $(this).data("column") + "";
+
+          $(table2)
+            .find("." + column)
+            .removeClass("hov-column-" + verTable);
+          $(table1)
+            .find(".row100.head ." + column)
+            .removeClass("hov-column-head-" + verTable);
+        });
+      })(jQuery);
+    </script>
+  </body>
+</html>
