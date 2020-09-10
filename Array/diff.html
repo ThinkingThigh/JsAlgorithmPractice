@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>diff</title>
+    <script>
+      const a = [
+        { id: 1, name: "name1" },
+        { id: 2, name: "name2" },
+        { id: 3, name: "name3" },
+        { id: 4, name: "name4" },
+      ];
+
+      const b = [
+        { id: 1, name: "name1" },
+        { id: 3, name: "name3" },
+      ];
+
+      const c = a.filter((item) => {
+        return b.every((list) => {
+          return item.id !== list.id;
+        });
+      });
+    </script>
+  </head>
+  <body></body>
+</html>
