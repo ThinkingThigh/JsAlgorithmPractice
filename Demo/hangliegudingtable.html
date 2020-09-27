@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <style>
+      table {
+        border-collapse: collapse;
+      }
+
+      td {
+        border: 1px solid #d4d4d4;
+      }
+
+      td {
+        height: 28px;
+        min-height: 28px;
+        max-height: 28px;
+        font-size: 12px;
+        text-align: center;
+        width: 80px;
+        min-width: 80px;
+        max-width: 80px;
+        padding: 0;
+        line-height: 28px;
+      }
+
+      .report-box {
+        width: 500px;
+        height: 300px;
+        overflow: hidden;
+      }
+
+      .left-table,
+      .right-table {
+        float: left;
+      }
+
+      .content-table {
+        overflow: scroll;
+      }
+
+      .left-title,
+      .right-title {
+        overflow: hidden;
+      }
+
+      #chanceGridTable1 tr:first-child td:first-child,
+      #chanceGridTable3 tr:first-child td {
+        border-top: none;
+      }
+
+      #chanceGridTable2 tr:first-child td:first-child,
+      #chanceGridTable3 tr td:first-child {
+        border-left: none;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="report-box clear">
+      <div class="left-table">
+        <table class="table" id="chanceGridTable">
+          <tr>
+            <td></td>
+          </tr>
+        </table>
+        <div class="left-title">
+          <table class="table" id="chanceGridTable1">
+            <tr>
+              <td>小1</td>
+            </tr>
+            <tr>
+              <td>小2</td>
+            </tr>
+            <tr>
+              <td>小3</td>
+            </tr>
+            <tr>
+              <td>小4</td>
+            </tr>
+            <tr>
+              <td>小5</td>
+            </tr>
+            <tr>
+              <td>小6</td>
+            </tr>
+            <tr>
+              <td>小7</td>
+            </tr>
+            <tr>
+              <td>小8</td>
+            </tr>
+            <tr>
+              <td>小9</td>
+            </tr>
+            <tr>
+              <td>小10</td>
+            </tr>
+            <tr>
+              <td>小11</td>
+            </tr>
+            <tr>
+              <td>小12</td>
+            </tr>
+            <tr>
+              <td style="visibility: hidden"></td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <div class="right-table">
+        <div class="right-title">
+          <table class="table" id="chanceGridTable2">
+            <tr>
+              <td>语文</td>
+              <td>数学</td>
+              <td>英文</td>
+              <td>历史</td>
+              <td>地理</td>
+              <td>生物</td>
+              <td>化学</td>
+              <td>物理</td>
+              <td>自然</td>
+              <td>社会</td>
+              <td>政治</td>
+              <td>美术</td>
+              <td>音乐</td>
+              <td>体育</td>
+              <td style="visibility: hidden"></td>
+            </tr>
+          </table>
+        </div>
+        <div class="content-table">
+          <table class="table" id="chanceGridTable3">
+            <tr>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+            </tr>
+            <tr>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+            </tr>
+            <tr>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+            </tr>
+            <tr>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+            </tr>
+            <tr>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+            </tr>
+            <tr>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+            </tr>
+            <tr>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+            </tr>
+            <tr>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+            </tr>
+            <tr>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+            </tr>
+            <tr>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+            </tr>
+            <tr>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+            </tr>
+            <tr>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+              <td>99</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script src="http://s.yidaichu.com/r/libs/js/jquery-3.1.1.min.js"></script>
+  <script>
+    $(".right-table").width(
+      $(".report-box").width() - $(".left-table").width()
+    );
+    $(".left-title,.content-table").height(
+      $(".report-box").height() - $("#chanceGridTable2").height()
+    );
+
+    $(".content-table").on("scroll", function () {
+      var right_div2_top = $(this).scrollTop();
+      var right_div2_left = $(this).scrollLeft();
+      $(".left-title").scrollTop(right_div2_top);
+      $(".right-title").scrollLeft(right_div2_left);
+    });
+  </script>
+</html>
