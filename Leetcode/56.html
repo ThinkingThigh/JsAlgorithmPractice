@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>56. 合并区间</title>
+    <script>
+      /**
+       * @param {number[][]} intervals
+       * @return {number[][]}
+       */
+      var merge = function (intervals) {};
+      function flatten(arr) {
+        return arr.reduce(function (pre, cur) {
+          if (!Array.isArray(cur)) {
+            return [...pre, cur];
+          } else {
+            return [...pre, ...flatten(cur)];
+          }
+        }, []);
+      }
+      let intervals = [
+        [1, 3],
+        [2, 6],
+        [3, 6],
+        [6, 7],
+        [8, 10],
+        [15, 18],
+      ];
+      let flatArr = flatten(intervals);
+      let sortArr = flatArr.sort((a, b) => {
+        return a - b;
+      });
+      // [1, 2, 3, 3, 6, 6, 6, 7, 8, 10, 15, 18]
+    //   let singleArr = Array.from(new Set(flatArr));
+      // [1, 2, 3, 6, 7, 8, 10, 15, 18]
+      let finalArr = [];
+      let count = 0;
+      for (let i = 0; i < sortArr.length; i++) {
+        if (sortArr[i] + 1 == sortArr[i + 1]) {
+          count++;
+        } else {
+          finalArr.push([sortArr[i - count], sortArr[i]]);
+          count = 0
+        }
+      }
+      console.log("oriArr", intervals);
+      console.log("flatArr", flatArr);
+      console.log("sortArr", sortArr);
+      console.log("finalArr", finalArr);
+    </script>
+  </head>
+  <body></body>
+</html>
