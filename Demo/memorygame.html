@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -46,26 +46,42 @@
     <script>
       // 数组列表
       let list = [];
-      // 计数
+      // 按第几次计数
       let currentIndex = 0;
+      let interval = null;
+      // 播放计数
+      let listIndex = 0;
       // 开始按钮
       function init(length) {
         list = [];
         currentIndex = 0;
+        listIndex = 0;
         for (let i = 0; i < length; i++) {
-            list.push(getRandom(0, 4));
+          list.push(getRandom(0, 4));
         }
         listPlay(list);
       }
       // 播放按钮列表
       function listPlay(arr) {
-        for (let i = 0; i < arr.length; i++) {
-          setTimeout(() => {
-            console.log(i);
-            buttonFlash(arr[i]);
-          }, 700 * i);
+        // for (let i = 0; i < arr.length; i++) {
+        //   setTimeout(() => {
+        //     console.log(i);
+        //     buttonFlash(arr[i]);
+        //   }, 700 * i);
+        // }
+        if (interval != null) {
+          clearInterval(interval);
         }
+        interval = setInterval(() => {
+          buttonFlash(arr[listIndex]);
+          listIndex += 1;
+          if (listIndex == arr.length) {
+            listIndex = 0;
+            clearInterval(interval);
+          }
+        }, 700);
       }
+
       // 按钮闪动
       function buttonFlash(index) {
         let buttons = document.getElementsByClassName("button");
@@ -79,18 +95,18 @@
       function buttonClick(index) {
         console.log("buttonClick", index);
         buttonFlash(index);
-        if(currentIndex == list.length - 1){
-            alert("Success! 下一关！");
-            init(list.length + 1);
-            return;
+        if (currentIndex == list.length - 1) {
+          alert("Success! 下一关！");
+          init(list.length + 1);
+          return;
         }
-        if(list[currentIndex] == index){
-            currentIndex += 1;
-        }else{
-            alert("Fail! 重新开始！");
-            init(3);
+        if (list[currentIndex] == index) {
+          currentIndex += 1;
+        } else {
+          clearInterval(interval);
+          alert("Fail! 重新开始！");
+          init(3);
         }
-        
       }
       // 生成随机数
       function getRandom(min, max) {
