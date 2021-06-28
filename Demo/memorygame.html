@@ -69,6 +69,7 @@
         //     buttonFlash(arr[i]);
         //   }, 700 * i);
         // }
+        console.log(interval);
         if (interval != null) {
           clearInterval(interval);
         }
@@ -96,16 +97,19 @@
         console.log("buttonClick", index);
         buttonFlash(index);
         if (currentIndex == list.length - 1) {
-          alert("Success! 下一关！");
-          init(list.length + 1);
+          setTimeout(() => {
+            alert("Success! 下一关！");
+            init(list.length + 1);
+          }, 300);
           return;
         }
         if (list[currentIndex] == index) {
           currentIndex += 1;
         } else {
-          clearInterval(interval);
-          alert("Fail! 重新开始！");
-          init(3);
+          setTimeout(() => {
+            alert("Fail! 重新开始！");
+            init(3);
+          }, 300);
         }
       }
       // 生成随机数
