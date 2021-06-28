@@ -44,13 +44,47 @@
       }
     </style>
     <script>
+      // 数组列表
+      let list = [];
+      // 计数
+      let currentIndex = 0;
       // 开始按钮
       function init() {
-        let arr = [];
-        arr.push(getRandom(0,4))
-        arr.push(getRandom(0,4))
-        arr.push(getRandom(0,4))
-        console.log(arr);
+        list = [];
+        currentIndex = 0;
+        list.push(getRandom(0, 4));
+        list.push(getRandom(0, 4));
+        list.push(getRandom(0, 4));
+        listPlay(list);
+      }
+      // 播放按钮列表
+      function listPlay(arr) {
+        for (let i = 0; i < arr.length; i++) {
+          setTimeout(() => {
+            console.log(i);
+            buttonFlash(arr[i]);
+          }, 700 * i);
+        }
+      }
+      // 按钮闪动
+      function buttonFlash(index) {
+        let buttons = document.getElementsByClassName("button");
+        let oldColor = buttons[index].style.backgroundColor;
+        buttons[index].style.backgroundColor = "white";
+        setTimeout(() => {
+          buttons[index].style.backgroundColor = oldColor;
+        }, 200);
+      }
+      // 按钮点击
+      function buttonClick(index) {
+        console.log("buttonClick", index);
+        buttonFlash(index);
+        if(list[currentIndex] == index){
+            currentIndex += 1;
+        }else{
+            alert("出错了！")
+        }
+        
       }
       // 生成随机数
       function getRandom(min, max) {
@@ -61,12 +95,36 @@
   <body>
     <div class="container">
       <div class="line">
-        <div class="button" style="background-color: red">1</div>
-        <div class="button" style="background-color: yellow">2</div>
+        <div
+          class="button"
+          style="background-color: red"
+          onclick="buttonClick(0)"
+        >
+          1
+        </div>
+        <div
+          class="button"
+          style="background-color: yellow"
+          onclick="buttonClick(1)"
+        >
+          2
+        </div>
       </div>
       <div class="line">
-        <div class="button" style="background-color: blue">3</div>
-        <div class="button" style="background-color: green">4</div>
+        <div
+          class="button"
+          style="background-color: blue"
+          onclick="buttonClick(2)"
+        >
+          3
+        </div>
+        <div
+          class="button"
+          style="background-color: green"
+          onclick="buttonClick(3)"
+        >
+          4
+        </div>
       </div>
       <div class="center-button" onclick="init()">start</div>
     </div>
