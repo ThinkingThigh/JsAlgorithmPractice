@@ -17,37 +17,37 @@ var winnerList = [
     id: "1",
     name: "刘毅",
     logo: "./images/icon_year_0.png",
-    probability: "0%",
+    probability: "5%",
   },
   {
     id: "2",
     name: "董晓辉",
     logo: "./images/icon_year_1.png",
-    probability: "20%",
+    probability: "19%",
   },
   {
     id: "3",
     name: "田浩",
     logo: "./images/icon_year_2.png",
-    probability: "20%",
+    probability: "19%",
   },
   {
     id: "4",
     name: "薛翼腾",
     logo: "./images/icon_year_3.png",
-    probability: "20%",
+    probability: "19%",
   },
   {
     id: "5",
     name: "林传让",
     logo: "./images/icon_year_4.png",
-    probability: "20%",
+    probability: "19%",
   },
   {
     id: "6",
     name: "张猛",
     logo: "./images/icon_year_5.png",
-    probability: "20%",
+    probability: "19%",
   },
 ]; //奖品列表
 // 有几份扇形
