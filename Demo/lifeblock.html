@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>生命格子图</title>
+    <link
+      href="https://cdn.bootcdn.net/ajax/libs/minireset.css/0.0.2/minireset.css"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.bootcdn.net/ajax/libs/dayjs/1.10.6/dayjs.min.js"></script>
+    <style>
+      .container {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+      }
+      #blocks-field {
+        display: flex;
+        flex-wrap: wrap;
+      }
+      .block {
+        width: 40px;
+        height: 40px;
+        border: 1px solid gray;
+      }
+      .passed {
+        background-color: red;
+      }
+      .future {
+        background-color: green;
+      }
+    </style>
+    <script>
+      function handleBirthdayClick() {
+        let birthday = dayjs(document.getElementById("birthday").value);
+        let end = birthday.add(80, "year");
+        let now = dayjs();
+        let html = "";
+        for (let i = 0; i < 80; i++) {
+          if (birthday.year() + i > now.year()) {
+            console.log(birthday.year() + i + "*");
+            html += `<div class="block future"></div>`;
+          } else {
+            console.log(birthday.year() + i);
+            html += `<div class="block passed"></div>`;
+          }
+        }
+        document.getElementById("blocks-field").innerHTML = html;
+        console.log("birthday", birthday.year(), end.year(), now.year());
+      }
+    </script>
+  </head>
+  <body>
+    <div class="container">
+      <div class="button-field">
+        <input id="birthday" type="date" value="1988-01-14" />
+        <div onclick="handleBirthdayClick()">点击查看</div>
+      </div>
+
+      <div id="blocks-field"></div>
+    </div>
+  </body>
+</html>

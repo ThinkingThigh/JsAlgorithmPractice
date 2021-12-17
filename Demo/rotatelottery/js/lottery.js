@@ -174,8 +174,8 @@ function runCup(i, item) {
     animateTo: 2880 - angles,
     duration: 8000,
     callback: function () {
-      alert(item.name);
       $("#tupBtn").removeAttr("disabled", true);
+      alert("恭喜！");
     },
   });
 }
