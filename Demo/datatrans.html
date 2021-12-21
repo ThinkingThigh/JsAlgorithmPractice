@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script>
+      let tt = [
+        { sceneName: "scene1", evaluationTargetNum: 1 },
+        { sceneName: "scene2", evaluationTargetNum: 5 },
+        { sceneName: "scene1", evaluationTargetNum: 2 },
+        { sceneName: "scene2", evaluationTargetNum: 6 },
+        { sceneName: "scene1", evaluationTargetNum: 3 },
+        { sceneName: "scene2", evaluationTargetNum: 3 },
+      ];
+
+      // const obj = {};
+      // tt.forEach((t) => {
+      //   console.log(t);
+      //   if (!obj[t.sceneName]) {
+      //     obj[t.sceneName] = [t.evaluationTargetNum];
+      //   } else {
+      //     obj[t.sceneName].push(t.evaluationTargetNum);
+      //   }
+      // });
+      // console.log("obj",obj)
+
+      // const vv = Object.keys(obj).map((key) => {
+      //   return {
+      //     sceneName: key,
+      //     evaluationTargetNum: obj[key],
+      //   };
+      // });
+      // console.log("vv", vv);
+
+      let vv = [];
+      let kk = [];
+      for (const t of tt) {
+        if (!kk.includes(t.sceneName)) {
+          kk.push(t.sceneName);
+          vv.push({ sceneName: t.sceneName, evaluationTargetNum: [] });
+        }
+      }
+
+      for (let t of tt) {
+        for (let v of vv) {
+          if (v.sceneName == t.sceneName) {
+            v.evaluationTargetNum.push(t.evaluationTargetNum);
+          }
+        }
+      }
+      console.log("vv", vv);
+    </script>
+  </head>
+  <body></body>
+</html>
