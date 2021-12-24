@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .container {
+        display: flex;
+        justify-content: space-around;
+        width: 600px;
+      }
+      .item {
+        width: 100px;
+        height: 50px;
+        background-color: red;
+      }
+      .item:hover {
+        background-color: green;
+      }
+      .default {
+        background-color: green;
+      }
+    </style>
+    <script>
+        let doms = document.getElementsByClassName("item");
+        function removeDefault(){
+            doms[1].classList.remove("default")
+        }
+        function addDefault(){
+            doms[1].classList.add("default")
+        }
+    </script>
+  </head>
+  <body>
+    <div class="container">
+      <div class="item" onmouseover="removeDefault()" onmouseout="addDefault()"></div>
+      <div class="item default"></div>
+      <div class="item" onmouseover="removeDefault()" onmouseout="addDefault()"></div>
+    </div>
+  </body>
+</html>
