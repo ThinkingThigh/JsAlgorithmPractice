@@ -1,0 +1,30 @@
+// 滚动条
+html {
+    box-sizing: border-box;
+    scrollbar-width: thin;
+}
+
+*,
+*:before,
+*:after {
+    box-sizing: inherit;
+    scrollbar-width: inherit;
+}
+
+// 伪元素无法继承
+*::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+*::-webkit-scrollbar-thumb {
+    background: hsl(214, 13%, 75%);
+    border-radius: 4px;
+}
+
+// 隐藏滚动条
+div {
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
+        display: none;
+    }
+}
