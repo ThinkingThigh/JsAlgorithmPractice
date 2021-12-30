@@ -1,0 +1,25 @@
+// 使用 Shape-outside 在浮动图像周围弯曲文本
+.any-shape {
+  width: 300px;
+  float: left;
+  shape-outside: circle(50%);
+}
+// 首字母
+p.intro:first-letter {
+  font-size: 100px;
+  display: block;
+  float: left;
+  line-height: 0.5;
+  margin: 15px 15px 10px 0;
+}
+// 圆锥梯度 饼图
+.piechart {
+  background: conic-gradient(
+    rgb(255, 132, 45) 0% 25%,
+    rgb(166, 195, 209) 25% 56%,
+    #ffb50d 56% 100%
+  );
+  border-radius: 50%;
+  width: 300px;
+  height: 300px;
+}
