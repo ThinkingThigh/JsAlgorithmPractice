@@ -1,0 +1,17 @@
+.options-list {
+    display: flex;
+    flex-wrap: wrap;  //当空间不足时，子项默认不会被包裹成一个新的行。使用 flex-wrap: wrap 来改变这一行为。
+}
+
+.card__thumb {
+    object-fit: cover; // 图像添加 object-fit，避免拉伸
+}
+
+.modal__content {
+    overscroll-behavior-y: contain; // 滚动链
+    overflow-y: auto;
+}
+
+.message__bubble {
+    max-width: calc(100% - var(--actions-width));   // 在CSS变量值因某种原因为空的情况下，以一种不破坏体验的方式使用它们。
+}
