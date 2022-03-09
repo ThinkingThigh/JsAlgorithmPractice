@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>判断iPhone型号</title>
+</head>
+
+<body>
+    <script>
+        function iPhoneModel() {
+            var isIphone = /iphone/gi.test(navigator.userAgent);
+            if (isIphone) {
+                var dpr = window.devicePixelRatio,
+                    screenWidth = window.screen.width,
+                    screenHeight = window.screen.height,
+                    modelList = {
+                        '320*480*1': '2G/3G/3GS',
+                        '320*480*2': '4/4S',
+                        '320*568*2': '5/5S/5C/SE',
+                        '375*667*2': '6/6S/7/8/SE2',
+                        '414*736*3': '6Plus/6S Plus/7Plus/8Plus',
+                        '375*812*3': 'X/XS/11 Pro',
+                        '414*896*2': '11/XR',
+                        '414*896*3': 'XS_Max/11_Pro_Max',
+                        '360*780*3': '12_Mini/13_Mini',
+                        '390*844*3': '12/12_Pro/13/13_Pro',
+                        '428*926*3': '12_Pro_Max/13_Pro_Max'
+                    }
+
+                return modelList[screenWidth + '*' + screenHeight + '*' + dpr] || 'iPhone';
+            } else {
+                return false;
+            }
+        }
+        document.write(iPhoneModel())
+    </script>
+</body>
+
+</html>
