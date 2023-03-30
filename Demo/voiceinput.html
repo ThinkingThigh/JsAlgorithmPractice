@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>HTML5录制语音并生成文件示例</title>
+</head>
+<body>
+	<h1>HTML5录制语音并生成文件示例</h1>
+	<button id="startRecording">开始录制</button>
+	<button id="stopRecording">停止录制</button>
+	<audio id="recordedAudio" controls></audio>
+	<script>
+		var chunks = []; // 存储录制的音频数据
+
+		// 获取用户媒体设备（麦克风）
+		navigator.mediaDevices.getUserMedia({ audio: true })
+			.then(function(stream) {
+				// 创建MediaRecorder对象
+				var mediaRecorder = new MediaRecorder(stream);
+
+				// 监听录制数据
+				mediaRecorder.ondataavailable = function(event) {
+					chunks.push(event.data);
+				};
+
+				// 监听录制结束事件
+				mediaRecorder.onstop = function() {
+					// 将录制的音频数据合并为一个Blob对象
+					var blob = new Blob(chunks, { type: 'audio/ogg; codecs=opus' });
+
+					// 创建一个URL对象，用于播放录制的音频
+					var audioURL = URL.createObjectURL(blob);
+					document.getElementById('recordedAudio').src = audioURL;
+				};
+
+				// 开始录制
+				document.getElementById('startRecording').addEventListener('click', function() {
+					mediaRecorder.start();
+				});
+
+				// 停止录制
+				document.getElementById('stopRecording').addEventListener('click', function() {
+					mediaRecorder.stop();
+				});
+			})
+			.catch(function(error) {
+				console.log('获取用户媒体设备失败：', error);
+			});
+	</script>
+</body>
+</html>
