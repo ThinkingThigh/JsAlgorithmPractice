@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div>
+        <button id="run">运行</button>
+        <table>
+            <thead>
+                <tr>
+                    <th>记录值</th>
+                    <th>理想值</th>
+                    <th>差</th>
+                </tr>
+            </thead>
+            <tbody id="log"></tbody>
+        </table>
+    </div>
+</body>
+<script>
+    function timer() {
+        var speed = 500;
+        var counter = 1;
+        var start = new Date().getTime();
+        function instance() {
+            var ideal = (counter * speed);
+            var real = (new Date().getTime() - start);
+            var diff = (real - ideal);
+            logline(real, ideal, diff)
+            counter++;
+            window.setTimeout(function () { instance(); }, speed);
+        };
+        window.setTimeout(function () { instance(); }, speed);
+    }
+
+    function logline(now, last, diff) {
+        const tableBody = document.getElementById("log");
+        const logRow = tableBody.insertRow();
+        logRow.insertCell().textContent = last;
+        logRow.insertCell().textContent = now;
+        logRow.insertCell().textContent = diff
+    }
+
+    document.querySelector("#run").addEventListener("click", timer);
+</script>
+
+</html>
