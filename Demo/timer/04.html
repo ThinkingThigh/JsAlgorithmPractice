@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div>
+        <button id="run">运行</button>
+        <table>
+            <thead>
+                <tr>
+                    <th>实际值</th>
+                    <th>误差</th>
+                </tr>
+            </thead>
+            <tbody id="log"></tbody>
+        </table>
+    </div>
+</body>
+<script>
+    const worker = new Worker('worker.js');
+
+    function timer() {
+        worker.postMessage({ type: 'start', speed: 1000 });
+    }
+
+    worker.onmessage = function (event) {
+        const { real, diff } = event.data;
+        logline(real, diff)
+        timer();
+    };
+
+    function logline(real, diff) {
+        const tableBody = document.getElementById("log");
+        const logRow = tableBody.insertRow();
+        logRow.insertCell().textContent = real;
+        logRow.insertCell().textContent = diff;
+    }
+    document.querySelector("#run").addEventListener("click", timer);
+</script>
+
+</html>
