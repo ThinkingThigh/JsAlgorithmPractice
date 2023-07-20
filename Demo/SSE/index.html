@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .fake-input {
+            font-size: 20px;
+            padding-right: 20px;
+            display: inline-block;
+        }
+
+        .fake-input:after {
+            content: '';
+            width: 20px;
+            height: 2px;
+            background: black;
+            opacity: 0;
+            display: inline-block;
+            animation: blink 0.5s linear infinite alternate;
+        }
+
+        @keyframes blink {
+            50% {
+                opacity: 0;
+            }
+
+            100% {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <span id="app"></span>
+    <span class="fake-input"></span>
+    <script>
+        const eventSource = new EventSource('http://localhost:8001/sse');
+        eventSource.onmessage = (event) => {
+            console.log("event", event)
+            document.getElementById('app').innerHTML = document.getElementById('app').innerHTML + `${event.data}`;
+        }
+    </script>
+</body>
+
+</html>
