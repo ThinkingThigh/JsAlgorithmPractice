@@ -1,0 +1,28 @@
+# 用于更新README.md中的日期
+# 用法：在仓库的.github/workflows/目录下创建ActionUpdateReadme.yml文件，内容如下
+# 该文件会在每天午夜运行，更新README.md中的日期
+# 也可以手动运行，点击Actions，选择UpdateReadme，点击Run workflow即可
+name: UpdateReadme
+on:
+  schedule:
+    - cron: "0 0 * * *" # 运行一次每天午夜
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Update README
+        run: |
+          sed -i "s/[0-9]\{4\}-[0-9]\{2\}-[0-9]\{2\}/$(date +'%Y-%m-%d')/g" README.md
+
+      - name: Commit and push if it changed
+        run: |
+          git diff
+          git config --global user.email "actions@github.com"
+          git config --global user.name "GitHub Action"
+          git commit -am "Update date in README"
+          git push

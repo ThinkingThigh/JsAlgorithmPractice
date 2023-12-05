@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rolex GMT-MASTER</title>
+    <style>
+        @font-face {
+            font-family: "Optima";
+            src: url("fonts/Optima.ttc");
+        }
+
+        @font-face {
+            src: url("./fonts/Palatino.ttc");
+            font-family: "Trebuchet MS";
+        }
+
+        @font-face {
+            font-family: "Nunito Sans";
+            src: url("./fonts/NunitoSans-Regular.ttf");
+        }
+
+        body {
+            margin: 0;
+        }
+
+        .watch-box {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: radial-gradient(circle, #eee, #ccc, #aaa, #777);
+        }
+
+        h2 {
+            position: absolute;
+            top: 0;
+            font-family: "Nunito Sans";
+        }
+
+        canvas {
+            position: absolute;
+            transform: scale(0.25);
+        }
+
+        #bezel {
+            z-index: 0;
+            font-weight: bold;
+            font-stretch: 0px;
+        }
+
+        #dial {
+            z-index: 1;
+            letter-spacing: 0.5px;
+        }
+
+        #watchPointer {
+            z-index: 2;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="watch-box">
+        <!-- 表针 -->
+        <canvas id="watchPointer" width="1800" height="1800"></canvas>
+        <!-- 表盘 -->
+        <canvas id="dial" width="1800" height="1800"></canvas>
+        <!-- 表圈 -->
+        <canvas id="bezel" width="1800" height="1800"></canvas>
+    </div>
+
+    <script>
+        const watchBox = document.querySelector(".watch-box");
+        const watchPointer = document.querySelector("#watchPointer");
+        const dial = document.querySelector("#dial");
+        const bezel = document.querySelector("#bezel");
+        const ctx = watchPointer.getContext("2d");
+        const dialCtx = dial.getContext("2d");
+        const bezelCtx = bezel.getContext("2d");
+        const ratio = 4;
+        ctx.scale(ratio, ratio);
+        dialCtx.scale(ratio, ratio);
+        bezelCtx.scale(ratio, ratio);
+
+        const logo = new Image();
+        const rolexLogo = new Image();
+        const imgResources = [logo, rolexLogo];
+        rolexLogo.src = "./images/rolex.png";
+        logo.src = "./images/logo.png";
+
+        // 图片资源加载后绘制表盘
+        const renderDrawDial = (() => {
+            let imageOnloadSuccessCount = 0;
+            return () => {
+                imageOnloadSuccessCount++;
+                if (imageOnloadSuccessCount >= imgResources.length) { // 图片资源加载完毕
+                    drawDial();
+                    drawGmtBezel();
+                    setInterval(drawWatchPointer, 100);
+                }
+            }
+        })()
+        rolexLogo.onload = renderDrawDial;
+        logo.onload = renderDrawDial;
+
+        const gmtBezelRed = "#8a2811";
+        const blue = "#133760";
+        const black = "#10111e";
+        const white = "#fff";
+        const grayD = "#ddd";
+        const grayC = "#ccc";
+        const grayB = "#bbb";
+        const grayA = "#aaa";
+        const gray9 = "#999";
+        const gray8 = "#888";
+        const gmtPointerRed = "#aa0d0f";
+        const transparent = "grba(0,0,0,255)";
+
+
+        // 绘制表圈
+        function drawGmtBezel() {
+            bezelCtx.save();
+            bezelCtx.clearRect(0, 0, 1800, 1800);
+            // 设置中心点，此时225, 225变成了坐标的0，0
+            bezelCtx.translate(225, 225);
+            bezelCtx.save();
+
+            // 阴影的x偏移
+            bezelCtx.shadowOffsetX = 50;
+            // 阴影的y偏移
+            bezelCtx.shadowOffsetY = 50;
+            // 阴影颜色
+            bezelCtx.shadowColor = "rgba(0, 0, 0, 0.5)";
+            // 阴影的模糊半径
+            bezelCtx.shadowBlur = 100;
+
+            /**
+             * 绘制陶瓷表圈
+             * @param {CanvasRenderingContext2D} bezelCtx
+             * @param {number} begin
+             * @param {number} end
+             * @param {string} color
+             * @returns
+             **/
+            const drawCeramicCircle = (bezelCtx, begin, end, color) => {
+                bezelCtx.beginPath();
+                bezelCtx.lineWidth = 26.5;
+                bezelCtx.arc(0, 0, 113.25, begin, end);
+                bezelCtx.strokeStyle = color;
+                bezelCtx.stroke();
+                bezelCtx.closePath();
+            }
+            // 画上表圈（蓝）
+            drawCeramicCircle(bezelCtx, Math.PI, 2 * Math.PI, blue)
+
+            // 画下表圈（红）
+            drawCeramicCircle(bezelCtx, 0, Math.PI, gmtBezelRed)
+
+            // 最外层金属旋转外圈
+            bezelCtx.beginPath();
+            bezelCtx.lineWidth = 6;
+            bezelCtx.arc(0, 0, 129.5, 0, 2 * Math.PI);
+            bezelCtx.strokeStyle = grayD;
+            bezelCtx.stroke();
+            bezelCtx.closePath();
+
+            bezelCtx.save();
+            bezelCtx.rotate(-Math.PI / 2);
+            for (let i = 1; i <= 60; i++) {
+                bezelCtx.rotate((2 * Math.PI) / 60);
+                // 绘制旋转外圈上的凹槽
+                bezelCtx.beginPath();
+                bezelCtx.lineWidth = 0.6;
+                bezelCtx.arc(132.5, 0, 4.2, Math.PI / 2, (3 / 2) * Math.PI);
+                if ((i > 13 && i < 18) || (i > 28 && i < 33)) {
+                    bezelCtx.fillStyle = gray9;
+                } else if (i >= 18 && i <= 28) {
+                    bezelCtx.fillStyle = gray8;
+                } else {
+                    bezelCtx.fillStyle = grayA;
+                }
+                bezelCtx.strokeStyle = white;
+                bezelCtx.fill();
+                bezelCtx.stroke();
+                bezelCtx.closePath();
+                bezelCtx.lineWidth = 1;
+
+                if (i === 60) {
+                    // 绘制十二点方向外圈
+                    bezelCtx.beginPath();
+                    bezelCtx.lineWidth = 1;
+                    bezelCtx.moveTo(106, 0);
+                    bezelCtx.lineTo(120, 16);
+                    bezelCtx.lineTo(120, -16);
+                    bezelCtx.lineTo(107, 0);
+                    bezelCtx.fillStyle = white;
+                    bezelCtx.strokeStyle = white;
+                    bezelCtx.fill();
+                    bezelCtx.stroke();
+                    bezelCtx.closePath();
+                }
+                if (i % 5 === 0 && i !== 60) {
+                    bezelCtx.save();
+                    bezelCtx.rotate(Math.PI / 2);
+                    bezelCtx.beginPath();
+                    bezelCtx.fillStyle = white;
+                    bezelCtx.font = "500 24px Saira";
+                    bezelCtx.textBaseline = "bottom";
+                    let width = bezelCtx.measureText((i * 4) / 10).width;
+                    if (width < 20) {
+                        bezelCtx.fillText((i * 4) / 10, -8, -99.5);
+                    } else {
+                        bezelCtx.fillText((i * 4) / 10, -12, -99.5);
+                    }
+                    bezelCtx.fill();
+                    bezelCtx.stroke();
+                    bezelCtx.closePath();
+                    bezelCtx.restore();
+                }
+                if (i % 5 === 3) {
+                    bezelCtx.beginPath();
+                    bezelCtx.fillStyle = white;
+                    bezelCtx.strokeStyle = white;
+                    bezelCtx.arc(109, -4, 2.7, 0, 2 * Math.PI);
+                    bezelCtx.fill();
+                    bezelCtx.stroke();
+                    bezelCtx.closePath();
+                }
+            }
+            bezelCtx.restore();
+            bezelCtx.restore();
+
+            bezelCtx.rotate(0.5 * Math.PI);
+        }
+
+        // 绘制表盘
+        function drawDial() {
+            dialCtx.save();
+
+            dialCtx.clearRect(0, 0, 1800, 1800);
+            // 设置中心点，此时225, 225变成了坐标的0，0
+            dialCtx.translate(225, 225);
+            // 画表盘外圈
+            dialCtx.beginPath();
+            // 画圆线使用arc(中心点X,中心点Y,半径,起始角度,结束角度)
+            dialCtx.arc(0, 0, 100, 0, 2 * Math.PI);
+            dialCtx.strokeStyle = grayC;
+            dialCtx.stroke();
+            // 执行画线段的操作stroke
+            dialCtx.closePath();
+
+            // 画表盘
+            dialCtx.beginPath();
+            // 画圆线使用arc(中心点X,中心点Y,半径,起始角度,结束角度)
+            dialCtx.arc(0, 0, 53, 0, 2 * Math.PI);
+            dialCtx.fillStyle = black;
+            dialCtx.strokeStyle = black;
+            dialCtx.lineWidth = 94;
+            dialCtx.stroke();
+            // 执行画线段的操作stroke
+            dialCtx.closePath();
+
+            dialCtx.drawImage(rolexLogo, -25, -56, 50, 27);
+
+            dialCtx.fillStyle = white;
+            dialCtx.font = "500 6px Nunito Sans";
+            dialCtx.textBaseline = "bottom";
+            dialCtx.fillText(
+                "OYSTER PERPETUAL DATE",
+                -dialCtx.measureText("OYSTER PERPETUAL DATE").width / 2,
+                -21
+            );
+
+            dialCtx.font = "6px Nunito Sans";
+            dialCtx.fillText("GMT-MASTER", -28, 34);
+
+            dialCtx.font = "6px Marmelad";
+            dialCtx.fillText("II", 25, 34.3, 4);
+
+            dialCtx.font = "5px Trebuchet MS";
+            dialCtx.fillText("SUPERLATIVE CHRONOMETER", -32.5, 40, 65);
+            dialCtx.fillText("OFFICIALLY CERTIFIED", -24, 46, 48);
+
+            // 绘制刻度
+            dialCtx.save();
+
+            dialCtx.lineWidth = 1;
+            dialCtx.shadowOffsetX = 5;
+            dialCtx.shadowOffsetY = 5;
+            dialCtx.shadowColor = "rgba(0, 0, 0, 0.4)";
+            dialCtx.shadowBlur = 10;
+
+            dialCtx.rotate(-Math.PI / 2);
+            for (let i = 1; i <= 60; i++) {
+                dialCtx.rotate((2 * Math.PI) / 60);
+                dialCtx.beginPath();
+
+                dialCtx.lineWidth = 1;
+                dialCtx.strokeStyle = grayD;
+                if (i % 5 === 0) {
+                    dialCtx.strokeStyle = white;
+                    dialCtx.lineWidth = 1.3;
+                }
+                if (i === 28 || i === 29 || i === 31 || i === 32) {
+                    dialCtx.moveTo(94, 0);
+                    dialCtx.lineTo(96, 0);
+                } else {
+                    dialCtx.moveTo(94, 0);
+                    dialCtx.lineTo(98.5, 0);
+                }
+                if (i !== 30) dialCtx.stroke();
+                if (i === 29) {
+                    dialCtx.save();
+                    dialCtx.rotate(-Math.PI / 2 - 0.05);
+                    dialCtx.textBaseline = "middle";
+                    dialCtx.font = "4px Nunito Sans";
+                    dialCtx.fillStyle = white;
+                    dialCtx.fillText(
+                        "M A D E",
+                        -dialCtx.measureText("MADE").width / 2,
+                        98,
+                        13
+                    );
+                    dialCtx.restore();
+                }
+                if (i === 30) {
+                    dialCtx.save();
+                    dialCtx.rotate(-Math.PI / 2);
+                    ctx.mozImageSmoothingEnabled = false;
+                    ctx.webkitImageSmoothingEnabled = false;
+                    ctx.msImageSmoothingEnabled = false;
+                    ctx.imageSmoothingEnabled = false;
+                    dialCtx.drawImage(logo, -3.5, 93, 7, 6);
+                    dialCtx.restore();
+                }
+                if (i === 31) {
+                    dialCtx.save();
+                    dialCtx.rotate(-Math.PI / 2 + 0.05);
+                    dialCtx.textBaseline = "middle";
+                    dialCtx.font = "4px Nunito Sans";
+                    dialCtx.fillStyle = white;
+                    dialCtx.fillText(
+                        "S W I S S",
+                        -dialCtx.measureText("SWISS").width / 2,
+                        98,
+                        13.5
+                    );
+                    dialCtx.restore();
+                }
+                dialCtx.closePath();
+
+                if (i === 60) {
+                    dialCtx.beginPath();
+                    dialCtx.moveTo(90, 12);
+                    dialCtx.lineTo(62, 0);
+                    dialCtx.lineTo(90, -12);
+                    dialCtx.lineTo(90, 12.5);
+                    dialCtx.lineWidth = 1.5;
+                    dialCtx.strokeStyle = gray9;
+                    dialCtx.fillStyle = white;
+                    dialCtx.fill();
+                    dialCtx.stroke();
+                    dialCtx.closePath();
+                }
+                // 绘制刻度
+                if (i % 5 === 0 && i % 15 !== 0) {
+                    dialCtx.beginPath();
+                    dialCtx.arc(82, 0, 8.5, 0, 2 * Math.PI);
+                    dialCtx.lineWidth = 1.5;
+                    dialCtx.strokeStyle = gray9;
+                    dialCtx.fillStyle = white;
+                    dialCtx.fill();
+                    dialCtx.stroke();
+                    dialCtx.closePath();
+                }
+                // 绘制刻度
+                if (i % 15 === 0 && i !== 60 && i !== 15) {
+                    dialCtx.beginPath();
+                    dialCtx.lineWidth = 1.5;
+                    dialCtx.strokeStyle = gray9;
+                    dialCtx.fillStyle = white;
+                    dialCtx.fillRect(60, -5, 30, 10);
+                    dialCtx.strokeRect(60, -5, 30, 10);
+                    dialCtx.fill();
+                    dialCtx.stroke();
+                    dialCtx.closePath();
+                }
+                // 绘制日历窗
+                if (i === 15) {
+                    dialCtx.beginPath();
+                    dialCtx.lineWidth = 2;
+                    dialCtx.strokeStyle = gray9;
+                    dialCtx.fillStyle = white;
+                    dialCtx.fillRect(57, -8, 25, 16);
+                    dialCtx.fill();
+                    dialCtx.stroke();
+                    dialCtx.closePath();
+                }
+            }
+            dialCtx.restore();
+            dialCtx.restore();
+        }
+
+        function drawWatchPointer() {
+            ctx.save();
+            ctx.clearRect(0, 0, 1800, 1800);
+            // 设置中心点，此时225, 225变成了坐标的0，0
+            ctx.translate(225, 225);
+            // 把状态保存起来
+            ctx.save();
+
+            // 获取当前时分秒
+            let time = new Date();
+            let day = time.getDate();
+            let hour = time.getHours() % 12;
+            let min = time.getMinutes();
+            let second = time.getSeconds();
+            let millsecond = time.getMilliseconds();
+
+            // 渲染日历窗数字
+            ctx.fillStyle = "#000";
+            ctx.font = "bold 16px AppleGothic";
+            let width = ctx.measureText(day).width;
+            ctx.fillText(day, width < 15 ? 63.5 : 58, 6);
+            ctx.fill();
+
+            // 绘制圆轴
+            ctx.beginPath();
+            ctx.arc(0, 0, 7, 0, 2 * Math.PI);
+            ctx.fillStyle = grayA;
+            ctx.fill();
+            ctx.closePath();
+            // 时针
+            ctx.rotate(((2 * Math.PI) / 12) * hour + ((2 * Math.PI) / 12) * (min / 60) - Math.PI / 2);
+            ctx.beginPath();
+            ctx.lineWidth = 3;
+            ctx.fillStyle = white;
+            ctx.fillRect(0, -4, 40, 8);
+            ctx.strokeStyle = grayA;
+            ctx.strokeRect(0, -3, 40, 6);
+            ctx.stroke();
+            ctx.closePath();
+            // 奔驰针头上三角
+            ctx.beginPath();
+            ctx.moveTo(48, -4.5);
+            ctx.lineTo(57, 0);
+            ctx.lineTo(48, 4.5);
+            ctx.lineWidth = 2;
+            ctx.strokeStyle = grayA;
+            ctx.fillStyle = white;
+            ctx.fill();
+            ctx.stroke();
+            ctx.closePath();
+            // 绘制奔驰针
+            ctx.beginPath();
+            ctx.arc(40, 0, 10, 0, 2 * Math.PI);
+            ctx.fillStyle = white;
+            ctx.lineWidth = 2;
+            ctx.strokeStyle = grayA;
+            ctx.fill();
+            ctx.stroke();
+            ctx.closePath();
+            ctx.beginPath();
+            ctx.moveTo(30, 0);
+            ctx.lineTo(39, 0);
+            ctx.lineTo(46.5, 7);
+            ctx.lineTo(39, 0);
+            ctx.lineTo(46.5, -7);
+            ctx.lineWidth = 2;
+            ctx.strokeStyle = grayA;
+            ctx.stroke();
+            ctx.closePath();
+
+            // 恢复成上一次save的状态
+            ctx.restore();
+            ctx.save();
+
+            // GMT针
+            ctx.rotate(((2 * Math.PI) / 24) * time.getHours() + ((2 * Math.PI) / 24) * (min / 60) - Math.PI / 2);
+            ctx.beginPath();
+            ctx.shadowOffsetX = 5;
+            ctx.shadowOffsetY = 5;
+            ctx.shadowColor = "rgba(0, 0, 0, 0.2)";
+            ctx.shadowBlur = 15;
+            ctx.lineWidth = 2;
+            ctx.fillStyle = white;
+            ctx.strokeStyle = gmtPointerRed;
+            ctx.moveTo(0, 0);
+            ctx.lineTo(80, 0);
+            ctx.stroke();
+            ctx.closePath();
+            ctx.beginPath();
+            ctx.strokeStyle = grayA;
+            ctx.moveTo(79, -9);
+            ctx.lineTo(95, 0);
+            ctx.lineTo(80, 8);
+            ctx.lineTo(80, -9);
+            ctx.fill();
+            ctx.stroke();
+            ctx.closePath();
+            // 绘制圆轴
+            ctx.beginPath();
+            ctx.arc(0, 0, 6, 0, 2 * Math.PI);
+            ctx.fillStyle = grayD;
+            ctx.fill();
+            ctx.closePath();
+            ctx.beginPath();
+            ctx.arc(0, 0, 2.5, 0, 2 * Math.PI);
+            ctx.fillStyle = grayA;
+            ctx.fill();
+            ctx.closePath();
+            ctx.restore();
+            ctx.save();
+
+            // 分针
+            ctx.rotate(((2 * Math.PI) / 60) * min + ((2 * Math.PI) / 60) * (second / 60) - Math.PI / 2);
+            ctx.beginPath();
+            ctx.lineWidth = 2;
+            ctx.fillStyle = white;
+            ctx.fillRect(10, -4, 70, 8);
+            ctx.strokeStyle = grayA;
+            ctx.fillStyle = grayA;
+            ctx.strokeRect(0, -4, 80, 8);
+            ctx.moveTo(80.7, -5.1);
+            ctx.lineTo(90, 0);
+            ctx.lineTo(80.7, 5.1);
+            ctx.fillRect(0, -4, 10, 8);
+            ctx.fill();
+            ctx.closePath();
+            // 绘制圆轴
+            ctx.beginPath();
+            ctx.arc(0, 0, 6, 0, 2 * Math.PI);
+            ctx.fillStyle = grayD;
+            ctx.fill();
+            ctx.closePath();
+            ctx.beginPath();
+            ctx.arc(0, 0, 2.5, 0, 2 * Math.PI);
+            ctx.fillStyle = grayA;
+            ctx.fill();
+            ctx.closePath();
+            ctx.restore();
+            ctx.save();
+
+            // 秒针
+            ctx.rotate(((2 * Math.PI) / 60) * second + ((2 * Math.PI) / 60) * (millsecond / 1000) - Math.PI / 2);
+            ctx.beginPath();
+            ctx.shadowOffsetX = 5;
+            ctx.shadowOffsetY = 5;
+            ctx.shadowColor = "rgba(0, 0, 0, 0.2)";
+            ctx.shadowBlur = 15;
+            ctx.moveTo(-30, 0);
+            ctx.lineTo(90, 0);
+            ctx.lineWidth = 2;
+            ctx.strokeStyle = grayA;
+            ctx.closePath();
+            ctx.stroke();
+            // 绘制秒针尾部
+            ctx.beginPath();
+            ctx.arc(-30, 0, 5, 0, 2 * Math.PI);
+            ctx.fillStyle = white;
+            ctx.fill();
+            ctx.closePath();
+            // 绘制秒针中间圆形
+            ctx.shadowOffsetX = 5;
+            ctx.shadowOffsetY = 5;
+            ctx.shadowColor = "rgba(0, 0, 0, 0.2)";
+            ctx.shadowBlur = 15;
+            ctx.beginPath();
+            ctx.arc(55, 0, 5.5, 0, 2 * Math.PI);
+            ctx.fillStyle = white;
+            ctx.lineWidth = 2;
+            ctx.strokeStyle = grayA;
+            ctx.fill();
+            ctx.stroke();
+            ctx.closePath();
+            ctx.restore();
+            ctx.save();
+
+            ctx.restore();
+            ctx.restore();
+        }
+    </script>
+</body>
+
+</html>
