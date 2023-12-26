@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+</head>
+
+<body>
+    <span id="countdown">5</span>秒后关闭窗口
+
+    <script>
+        var countdown = 5;
+        var countdownDisplay = document.getElementById('countdown');
+
+        var countdownInterval = setInterval(function() {
+            countdown--;
+            countdownDisplay.textContent = countdown;
+
+            if (countdown <= 0) {
+                clearInterval(countdownInterval);
+                window.close();
+            }
+        }, 1000);
+    </script>
+</body>
+
+</html>
