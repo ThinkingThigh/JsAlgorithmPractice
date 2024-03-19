@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+@keyframes scaleAndFade1 {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50%, 100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+@keyframes scaleAndFade2 {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50%, 100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+#image1 {
+  animation: scaleAndFade1 4s infinite;
+  transform-origin: center;
+  top: 0;
+  left: 0;
+}
+
+#image2 {
+  opacity: 0;
+  animation: scaleAndFade2 4s 2s infinite;
+  transform-origin: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+</style>
+</head>
+<body>
+
+<img id="image1" src="https://img0.baidu.com/it/u=3380526336,4042798617&fm=253&fmt=auto&app=138&f=JPEG?w=610&h=495" alt="Your Image 1">
+<img id="image2" src="https://img0.baidu.com/it/u=3380526336,4042798617&fm=253&fmt=auto&app=138&f=JPEG?w=610&h=495" alt="Your Image 2">
+
+</body>
+</html>
