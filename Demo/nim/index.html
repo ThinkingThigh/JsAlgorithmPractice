@@ -4,11 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>nim游戏</title>
     <script>
-        function findWinningMove(piles) {
+        function calculateSG(piles) {
+
             // 计算所有堆石子的数量的异或结果
             let xorSum = piles.reduce((acc, pile) => acc ^ pile, 0);
+            console.log(xorSum);
 
             // 如果异或结果为0，先手无法保证必胜
             if (xorSum === 0) {
@@ -28,19 +30,30 @@
             return null;
         }
 
-        // 示例测试
-        let piles = [1, 2, 3, 4, 5, 6, 7, 8];
-        const move = findWinningMove(piles);
-        if (move) {
-            console.log(`从第 ${move.pileIndex + 1} 堆中取出 ${move.stonesToRemove} 颗石子`);
-        } else {
-            console.log("无法保证必胜");
+        function getResult() {
+            // 示例测试
+            // let piles = [1, 2, 3, 4, 5, 6, 7, 8];
+            let piles = document.getElementById("piles").value.split(",").map(Number);
+            let move = calculateSG(piles);
+            let resultDom = document.getElementById("result");
+            if (move) {
+                resultDom.innerHTML = `先手从第 ${move.pileIndex + 1} 堆中取出 ${move.stonesToRemove} 颗石子`;
+            } else {
+                resultDom.innerHTML = "先手无法保证必胜";
+            }
+
         }
     </script>
 </head>
 
 <body>
+    <div>
+        <input type="text" id="piles" value="1,2,3,4,5,6,7,8" />
+        <button onclick="getResult()">获取结果</button>
+    </div>
+    <div id="result">
 
+    </div>
 </body>
 
 </html>

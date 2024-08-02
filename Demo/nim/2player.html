@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>nim游戏</title>
+    <script>
+        let piles = [1, 2, 3, 4, 5, 6, 7, 8]; // 初始石子堆
+        let currentPlayer = 1; // 当前玩家，1表示玩家1，2表示玩家2
+
+        function calculateSG(piles) {
+            let xorSum = piles.reduce((acc, pile) => acc ^ pile, 0);
+            if (xorSum === 0) {
+                return null;
+            }
+            for (let i = 0; i < piles.length; i++) {
+                let targetPile = piles[i];
+                let newPile = targetPile ^ xorSum;
+                if (newPile < targetPile) {
+                    return { pileIndex: i, stonesToRemove: targetPile - newPile };
+                }
+            }
+            return null;
+        }
+
+        function getResult() {
+            let result = calculateSG(piles);
+            if (result) {
+                document.getElementById('result').innerText = `玩家${currentPlayer}从第${result.pileIndex + 1}堆中取走${result.stonesToRemove}颗石子`;
+                piles[result.pileIndex] -= result.stonesToRemove;
+                if (piles.every(pile => pile === 0)) {
+                    document.getElementById('result').innerText += `\n玩家${currentPlayer}获胜！`;
+                } else {
+                    currentPlayer = currentPlayer === 1 ? 2 : 1; // 切换玩家
+                }
+            } else {
+                document.getElementById('result').innerText = `玩家${currentPlayer}无法保证必胜`;
+            }
+            updatePilesDisplay();
+        }
+
+        function opponentMove(pileIndex, stonesToRemove) {
+            if (pileIndex >= 0 && pileIndex < piles.length && stonesToRemove > 0 && stonesToRemove <= piles[pileIndex]) {
+                piles[pileIndex] -= stonesToRemove;
+                if (piles.every(pile => pile === 0)) {
+                    document.getElementById('result').innerText = `玩家${currentPlayer === 1 ? 2 : 1}获胜！`;
+                    return;
+                }
+                currentPlayer = currentPlayer === 1 ? 2 : 1; // 切换玩家
+                getResult(); // 计算并执行当前玩家的最佳操作
+            } else {
+                document.getElementById('result').innerText = `无效的操作，请重新输入。`;
+            }
+        }
+
+        function updatePilesDisplay() {
+            document.getElementById('piles').innerText = `当前石子堆: ${piles.join(', ')}`;
+        }
+
+        window.onload = function () {
+            updatePilesDisplay();
+        }
+    </script>
+</head>
+
+<body>
+    <!-- <h1>nim游戏</h1> -->
+    <div id="piles"></div>
+
+    <h2>获取我方操作</h2>
+    <button onclick="getResult()">开始</button>
+    <div id="result"></div>
+    <div>
+        <h2>输入对方操作</h2>
+        <label for="pileIndex">从第</label>
+        <input type="number" id="pileIndex" min="1" max="8">
+        堆（从1开始）
+        <label for="stonesToRemove">取走</label>
+        <input type="number" id="stonesToRemove" min="1">
+        <label for="stonesToRemove">颗石子</label>
+        <button
+            onclick="opponentMove(parseInt(document.getElementById('pileIndex').value) - 1, parseInt(document.getElementById('stonesToRemove').value))">确认</button>
+    </div>
+</body>
+
+</html>
