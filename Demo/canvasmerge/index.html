@@ -6,9 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <script>
+        // urls可以是图片链接或者base64
         let urls = ["https://bpit-public-dev.oss-cn-beijing.aliyuncs.com/files/e8/af/18c3902578/entrance-1.png", "https://bpit-public-dev.oss-cn-beijing.aliyuncs.com/files/95/16/d85af86956/pop.jpg", "https://bpit-public-dev.oss-cn-beijing.aliyuncs.com/files/51/c7/fc56c98529/entrance-2.png", "https://bpit-public-dev.oss-cn-beijing.aliyuncs.com/files/f8/bc/c9c00034dd/jinchen.JPG"]
-        function mergeAndUpload(urls) {
-            // 将urls中的图片都转化成blob
+        function mergeImage(urls) {
             let canvas = document.createElement('canvas');
             let ctx = canvas.getContext('2d');
             let images = [];
@@ -44,14 +44,34 @@
                 };
             });
         }
+        function urlToBase64(urls) {
+            // 将urls中的图片都转化成base64
+            urls = urls.map(url => {
+                let img = new Image();
+                img.crossOrigin = 'Anonymous';
+                img.src = url;
+                let canvas = document.createElement('canvas');
+                let ctx = canvas.getContext('2d');
+                img.onload = () => {
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    ctx.drawImage(img, 0, 0);
+                    let base64 = canvas.toDataURL('image/png');
+                    console.log(base64);
+                };
+                return url;
+            });
+            return urls;
+        }
         window.onload = function () {
-            mergeAndUpload(urls);
+            mergeImage(urls);
         }
     </script>
 </head>
 
 <body>
-    <img id="result">
+    <div id="content"></div>
+    <img id="result" />
 </body>
 
 </html>
