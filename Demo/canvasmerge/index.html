@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        let urls = ["https://bpit-public-dev.oss-cn-beijing.aliyuncs.com/files/e8/af/18c3902578/entrance-1.png", "https://bpit-public-dev.oss-cn-beijing.aliyuncs.com/files/95/16/d85af86956/pop.jpg", "https://bpit-public-dev.oss-cn-beijing.aliyuncs.com/files/51/c7/fc56c98529/entrance-2.png", "https://bpit-public-dev.oss-cn-beijing.aliyuncs.com/files/f8/bc/c9c00034dd/jinchen.JPG"]
+        function mergeAndUpload(urls) {
+            // 将urls中的图片都转化成blob
+            let canvas = document.createElement('canvas');
+            let ctx = canvas.getContext('2d');
+            let images = [];
+            let loadedCount = 0;
+
+            urls.forEach((url, index) => {
+                let img = new Image();
+                // 注意：遇到 Uncaught DOMException: Failed to execute 'toBlob' on 'HTMLCanvasElement': Tainted canvases may not be exported. 异常时，
+                // 在加载图像时设置 crossOrigin 属性。
+                // 且确保服务器允许跨域请求（CORS）。
+                img.crossOrigin = 'Anonymous';
+                img.src = url;
+                img.onload = () => {
+                    images[index] = img;
+                    loadedCount++;
+                    if (loadedCount === urls.length) {
+                        // 所有图片加载完成后计算总高度和最大宽度
+                        let totalHeight = images.reduce((sum, img) => sum + img.height, 0);
+                        let maxWidth = Math.max(...images.map(img => img.width));
+                        canvas.width = maxWidth;
+                        canvas.height = totalHeight;
+
+                        let currentHeight = 0;
+                        images.forEach(img => {
+                            ctx.drawImage(img, 0, currentHeight, img.width, img.height);
+                            currentHeight += img.height;
+                        });
+
+                        canvas.toBlob(blob => {
+                            document.getElementById('result').src = URL.createObjectURL(blob);
+                        });
+                    }
+                };
+            });
+        }
+        window.onload = function () {
+            mergeAndUpload(urls);
+        }
+    </script>
+</head>
+
+<body>
+    <img id="result">
+</body>
+
+</html>
