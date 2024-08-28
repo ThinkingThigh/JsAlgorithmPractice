@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avatar Generator</title>
+</head>
+
+<body>
+    <h1>头像生成器</h1>
+    头像文件：
+    <input type="file" id="avatarInput" accept="image/*">
+    头像框文件：（默认为薪火框）
+    <input type="file" id="frameInput" accept="image/*">
+    <button onclick="generateAvatar()">生成头像</button>
+    <canvas id="canvas" width="240" height="240" style="display:none;"></canvas>
+    <img id="result" alt="生成的头像">
+
+    <div>P.S. 通过活动获取的头框仍然是稀缺的，点开头像看到的是无框原图，而生成的头像点开带框有白边，强迫症慎用！大家要积极参加知音楼活动哦！</div>
+
+    <script>
+        function generateAvatar() {
+            const avatarInput = document.getElementById('avatarInput').files[0];
+            const frameInput = document.getElementById('frameInput').files[0];
+            const canvas = document.getElementById('canvas');
+            const ctx = canvas.getContext('2d');
+            const result = document.getElementById('result');
+
+            if (!avatarInput) {
+                alert('请上传头像');
+                return;
+            }
+
+            const avatarImg = new Image();
+            const frameImg = new Image();
+
+            avatarImg.onload = function () {
+                frameImg.onload = function () {
+                    // 清空画布
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                    // 调整图片宽度为240像素，高度按比例缩放
+                    const avatarHeight = avatarImg.height * (240 / avatarImg.width);
+                    const frameHeight = frameImg.height * (240 / frameImg.width);
+
+                    // 计算图片的中心位置
+                    const avatarX = 0;
+                    const avatarY = (canvas.height - avatarHeight) / 2;
+                    const frameX = 0;
+                    const frameY = (canvas.height - frameHeight) / 2;
+
+                    // 绘制头像
+                    ctx.drawImage(avatarImg, avatarX, avatarY, 240, avatarHeight);
+
+                    // 绘制头像框
+                    ctx.drawImage(frameImg, frameX, frameY, 240, frameHeight);
+
+                    // 将canvas内容转换为图片
+                    result.src = canvas.toDataURL('image/png');
+                    result.style.display = 'block';
+                };
+
+                if (frameInput) {
+                    frameImg.src = URL.createObjectURL(frameInput);
+                } else {
+                    frameImg.src = './xinhuo.png'; // 默认头像框
+                }
+            };
+            avatarImg.src = URL.createObjectURL(avatarInput);
+        }
+    </script>
+</body>
+
+</html>
