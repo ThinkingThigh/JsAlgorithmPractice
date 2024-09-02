@@ -1,0 +1,82 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>随机出牌</title>
+    <style>
+        .container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        #display {
+            width: 100px;
+            height: 150px;
+            background-color: #f0f0f0;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        #displayed {
+            margin-top: 20px;
+            font-size: 24px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div id="display"></div>
+        <div class="button-container">
+            <button id="drawButton">出牌</button>
+            <button id="resetButton">重开</button>
+            <button id="showButton">隐藏/显示出过的牌</button>
+        </div>
+        <div id="displayed">出过的牌: </div>
+    </div>
+
+    <script>
+        let numbers = [1, 2, 3, 4, 5, 6, 7];
+
+        document.getElementById('drawButton').addEventListener('click', function () {
+            if (numbers.length === 0) {
+                alert('没有卡牌了！');
+                return;
+            }
+            const randomIndex = Math.floor(Math.random() * numbers.length);
+            const drawnNumber = numbers.splice(randomIndex, 1)[0];
+            document.getElementById('display').innerText = drawnNumber;
+
+            // 将出过的牌添加到displayed中
+            const displayedElement = document.getElementById('displayed');
+            displayedElement.innerText += drawnNumber + ' ';
+        });
+
+        document.getElementById('resetButton').addEventListener('click', function () {
+            numbers = [1, 2, 3, 4, 5, 6, 7];
+            document.getElementById('display').innerText = '';
+            document.getElementById('displayed').innerText = '出过的牌: ';
+        });
+
+        document.getElementById('showButton').addEventListener('click', function () {
+            const displayedElement = document.getElementById('displayed');
+            if (displayedElement.style.display === 'none') {
+                displayedElement.style.display = 'block';
+            } else {
+                displayedElement.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+
+</html>
