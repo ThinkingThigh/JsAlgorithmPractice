@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UA</title>
+    <script>
+        function getYachUrl(url = '', title = 'test', id = 'test') {
+            if (!url) {
+                alert('请输入url');
+                return;
+            }
+            const yachurl = `yach://yach.zhiyinlou.com/workbench/tabopen?id=${id}&url=${encodeURIComponent(url)}&title=${title}`;
+            document.getElementById('yachlink').innerHTML = yachurl;
+        }
+    </script>
+</head>
+
+<body onload="getUA()">
+    <input type="text" id="url" value=""> <button onclick="getYachUrl(document.getElementById('url').value)">Go</button>
+    <div id="yachlink">
+    </div>
+</body>
+
+</html>
