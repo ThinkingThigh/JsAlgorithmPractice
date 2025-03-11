@@ -5,21 +5,35 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UA</title>
+    <title>生成yach链接</title>
+
+    <!-- 引入layui -->
+    <link rel="stylesheet" href="https://static.zhiyinlou.com/fe-tools/framework/layui-v2.9.10/layui/css/layui.css">
+    <script src="https://static.zhiyinlou.com/fe-tools/framework/layui-v2.9.10/layui/layui.js"></script>
     <script>
         function getYachUrl(url = '', title = 'test', id = 'test') {
             if (!url) {
                 alert('请输入url');
                 return;
             }
-            const yachurl = `yach://yach.zhiyinlou.com/workbench/tabopen?id=${id}&url=${encodeURIComponent(url)}&title=${title}`;
-            document.getElementById('yachlink').innerHTML = yachurl;
+            const type = document.querySelector('input[name="type"]:checked').value;
+            let yachurl;
+            if (type === 'workbench') {
+                yachurl = `yach://yach.zhiyinlou.com/workbench/tabopen?id=${id}&url=${encodeURIComponent(url)}&title=${title}`;
+            } else {
+                yachurl = `yach://yach.zhiyinlou.com/session/webview?url=${encodeURIComponent(url)}&pc_slide=true&hide_title_bar=true`;
+            }
+            document.getElementById('yachlink').innerHTML = `<a href="${yachurl}">${yachurl}</a>`;
         }
     </script>
 </head>
 
-<body onload="getUA()">
-    <input type="text" id="url" value=""> <button onclick="getYachUrl(document.getElementById('url').value)">Go</button>
+<body>
+    <h3>生成工作台打开的链接</h3>
+    <input type="radio" name="type" value="workbench" id="workbench" checked>工作台打开 
+    <input type="radio" name="type" value="session" id="session">会话打开
+    <input type="text" id="url" value="" placeholder="请输入URL"> 
+    <button onclick="getYachUrl(document.getElementById('url').value)">生成</button>
     <div id="yachlink">
     </div>
 </body>
