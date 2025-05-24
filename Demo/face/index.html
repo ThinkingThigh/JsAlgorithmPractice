@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>液晶屏模拟</title>
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      background: #222;
+      overflow: hidden;
+    }
+    .lcd-container {
+      display: grid;
+      width: 100vw;
+      height: 100vh;
+      gap: 2px;
+      margin: 0;
+      padding: 0;
+      border-radius: 0;
+      background: #222;
+      position: relative;
+    }
+    .pixel {
+      width: 100%;
+      height: 100%;
+      background: #444;
+      border-radius: 3px;
+      transition: background 0.2s;
+      aspect-ratio: 1 / 1;
+    }
+    .pixel.on {
+      background: #0f0; /* 点亮的像素为绿色 */
+    }
+    .symbol {
+      position: absolute;
+      top: 16px;
+      right: 32px;
+      font-size: 3vw;
+      color: #fff;
+      z-index: 10;
+      pointer-events: none;
+      user-select: none;
+      text-shadow: 2px 2px 8px #000;
+    }
+    .face-selector {
+      position: fixed;
+      right: 32px;
+      bottom: 32px;
+      z-index: 20;
+      background: rgba(34,34,34,0.95);
+      border-radius: 16px;
+      box-shadow: 0 2px 12px #0008;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      font-size: 1.1em;
+      width: 56px;
+      height: 56px;
+      overflow: hidden;
+      transition: width 0.25s, height 0.25s, padding 0.25s;
+      cursor: pointer;
+      align-items: center;
+      justify-content: center;
+    }
+    .face-selector.expanded {
+      width: 220px;
+      height: 520px;
+      padding: 16px 20px 16px 16px;
+      overflow-y: auto;
+      cursor: default;
+      align-items: flex-start;
+      justify-content: flex-start;
+    }
+    .face-selector label {
+      color: #fff;
+      cursor: pointer;
+      margin-bottom: 2px;
+      transition: color 0.2s;
+      display: none;
+    }
+    .face-selector.expanded label {
+      display: block;
+    }
+    .face-selector label.selected {
+      color: #0f0;
+      font-weight: bold;
+    }
+    .face-selector input[type="radio"] {
+      margin-right: 6px;
+    }
+    .face-selector .face-btn {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: #111;
+      color: #0f0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2em;
+      border: 2px solid #0f0;
+      margin: 4px auto 0 auto;
+      box-shadow: 0 2px 8px #0006;
+      transition: background 0.2s, color 0.2s;
+      pointer-events: none;
+      user-select: none;
+    }
+    .face-selector.expanded .face-btn {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="lcd-container" id="lcd"></div>
+  <div class="face-selector" id="faceSelector">
+    <div class="face-btn" id="faceBtn">😊</div>
+  </div>
+  <script>
+    // 只保留四个精细表情
+    const faces = [
+      { name: '喜', symbol: '!', key: 'happy' },
+      { name: '怒', symbol: '!', key: 'angry' },
+      { name: '哀', symbol: '.', key: 'sad' },
+      { name: '乐', symbol: '?', key: 'amused' },
+    ];
+    let currentFace = 0;
+    // 渲染表情选择器
+    function renderFaceSelector() {
+      const selector = document.getElementById('faceSelector');
+      // 只显示当前表情的按钮
+      selector.innerHTML = `<div class="face-btn" id="faceBtn">${faces[currentFace].symbol||'😊'}</div>` +
+        faces.map((f, i) =>
+          `<label class="${i===currentFace?'selected':''}"><input type="radio" name="face" value="${i}" ${i===currentFace?'checked':''}>${f.name}</label>`
+        ).join('');
+      selector.querySelectorAll('input[type=radio]').forEach(input => {
+        input.addEventListener('change', e => {
+          currentFace = parseInt(e.target.value);
+          renderFaceSelector();
+          createLcdGrid();
+        });
+      });
+      // 悬停展开
+      selector.onmouseenter = () => selector.classList.add('expanded');
+      selector.onmouseleave = () => selector.classList.remove('expanded');
+    }
+    // 字符像素字模（仅支持常用符号和数字/字母，可扩展）
+    const charMap = {
+      '!': [
+        '1',
+        '1',
+        '1',
+        '1',
+        '1',
+        '0',
+        '1',
+      ],
+      '?': [
+        '111',
+        '001',
+        '011',
+        '010',
+        '000',
+        '010',
+      ],
+      '.': [
+        '0',
+        '0',
+        '0',
+        '0',
+        '1',
+      ],
+      '-': [
+        '000',
+        '111',
+        '000',
+      ],
+      ',': [
+        '0',
+        '0',
+        '1',
+        '1',
+      ],
+      ':': [
+        '0',
+        '1',
+        '0',
+        '1',
+        '0',
+      ],
+      // 可扩展更多符号
+    };
+    // 在像素屏右上角绘制符号
+    function drawSymbolOnLcd(rows, cols, symbol) {
+      if(!symbol) return [];
+      let pixels = [];
+      let offsetX = cols - 8; // 右侧留8格
+      let offsetY = 2; // 顶部留2格
+      let curX = offsetX;
+      for(const ch of symbol) {
+        const map = charMap[ch] || [];
+        for(let y=0; y<map.length; y++) {
+          for(let x=0; x<map[y].length; x++) {
+            if(map[y][x]==='1') {
+              pixels.push((offsetY+y)*cols + (curX+x));
+            }
+          }
+        }
+        curX += 4; // 字符间隔
+      }
+      return pixels;
+    }
+    // 动态表情渲染
+    function createLcdGrid() {
+      const lcd = document.getElementById('lcd');
+      lcd.innerHTML = '<div class="symbol" id="symbol"></div>';
+      // 计算每个像素的最小尺寸和间距
+      const minPixelSize = 20;
+      const gap = 2;
+      const screenW = window.innerWidth;
+      const screenH = window.innerHeight;
+      const cols = Math.floor((screenW + gap) / (minPixelSize + gap));
+      const rows = Math.floor((screenH + gap) / (minPixelSize + gap));
+      lcd.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+      lcd.style.gridTemplateRows = `repeat(${rows}, 1fr)`;
+      for(let i=0; i<rows*cols; i++) {
+        const pixel = document.createElement('div');
+        pixel.className = 'pixel';
+        lcd.appendChild(pixel);
+      }
+      // 启动动画
+      startFaceAnimation(rows, cols, faces[currentFace].key);
+    }
+    function lightUpPixels(indices) {
+      const pixels = document.querySelectorAll('.pixel');
+      indices.forEach(idx => {
+        if(pixels[idx]) pixels[idx].classList.add('on');
+      });
+    }
+    function clearPixels() {
+      const pixels = document.querySelectorAll('.pixel');
+      pixels.forEach(pixel => pixel.classList.remove('on'));
+    }
+    // 动画主控
+    let faceFrame = 0;
+    let faceTimer = null;
+    function startFaceAnimation(rows, cols, faceKey) {
+      if(faceTimer) clearInterval(faceTimer);
+      function animate() {
+        clearPixels();
+        drawFace(rows, cols, faceKey, faceFrame);
+        faceFrame = (faceFrame + 1) % 120;
+      }
+      animate();
+      faceTimer = setInterval(animate, 120);
+    }
+    // 参考B站小电视风格优化四表情
+    function drawFace(rows, cols, faceKey, frame) {
+      const cx = Math.floor(cols / 2);
+      const cy = Math.floor(rows / 2);
+      const eyeOffsetX = Math.floor(cols * 0.19);
+      const eyeOffsetY = Math.floor(rows * 0.18);
+      const eyeW = Math.max(4, Math.floor(cols * 0.08));
+      const eyeH = Math.max(3, Math.floor(rows * 0.07));
+      const mouthW = Math.floor(cols * 0.18);
+      const mouthY = cy + Math.floor(rows * 0.13);
+      let pixels = [];
+      // 眨眼动画
+      const isBlink = frame % 60 < 6;
+      if(faceKey === 'happy') {
+        // 喜：大圆眯眼+大U型嘴
+        for(let i=0;i<2;i++) {
+          const sign = i===0?-1:1;
+          if(isBlink) {
+            // 眨眼：细线
+            for(let x=-eyeW;x<=eyeW;x++) {
+              const px = cx + sign*eyeOffsetX + x;
+              const py = cy - eyeOffsetY;
+              pixels.push(py*cols + px);
+            }
+          } else {
+            // 大圆眼+高光
+            for(let y=-eyeH;y<=eyeH;y++) {
+              for(let x=-eyeW;x<=eyeW;x++) {
+                if(x*x/(eyeW*eyeW)+y*y/(eyeH*eyeH)<=1) {
+                  const px = cx + sign*eyeOffsetX + x;
+                  const py = cy - eyeOffsetY + y;
+                  pixels.push(py*cols + px);
+                  // 高光点
+                  if(x === -eyeW+2 && y === -eyeH+2) {
+                    pixels.push((py-1)*cols + (px-1));
+                  }
+                }
+              }
+            }
+          }
+        }
+        // 大U型嘴
+        for(let t=-mouthW;t<=mouthW;t++) {
+          const x = cx + t;
+          const y = mouthY + Math.floor(2.2 * Math.pow(t/mouthW,2) * eyeH + 2);
+          pixels.push(y*cols + x);
+          pixels.push((y+1)*cols + x);
+        }
+        pixels = pixels.concat(drawSymbolOnLcd(rows, cols, '!'));
+      } else if(faceKey === 'angry') {
+        // 怒：粗眉+大圆眼+倒V嘴
+        // 粗眉
+        for(let i=0;i<2;i++) {
+          const sign = i===0?-1:1;
+          for(let t=-eyeW-2;t<=eyeW+2;t++) {
+            const x = cx + sign*eyeOffsetX + t;
+            const y = cy - eyeOffsetY - eyeH - 2 - Math.floor(t/(eyeW+2)*eyeH*0.7);
+            pixels.push(y*cols + x);
+            pixels.push((y+1)*cols + x);
+          }
+        }
+        // 大圆怒眼
+        for(let i=0;i<2;i++) {
+          const sign = i===0?-1:1;
+          if(isBlink) {
+            for(let x=-eyeW;x<=eyeW;x++) {
+              const px = cx + sign*eyeOffsetX + x;
+              const py = cy - eyeOffsetY;
+              pixels.push(py*cols + px);
+            }
+          } else {
+            for(let y=-eyeH;y<=eyeH;y++) {
+              for(let x=-eyeW;x<=eyeW;x++) {
+                if(x*x/(eyeW*eyeW)+y*y/(eyeH*eyeH)<=1) {
+                  const px = cx + sign*eyeOffsetX + x;
+                  const py = cy - eyeOffsetY + y;
+                  pixels.push(py*cols + px);
+                  // 高光点
+                  if(x === -eyeW+2 && y === -eyeH+2) {
+                    pixels.push((py-1)*cols + (px-1));
+                  }
+                }
+              }
+            }
+          }
+        }
+        // 倒V型嘴
+        for(let t=-mouthW;t<=mouthW;t++) {
+          const x = cx + t;
+          const y = mouthY + Math.floor(-Math.abs(t/mouthW)*eyeH + 2);
+          pixels.push(y*cols + x);
+          pixels.push((y+1)*cols + x);
+        }
+        pixels = pixels.concat(drawSymbolOnLcd(rows, cols, '!'));
+      } else if(faceKey === 'sad') {
+        // 哀：大圆下垂眼+泪珠+下弯嘴
+        for(let i=0;i<2;i++) {
+          const sign = i===0?-1:1;
+          if(isBlink) {
+            for(let x=-eyeW;x<=eyeW;x++) {
+              const px = cx + sign*eyeOffsetX + x;
+              const py = cy - eyeOffsetY;
+              pixels.push(py*cols + px);
+            }
+          } else {
+            for(let y=-eyeH;y<=eyeH;y++) {
+              for(let x=-eyeW;x<=eyeW;x++) {
+                if(x*x/(eyeW*eyeW)+y*y/(eyeH*eyeH)<=1) {
+                  const px = cx + sign*eyeOffsetX + x;
+                  const py = cy - eyeOffsetY + y + Math.floor(Math.abs(x/eyeW)*2); // 下垂
+                  pixels.push(py*cols + px);
+                  // 高光点
+                  if(x === -eyeW+2 && y === -eyeH+2) {
+                    pixels.push((py-1)*cols + (px-1));
+                  }
+                }
+              }
+            }
+            // 动态泪珠
+            if(frame%40<20) {
+              for(let drop=0;drop<2;drop++) {
+                pixels.push((cy-eyeOffsetY+eyeH+4+drop+frame%3)*cols + (cx+sign*eyeOffsetX));
+              }
+            }
+          }
+        }
+        // 下弯嘴
+        for(let t=-mouthW;t<=mouthW;t++) {
+          const x = cx + t;
+          const y = mouthY + Math.floor(-1.5 * Math.pow(t/mouthW,2) * eyeH + 2);
+          pixels.push(y*cols + x);
+          pixels.push((y+1)*cols + x);
+        }
+        pixels = pixels.concat(drawSymbolOnLcd(rows, cols, '.'));
+      } else if(faceKey === 'amused') {
+        // 乐：大圆眼+大U型嘴
+        for(let i=0;i<2;i++) {
+          const sign = i===0?-1:1;
+          if(isBlink) {
+            for(let x=-eyeW;x<=eyeW;x++) {
+              const px = cx + sign*eyeOffsetX + x;
+              const py = cy - eyeOffsetY;
+              pixels.push(py*cols + px);
+            }
+          } else {
+            for(let y=-eyeH-1;y<=eyeH+1;y++) {
+              for(let x=-eyeW-1;x<=eyeW+1;x++) {
+                if(x*x/(eyeW*eyeW)+y*y/(eyeH*eyeH)<=1) {
+                  const px = cx + sign*eyeOffsetX + x;
+                  const py = cy - eyeOffsetY + y;
+                  pixels.push(py*cols + px);
+                  // 高光点
+                  if(x === -eyeW+2 && y === -eyeH+2) {
+                    pixels.push((py-1)*cols + (px-1));
+                  }
+                }
+              }
+            }
+          }
+        }
+        // 大U型嘴
+        for(let t=-mouthW;t<=mouthW;t++) {
+          const x = cx + t;
+          const y = mouthY + Math.floor(2.2 * Math.pow(t/mouthW,2) * eyeH + 2);
+          pixels.push(y*cols + x);
+          pixels.push((y+1)*cols + x);
+        }
+        pixels = pixels.concat(drawSymbolOnLcd(rows, cols, '?'));
+      }
+      lightUpPixels(pixels);
+    }
+    window.addEventListener('resize', createLcdGrid);
+    renderFaceSelector();
+    createLcdGrid();
+  </script>
+</body>
+</html>
