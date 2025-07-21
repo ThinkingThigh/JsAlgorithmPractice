@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -55,7 +56,7 @@
             background: rgba(255, 255, 255, 0.98);
             border-radius: 25px;
             padding: 40px;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
             backdrop-filter: blur(15px);
             flex: 1;
         }
@@ -64,7 +65,7 @@
             background: linear-gradient(145deg, #e8f4fd, #d1e7f0);
             border-radius: 20px;
             padding: 30px 25px 30px 30px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.08);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
             height: 520px;
             display: flex;
             flex-direction: column;
@@ -197,7 +198,7 @@
             background: #000;
             border-radius: 20px;
             overflow: hidden;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
         }
 
         .start-learning-container {
@@ -228,22 +229,27 @@
 
         .video-mask {
             position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
             z-index: 2;
             cursor: not-allowed;
-            background: rgba(0,0,0,0.3);
+            background: rgba(0, 0, 0, 0.3);
         }
 
         .play-btn {
             position: absolute;
-            left: 50%; top: 50%;
+            left: 50%;
+            top: 50%;
             transform: translate(-50%, -50%);
             z-index: 3;
             background: rgba(25, 118, 210, 0.9);
             color: #fff;
             border: none;
             border-radius: 50%;
-            width: 70px; height: 70px;
+            width: 70px;
+            height: 70px;
             font-size: 36px;
             cursor: pointer;
             display: flex;
@@ -395,7 +401,7 @@
             height: 3px;
             background: #ffffff;
             border-radius: 50%;
-            box-shadow: 0 0 3px rgba(0,0,0,0.5);
+            box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
         }
 
         .video-progress-overlay .time-display {
@@ -403,7 +409,7 @@
             color: #ffffff;
             font-size: 0.75rem;
             font-weight: 500;
-            text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
             opacity: 0.9;
         }
 
@@ -495,7 +501,7 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
             transition: left 0.5s;
         }
 
@@ -518,7 +524,7 @@
             background: linear-gradient(135deg, #ffffff, #f8f9fa);
             color: #495057;
             border: 2px solid #e9ecef;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
         }
 
         .btn-secondary:hover {
@@ -536,11 +542,11 @@
                 grid-template-columns: 1fr;
                 gap: 20px;
             }
-            
+
             .header h1 {
                 font-size: 2rem;
             }
-            
+
             .video-container {
                 height: 300px;
             }
@@ -548,23 +554,51 @@
 
         /* 添加一些动画效果 */
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .course-item {
             animation: fadeIn 0.5s ease forwards;
         }
 
-        .course-item:nth-child(1) { animation-delay: 0.1s; }
-        .course-item:nth-child(2) { animation-delay: 0.2s; }
-        .course-item:nth-child(3) { animation-delay: 0.3s; }
-        .course-item:nth-child(4) { animation-delay: 0.4s; }
-        .course-item:nth-child(5) { animation-delay: 0.5s; }
-        .course-item:nth-child(6) { animation-delay: 0.6s; }
-        .course-item:nth-child(7) { animation-delay: 0.7s; }
+        .course-item:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+
+        .course-item:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .course-item:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+
+        .course-item:nth-child(4) {
+            animation-delay: 0.4s;
+        }
+
+        .course-item:nth-child(5) {
+            animation-delay: 0.5s;
+        }
+
+        .course-item:nth-child(6) {
+            animation-delay: 0.6s;
+        }
+
+        .course-item:nth-child(7) {
+            animation-delay: 0.7s;
+        }
     </style>
 </head>
+
 <body>
     <div class="container">
         <div class="header">
@@ -615,35 +649,38 @@
             </div>
 
             <div class="video-player">
-                                    <div class="video-container" oncontextmenu="return false">
-                        <video id="videoPlayer" preload="none" controlslist="nodownload noremoteplayback" disablepictureinpicture style="display: none;">
-                            <source src="" type="video/mp4">
-                            您的浏览器不支持 video 标签。
-                        </video>
-                        <div class="video-placeholder" id="videoPlaceholder">
-                            <div style="font-size: 5rem; margin-bottom: 30px; opacity: 0.9;">🎥</div>
-                            <h3 style="font-size: 1.8rem; margin-bottom: 20px; font-weight: 400; line-height: 1.4;">选择课程开始学习</h3>
-                            <p style="font-size: 1rem; opacity: 0.8; line-height: 1.6;">点击左侧课程列表中的任意课程<br>开始您的学习之旅</p>
-                        </div>
-                        <div class="video-mask" id="videoMask" style="display: none;"></div>
-                        <div class="video-control-overlay">
-                            <button class="control-btn control-play" id="playBtn" style="display: none;">▶</button>
-                            <button class="control-btn control-pause" id="pauseBtn" style="display: none;">⏸</button>
-                            <button class="control-btn control-fullscreen" id="fullscreenBtn" style="display: none;">⛶</button>
-                        </div>
-                        <div class="video-progress-overlay">
-                            <div class="progress-bar">
-                                <div class="progress-fill" id="progressFill"></div>
-                            </div>
-                            <div class="time-display">
-                                <span id="currentTime">00:00</span> / <span id="totalTime">00:00</span>
-                            </div>
-                        </div>
+                <div class="video-container" oncontextmenu="return false">
+                    <video id="videoPlayer" preload="none" controlslist="nodownload noremoteplayback"
+                        disablepictureinpicture style="display: none;">
+                        <source src="" type="video/mp4">
+                        您的浏览器不支持 video 标签。
+                    </video>
+                    <div class="video-placeholder" id="videoPlaceholder">
+                        <div style="font-size: 5rem; margin-bottom: 30px; opacity: 0.9;">🎥</div>
+                        <h3 style="font-size: 1.8rem; margin-bottom: 20px; font-weight: 400; line-height: 1.4;">选择课程开始学习
+                        </h3>
+                        <p style="font-size: 1rem; opacity: 0.8; line-height: 1.6;">点击左侧课程列表中的任意课程<br>开始您的学习之旅</p>
                     </div>
-                    <div class="start-learning-container">
-                        <button class="btn btn-primary" id="startBtn">开始学习</button>
+                    <div class="video-mask" id="videoMask" style="display: none;"></div>
+                    <div class="video-control-overlay">
+                        <button class="control-btn control-play" id="playBtn" style="display: none;">▶</button>
+                        <button class="control-btn control-pause" id="pauseBtn" style="display: none;">⏸</button>
+                        <button class="control-btn control-fullscreen" id="fullscreenBtn"
+                            style="display: none;">⛶</button>
+                    </div>
+                    <div class="video-progress-overlay">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressFill"></div>
+                        </div>
+                        <div class="time-display">
+                            <span id="currentTime">00:00</span> / <span id="totalTime">00:00</span>
+                        </div>
                     </div>
                 </div>
+                <div class="start-learning-container">
+                    <button class="btn btn-primary" id="startBtn">开始学习</button>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -672,7 +709,7 @@
         // 禁用拖拽
         document.addEventListener('dragstart', e => e.preventDefault());
         // 禁用快捷键
-        document.addEventListener('keydown', function(e) {
+        document.addEventListener('keydown', function (e) {
             if (
                 e.key === 'F12' ||
                 (e.ctrlKey && e.key.toLowerCase() === 'u') ||
@@ -686,20 +723,20 @@
         });
 
         courseItems.forEach(item => {
-            item.addEventListener('click', function() {
+            item.addEventListener('click', function () {
                 // 移除所有active类
                 courseItems.forEach(c => c.classList.remove('active'));
                 // 添加active类到当前项
                 this.classList.add('active');
-                
+
                 // 更新视频信息
                 const videoFile = this.getAttribute('data-video');
                 const courseTitle = this.querySelector('.course-title').textContent;
                 const speaker = this.querySelector('.course-speaker').textContent;
-                
+
                 // 重置播放器状态
                 resetPlayer();
-                
+
                 // 显示课程信息
                 videoPlaceholder.innerHTML = `
                     <div style="font-size: 5rem; margin-bottom: 30px; opacity: 0.9;">🎬</div>
@@ -709,10 +746,10 @@
                         点击"开始学习"按钮开始观看
                     </p>
                 `;
-                
+
                 currentVideo = videoFile;
                 isVideoLoaded = false;
-                
+
                 // 显示开始播放按钮
                 startBtn.style.display = 'inline-block';
                 pauseBtn.style.display = 'none';
@@ -728,10 +765,10 @@
             fullscreenBtn.style.display = 'none';
             videoProgressOverlay.style.display = 'none';
             videoPlaceholder.style.display = 'flex';
-            
+
             // 显示开始学习容器
             startLearningContainer.style.display = 'block';
-            
+
             // 重置进度
             progressFill.style.width = '0%';
             currentTimeSpan.textContent = '00:00';
@@ -740,12 +777,12 @@
         }
 
         // 开始播放按钮
-        startBtn.addEventListener('click', function() {
+        startBtn.addEventListener('click', function () {
             if (!currentVideo) {
                 alert('请先选择一个课程');
                 return;
             }
-            
+
             // 加载视频
             videoPlayer.src = `videos/${currentVideo}`;
             videoPlayer.style.display = 'block';
@@ -754,17 +791,17 @@
             playBtn.style.display = 'flex';
             fullscreenBtn.style.display = 'flex';
             videoProgressOverlay.style.display = 'block';
-            
+
             // 隐藏开始学习容器
             startLearningContainer.style.display = 'none';
-            
+
             isVideoLoaded = true;
         });
 
         // 播放按钮
-        playBtn.addEventListener('click', function() {
+        playBtn.addEventListener('click', function () {
             if (!isVideoLoaded) return;
-            
+
             videoPlayer.play();
             playBtn.style.display = 'none';
             pauseBtn.style.display = 'flex';
@@ -774,9 +811,9 @@
         });
 
         // 暂停按钮
-        pauseBtn.addEventListener('click', function() {
+        pauseBtn.addEventListener('click', function () {
             if (!isVideoLoaded) return;
-            
+
             videoPlayer.pause();
             pauseBtn.style.display = 'none';
             playBtn.style.display = 'flex';
@@ -786,12 +823,12 @@
         });
 
         // 全屏按钮
-        fullscreenBtn.addEventListener('click', function() {
+        fullscreenBtn.addEventListener('click', function () {
             const videoPlayer = document.querySelector('.video-player');
-            const isFullscreen = document.fullscreenElement || 
-                               document.webkitFullscreenElement || 
-                               document.mozFullScreenElement;
-            
+            const isFullscreen = document.fullscreenElement ||
+                document.webkitFullscreenElement ||
+                document.mozFullScreenElement;
+
             if (isFullscreen) {
                 // 如果已经是全屏状态，则退出全屏
                 if (document.exitFullscreen) {
@@ -821,15 +858,15 @@
         function handleFullscreenChange() {
             const videoPlayer = document.querySelector('.video-player');
             const videoContainer = document.querySelector('.video-container');
-            const isFullscreen = document.fullscreenElement || 
-                               document.webkitFullscreenElement || 
-                               document.mozFullScreenElement;
-            
+            const isFullscreen = document.fullscreenElement ||
+                document.webkitFullscreenElement ||
+                document.mozFullScreenElement;
+
             if (isFullscreen) {
                 // 全屏时设置播放器高度为浏览器高度
                 videoContainer.style.height = '100vh';
                 videoContainer.style.width = '100vw';
-                
+
                 // 显示控制按钮
                 if (isVideoLoaded) {
                     fullscreenBtn.style.display = 'flex';
@@ -845,7 +882,7 @@
                 // 退出全屏时恢复原尺寸
                 videoContainer.style.height = '520px';
                 videoContainer.style.width = '100%';
-                
+
                 // 恢复控制按钮状态
                 if (isVideoLoaded) {
                     fullscreenBtn.style.display = 'flex';
@@ -861,12 +898,12 @@
         }
 
         // 视频事件监听
-        videoPlayer.addEventListener('loadedmetadata', function() {
+        videoPlayer.addEventListener('loadedmetadata', function () {
             const duration = videoPlayer.duration;
             totalTimeSpan.textContent = formatTime(duration);
         });
 
-        videoPlayer.addEventListener('timeupdate', function() {
+        videoPlayer.addEventListener('timeupdate', function () {
             if (videoPlayer.duration) {
                 const progress = (videoPlayer.currentTime / videoPlayer.duration) * 100;
                 progressFill.style.width = progress + '%';
@@ -874,7 +911,7 @@
             }
         });
 
-        videoPlayer.addEventListener('ended', function() {
+        videoPlayer.addEventListener('ended', function () {
             pauseBtn.style.display = 'none';
             playBtn.style.display = 'flex';
             videoMask.style.display = 'block';
@@ -882,7 +919,7 @@
             isPlaying = false;
         });
 
-        videoPlayer.addEventListener('pause', function() {
+        videoPlayer.addEventListener('pause', function () {
             pauseBtn.style.display = 'none';
             playBtn.style.display = 'flex';
             videoMask.style.display = 'block';
@@ -890,7 +927,7 @@
             isPlaying = false;
         });
 
-        videoPlayer.addEventListener('play', function() {
+        videoPlayer.addEventListener('play', function () {
             playBtn.style.display = 'none';
             pauseBtn.style.display = 'flex';
         });
@@ -902,17 +939,18 @@
         }
 
         // 进度条点击
-        document.querySelector('.video-progress-overlay .progress-bar').addEventListener('click', function(e) {
+        document.querySelector('.video-progress-overlay .progress-bar').addEventListener('click', function (e) {
             if (!isVideoLoaded) return;
-            
+
             const rect = this.getBoundingClientRect();
             const clickX = e.clientX - rect.left;
             const percentage = (clickX / rect.width);
-            
+
             if (videoPlayer.duration) {
                 videoPlayer.currentTime = percentage * videoPlayer.duration;
             }
         });
     </script>
 </body>
+
 </html>
