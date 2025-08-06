@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>身份证OCR图片生成器</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            color: white;
+            text-align: center;
+            padding: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .main-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            padding: 30px;
+        }
+
+        .form-section {
+            flex: 1;
+            min-width: 350px;
+        }
+
+        .preview-section {
+            flex: 2;
+            min-width: 600px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 10px rgba(102, 126, 234, 0.3);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(45deg, #ffeaa7, #fdcb6e);
+            color: #2d3436;
+        }
+
+        .btn-secondary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(253, 203, 110, 0.3);
+        }
+
+        .btn-danger {
+            background: linear-gradient(45deg, #ff7675, #e17055);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(255, 118, 117, 0.3);
+        }
+
+        .idcard-container {
+            position: relative;
+            margin-bottom: 30px;
+        }
+
+        .idcard-canvas {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            background: #f8f9fa;
+            border: 2px solid #dee2e6;
+        }
+
+
+
+        .face-switch {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+            gap: 10px;
+        }
+
+        .face-btn {
+            padding: 10px 20px;
+            border: 2px solid #667eea;
+            background: white;
+            color: #667eea;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .face-btn.active {
+            background: #667eea;
+            color: white;
+        }
+
+        .face-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .preview-title {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+            color: #333;
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .form-section, .preview-section {
+                min-width: auto;
+            }
+            
+            .button-group {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>身份证OCR图片生成器</h1>
+            <p>生成符合标准比例的身份证图片，适用于OCR识别测试</p>
+        </div>
+        
+        <div class="main-content">
+            <div class="form-section">
+                <h2>身份证信息</h2>
+                
+                <div class="form-group">
+                    <label for="name">姓名：</label>
+                    <input type="text" id="name" placeholder="请输入姓名">
+                </div>
+                
+                <div class="form-group">
+                    <label for="gender">性别：</label>
+                    <select id="gender">
+                        <option value="">请选择性别</option>
+                        <option value="男">男</option>
+                        <option value="女">女</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="ethnicity">民族：</label>
+                    <select id="ethnicity">
+                        <option value="">请选择民族</option>
+                        <option value="汉">汉</option>
+                        <option value="蒙古">蒙古</option>
+                        <option value="回">回</option>
+                        <option value="藏">藏</option>
+                        <option value="维吾尔">维吾尔</option>
+                        <option value="苗">苗</option>
+                        <option value="彝">彝</option>
+                        <option value="壮">壮</option>
+                        <option value="布依">布依</option>
+                        <option value="朝鲜">朝鲜</option>
+                        <option value="满">满</option>
+                        <option value="侗">侗</option>
+                        <option value="瑶">瑶</option>
+                        <option value="白">白</option>
+                        <option value="土家">土家</option>
+                        <option value="哈尼">哈尼</option>
+                        <option value="哈萨克">哈萨克</option>
+                        <option value="傣">傣</option>
+                        <option value="黎">黎</option>
+                        <option value="傈僳">傈僳</option>
+                        <option value="佤">佤</option>
+                        <option value="畲">畲</option>
+                        <option value="高山">高山</option>
+                        <option value="拉祜">拉祜</option>
+                        <option value="水">水</option>
+                        <option value="东乡">东乡</option>
+                        <option value="纳西">纳西</option>
+                        <option value="景颇">景颇</option>
+                        <option value="柯尔克孜">柯尔克孜</option>
+                        <option value="土">土</option>
+                        <option value="达斡尔">达斡尔</option>
+                        <option value="仫佬">仫佬</option>
+                        <option value="羌">羌</option>
+                        <option value="布朗">布朗</option>
+                        <option value="撒拉">撒拉</option>
+                        <option value="毛南">毛南</option>
+                        <option value="仡佬">仡佬</option>
+                        <option value="锡伯">锡伯</option>
+                        <option value="阿昌">阿昌</option>
+                        <option value="普米">普米</option>
+                        <option value="塔吉克">塔吉克</option>
+                        <option value="怒">怒</option>
+                        <option value="乌孜别克">乌孜别克</option>
+                        <option value="俄罗斯">俄罗斯</option>
+                        <option value="鄂温克">鄂温克</option>
+                        <option value="德昂">德昂</option>
+                        <option value="保安">保安</option>
+                        <option value="裕固">裕固</option>
+                        <option value="京">京</option>
+                        <option value="塔塔尔">塔塔尔</option>
+                        <option value="独龙">独龙</option>
+                        <option value="鄂伦春">鄂伦春</option>
+                        <option value="赫哲">赫哲</option>
+                        <option value="门巴">门巴</option>
+                        <option value="珞巴">珞巴</option>
+                        <option value="基诺">基诺</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="birthday">出生日期：</label>
+                    <input type="date" id="birthday">
+                </div>
+                
+                <div class="form-group">
+                    <label for="address">住址：</label>
+                    <input type="text" id="address" placeholder="请输入详细住址">
+                </div>
+                
+                <div class="form-group">
+                    <label for="idnumber">公民身份证号码：</label>
+                    <input type="text" id="idnumber" placeholder="请输入18位身份证号码" maxlength="18">
+                </div>
+                
+                <div class="form-group">
+                    <label for="issuer">签发机关：</label>
+                    <input type="text" id="issuer" placeholder="请输入签发机关">
+                </div>
+                
+                <div class="form-group">
+                    <label for="validFrom">有效期限起始：</label>
+                    <input type="date" id="validFrom">
+                </div>
+                
+                <div class="form-group">
+                    <label for="validTo">有效期限截止：</label>
+                    <div style="display: flex; gap: 10px; align-items: center;">
+                        <input type="date" id="validTo" style="flex: 1;">
+                        <label style="margin: 0; white-space: nowrap;">
+                            <input type="checkbox" id="isLongTerm" onchange="toggleLongTerm()"> 
+                            长期
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="button-group">
+                    <button class="btn btn-primary" onclick="updatePreview()">更新预览</button>
+                    <button class="btn btn-secondary" onclick="clearForm()">清空表单</button>
+                    <button class="btn btn-danger" onclick="downloadImage()">下载图片</button>
+                </div>
+                
+
+            </div>
+            
+            <div class="preview-section">
+                <h2 class="preview-title">身份证预览</h2>
+                
+                <div class="face-switch">
+                    <button class="face-btn active" onclick="switchFace('front')">正面</button>
+                    <button class="face-btn" onclick="switchFace('back')">反面</button>
+                </div>
+                
+                <div class="idcard-container" id="frontCard">
+                    <canvas id="frontCanvas" class="idcard-canvas"></canvas>
+                </div>
+                
+                <div class="idcard-container" id="backCard" style="display: none;">
+                    <canvas id="backCanvas" class="idcard-canvas"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentFace = 'front';
+        let frontCanvas, backCanvas, frontCtx, backCtx;
+        
+        // 身份证标准尺寸 (优化为更适合OCR识别的高分辨率)
+        const ID_CARD_WIDTH = 1280;  // 提高分辨率以满足OCR要求
+        const ID_CARD_HEIGHT = 810;  // 保持85.6:54比例，提高清晰度
+
+        // 初始化Canvas
+        function initCanvas() {
+            frontCanvas = document.getElementById('frontCanvas');
+            backCanvas = document.getElementById('backCanvas');
+            
+            // 设置Canvas尺寸
+            frontCanvas.width = ID_CARD_WIDTH;
+            frontCanvas.height = ID_CARD_HEIGHT;
+            backCanvas.width = ID_CARD_WIDTH;
+            backCanvas.height = ID_CARD_HEIGHT;
+            
+            frontCtx = frontCanvas.getContext('2d');
+            backCtx = backCanvas.getContext('2d');
+            
+            // 初始绘制
+            drawFrontCard();
+            drawBackCard();
+        }
+
+        // 切换正反面
+        function switchFace(face) {
+            currentFace = face;
+            
+            // 更新按钮状态
+            document.querySelectorAll('.face-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // 切换显示的卡片
+            if (face === 'front') {
+                document.getElementById('frontCard').style.display = 'block';
+                document.getElementById('backCard').style.display = 'none';
+            } else {
+                document.getElementById('frontCard').style.display = 'none';
+                document.getElementById('backCard').style.display = 'block';
+            }
+        }
+
+        // 绘制身份证正面
+        function drawFrontCard() {
+            const ctx = frontCtx;
+            
+            // 清空画布
+            ctx.clearRect(0, 0, ID_CARD_WIDTH, ID_CARD_HEIGHT);
+            
+            // 设置抗锯齿和高质量渲染
+            ctx.imageSmoothingEnabled = true;
+            ctx.imageSmoothingQuality = 'high';
+            ctx.textBaseline = 'top';
+            
+            // 设置高对比度白色背景
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, ID_CARD_WIDTH, ID_CARD_HEIGHT);
+            
+            // 绘制微妙边框 (OCR友好)
+            ctx.strokeStyle = '#e0e0e0';
+            ctx.lineWidth = 3;
+            ctx.strokeRect(0, 0, ID_CARD_WIDTH, ID_CARD_HEIGHT);
+            
+            // 绘制国徽区域 (按比例放大，增加细节)
+            const emblemX = 100;
+            const emblemY = 100;
+            const emblemRadius = 52;
+            
+            // 国徽外圈
+            ctx.fillStyle = '#dc143c';
+            ctx.beginPath();
+            ctx.arc(emblemX, emblemY, emblemRadius, 0, 2 * Math.PI);
+            ctx.fill();
+            
+            // 国徽内圈装饰
+            ctx.fillStyle = '#b71c1c';
+            ctx.beginPath();
+            ctx.arc(emblemX, emblemY, emblemRadius * 0.8, 0, 2 * Math.PI);
+            ctx.fill();
+            
+            // 中心五星
+            ctx.fillStyle = '#ffd700';
+            ctx.font = 'bold 24px serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('★', emblemX, emblemY + 8);
+            
+            // 绘制标题 (高对比度，适合OCR)
+            ctx.fillStyle = '#000000';
+            ctx.font = 'bold 62px SimSun, "Microsoft YaHei", sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('中华人民共和国', ID_CARD_WIDTH / 2, 100);
+            
+            ctx.font = 'bold 48px SimSun, "Microsoft YaHei", sans-serif';
+            ctx.fillText('居民身份证', ID_CARD_WIDTH / 2, 170);
+            
+            // 绘制照片区域 (按比例放大)
+            const photoX = ID_CARD_WIDTH - 215;
+            const photoY = 210;
+            const photoW = 165;
+            const photoH = 210;
+            
+            // 照片边框
+            ctx.strokeStyle = '#999999';
+            ctx.lineWidth = 2;
+            ctx.strokeRect(photoX, photoY, photoW, photoH);
+            
+            // 照片背景
+            ctx.fillStyle = '#f8f8f8';
+            ctx.fillRect(photoX, photoY, photoW, photoH);
+            
+            // 照片文字
+            ctx.fillStyle = '#666666';
+            ctx.font = '22px SimSun';
+            ctx.textAlign = 'center';
+            ctx.fillText('照片', photoX + photoW/2, photoY + photoH/2);
+            
+            // 绘制表单数据
+            drawFrontData();
+        }
+        
+        // 绘制身份证反面
+        function drawBackCard() {
+            const ctx = backCtx;
+            
+            // 清空画布
+            ctx.clearRect(0, 0, ID_CARD_WIDTH, ID_CARD_HEIGHT);
+            
+            // 设置抗锯齿和高质量渲染
+            ctx.imageSmoothingEnabled = true;
+            ctx.imageSmoothingQuality = 'high';
+            ctx.textBaseline = 'top';
+            
+            // 设置高对比度白色背景
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, ID_CARD_WIDTH, ID_CARD_HEIGHT);
+            
+            // 绘制微妙边框 (OCR友好)
+            ctx.strokeStyle = '#e0e0e0';
+            ctx.lineWidth = 3;
+            ctx.strokeRect(0, 0, ID_CARD_WIDTH, ID_CARD_HEIGHT);
+            
+            // 绘制底部装饰区域（模拟真实身份证反面）
+            ctx.fillStyle = '#f8f8f8';
+            ctx.fillRect(0, ID_CARD_HEIGHT - 150, ID_CARD_WIDTH, 150);
+            
+            // 绘制防伪线条元素
+            ctx.strokeStyle = '#e8e8e8';
+            ctx.lineWidth = 1;
+            for (let i = 0; i < 5; i++) {
+                const y = ID_CARD_HEIGHT - 130 + i * 25;
+                ctx.beginPath();
+                ctx.moveTo(50, y);
+                ctx.lineTo(ID_CARD_WIDTH - 50, y);
+                ctx.stroke();
+            }
+            
+            // 绘制表单数据
+            drawBackData();
+        }
+        
+        // 绘制正面数据
+        function drawFrontData() {
+            const ctx = frontCtx;
+            
+            // 设置高对比度文字样式 (OCR优化)
+            ctx.fillStyle = '#000000';
+            ctx.textAlign = 'left';
+            ctx.textBaseline = 'top';
+            
+            // 获取表单数据
+            const name = document.getElementById('name').value || '';
+            const gender = document.getElementById('gender').value || '';
+            const ethnicity = document.getElementById('ethnicity').value || '';
+            const birthday = document.getElementById('birthday').value || '';
+            const address = document.getElementById('address').value || '';
+            const idnumber = document.getElementById('idnumber').value || '';
+            
+            // 格式化生日
+            let formattedBirthday = '';
+            if (birthday) {
+                const date = new Date(birthday);
+                const year = date.getFullYear();
+                const month = String(date.getMonth() + 1).padStart(2, '0');
+                const day = String(date.getDate()).padStart(2, '0');
+                formattedBirthday = `${year}年${month}月${day}日`;
+            }
+            
+            // 按高分辨率调整位置
+            const leftMargin = 68;  // 左边距
+            const labelWidth = 165;  // 标签宽度
+            const contentX = leftMargin + labelWidth;  // 内容起始位置
+            const startY = 260;  // 起始Y位置
+            const lineHeight = 57;  // 行间距
+            
+            // 标签字体 (OCR优化 - 更大更清晰)
+            ctx.font = 'bold 30px SimSun, "Microsoft YaHei", sans-serif';
+            
+            // 姓名 - 第一行
+            ctx.fillText('姓　　名', leftMargin, startY);
+            ctx.font = '30px SimSun, "Microsoft YaHei", sans-serif';
+            ctx.fillText(name, contentX, startY);
+            
+            // 性别和民族 - 第二行
+            ctx.font = 'bold 30px SimSun, "Microsoft YaHei", sans-serif';
+            ctx.fillText('性　　别', leftMargin, startY + lineHeight);
+            ctx.font = '30px SimSun, "Microsoft YaHei", sans-serif';
+            ctx.fillText(gender, contentX, startY + lineHeight);
+            
+            ctx.font = 'bold 30px SimSun, "Microsoft YaHei", sans-serif';
+            ctx.fillText('民　　族', contentX + 180, startY + lineHeight);
+            ctx.font = '30px SimSun, "Microsoft YaHei", sans-serif';
+            ctx.fillText(ethnicity, contentX + 300, startY + lineHeight);
+            
+            // 出生 - 第三行
+            ctx.font = 'bold 30px SimSun, "Microsoft YaHei", sans-serif';
+            ctx.fillText('出　　生', leftMargin, startY + lineHeight * 2);
+            ctx.font = '30px SimSun, "Microsoft YaHei", sans-serif';
+            ctx.fillText(formattedBirthday, contentX, startY + lineHeight * 2);
+            
+            // 住址 - 第四行开始
+            ctx.font = 'bold 30px SimSun, "Microsoft YaHei", sans-serif';
+            ctx.fillText('住　　址', leftMargin, startY + lineHeight * 3);
+            ctx.font = '30px SimSun, "Microsoft YaHei", sans-serif';
+            // 避免与照片重叠
+            const addressMaxWidth = ID_CARD_WIDTH - 330 - contentX;
+            wrapText(ctx, address, contentX, startY + lineHeight * 3, addressMaxWidth, 36);
+            
+            // 身份证号码 - 底部 (OCR关键区域)
+            const idY = startY + lineHeight * 5.5;
+            ctx.font = 'bold 30px SimSun, "Microsoft YaHei", sans-serif';
+            ctx.fillText('公民身份号码', leftMargin, idY);
+            
+            // 身份证号码使用等宽字体，增强OCR识别
+            ctx.font = 'bold 36px "Courier New", monospace';
+            ctx.letterSpacing = '2px';
+            ctx.fillText(idnumber, contentX + 90, idY);
+        }
+        
+        // 绘制反面数据
+        function drawBackData() {
+            const ctx = backCtx;
+            
+            // 设置高对比度文字样式 (OCR优化)
+            ctx.fillStyle = '#000000';
+            ctx.textAlign = 'left';
+            ctx.textBaseline = 'top';
+            
+            // 获取表单数据
+            const issuer = document.getElementById('issuer').value || '';
+            const validFrom = document.getElementById('validFrom').value || '';
+            const validTo = document.getElementById('validTo').value || '';
+            const isLongTerm = document.getElementById('isLongTerm').checked;
+            
+            // 格式化有效期
+            let formattedValidity = '';
+            if (validFrom) {
+                const fromDate = new Date(validFrom);
+                const fromStr = `${fromDate.getFullYear()}.${String(fromDate.getMonth() + 1).padStart(2, '0')}.${String(fromDate.getDate()).padStart(2, '0')}`;
+                
+                if (isLongTerm) {
+                    formattedValidity = `${fromStr}-长期`;
+                } else if (validTo) {
+                    const toDate = new Date(validTo);
+                    const toStr = `${toDate.getFullYear()}.${String(toDate.getMonth() + 1).padStart(2, '0')}.${String(toDate.getDate()).padStart(2, '0')}`;
+                    formattedValidity = `${fromStr}-${toStr}`;
+                } else {
+                    formattedValidity = fromStr;
+                }
+            }
+            
+            // 按高分辨率调整反面布局
+            const leftMargin = 75;
+            const labelWidth = 180;
+            const contentX = leftMargin + labelWidth;
+            const startY = 270;  // 反面内容起始位置
+            const lineHeight = 60;
+            
+            // 签发机关
+            ctx.font = 'bold 30px SimSun, "Microsoft YaHei", sans-serif';
+            ctx.fillText('签发机关', leftMargin, startY);
+            ctx.font = '30px SimSun, "Microsoft YaHei", sans-serif';
+            ctx.fillText(issuer, contentX, startY);
+            
+            // 有效期限
+            ctx.font = 'bold 30px SimSun, "Microsoft YaHei", sans-serif';
+            ctx.fillText('有效期限', leftMargin, startY + lineHeight * 2);
+            
+            // 日期用等宽字体，增强OCR识别
+            ctx.font = 'bold 28px "Courier New", monospace';
+            ctx.fillText(formattedValidity, contentX, startY + lineHeight * 2);
+        }
+        
+        // 文字换行函数
+        function wrapText(context, text, x, y, maxWidth, lineHeight) {
+            const words = text.split('');
+            let line = '';
+            let currentY = y;
+            
+            for (let n = 0; n < words.length; n++) {
+                const testLine = line + words[n];
+                const metrics = context.measureText(testLine);
+                const testWidth = metrics.width;
+                
+                if (testWidth > maxWidth && n > 0) {
+                    context.fillText(line, x, currentY);
+                    line = words[n];
+                    currentY += lineHeight;
+                } else {
+                    line = testLine;
+                }
+            }
+            context.fillText(line, x, currentY);
+        }
+        
+        // 更新预览
+        function updatePreview() {
+            drawFrontCard();
+            drawBackCard();
+            showMessage('预览已更新！', 'success');
+        }
+
+        // 清空表单
+        function clearForm() {
+            if (confirm('确定要清空所有表单数据吗？')) {
+                document.querySelectorAll('input, select').forEach(element => {
+                    if (element.type === 'checkbox') {
+                        element.checked = false;
+                    } else {
+                        element.value = '';
+                    }
+                });
+                
+                // 重置有效期截止日期输入框状态
+                const validToInput = document.getElementById('validTo');
+                validToInput.disabled = false;
+                validToInput.style.backgroundColor = '';
+                validToInput.style.color = '';
+                
+                // 重新绘制空白身份证
+                drawFrontCard();
+                drawBackCard();
+                
+                showMessage('表单已清空！', 'info');
+            }
+        }
+
+        // 下载图片功能 (OCR优化版本)
+        function downloadImage() {
+            const canvas = currentFace === 'front' ? frontCanvas : backCanvas;
+            
+            // 生成高质量PNG图片，最大质量设置
+            const dataURL = canvas.toDataURL('image/png', 1.0);
+            
+            // 创建下载链接
+            const link = document.createElement('a');
+            const timestamp = new Date().toISOString().slice(0, 19).replace(/:/g, '-');
+            link.download = `身份证_OCR_${currentFace === 'front' ? '正面' : '反面'}_${timestamp}.png`;
+            link.href = dataURL;
+            
+            // 触发下载
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            // 输出图片信息供调试
+            console.log(`图片尺寸: ${canvas.width}x${canvas.height}px`);
+            console.log(`图片大小: 约${Math.round(dataURL.length * 0.75 / 1024)}KB`);
+            
+            showMessage(`高质量OCR图片下载成功！尺寸: ${canvas.width}×${canvas.height}px`, 'success');
+        }
+
+        // 显示消息提示
+        function showMessage(message, type) {
+            const messageDiv = document.createElement('div');
+            messageDiv.textContent = message;
+            messageDiv.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 15px 25px;
+                border-radius: 8px;
+                color: white;
+                font-weight: bold;
+                z-index: 1000;
+                opacity: 0;
+                transition: opacity 0.3s ease;
+                ${type === 'success' ? 'background: #00b894;' : 
+                  type === 'error' ? 'background: #e17055;' : 
+                  'background: #0984e3;'}
+            `;
+            
+            document.body.appendChild(messageDiv);
+            
+            // 显示动画
+            setTimeout(() => {
+                messageDiv.style.opacity = '1';
+            }, 100);
+            
+            // 3秒后自动消失
+            setTimeout(() => {
+                messageDiv.style.opacity = '0';
+                setTimeout(() => {
+                    document.body.removeChild(messageDiv);
+                }, 300);
+            }, 3000);
+        }
+
+        // 实时预览功能
+        document.querySelectorAll('input, select').forEach(element => {
+            element.addEventListener('input', updatePreview);
+            element.addEventListener('change', updatePreview);
+        });
+
+        // 身份证号码格式验证
+        document.getElementById('idnumber').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length > 17) {
+                value = value.substring(0, 17) + e.target.value.slice(17).replace(/[^0-9Xx]/g, '');
+            }
+            if (value.length > 18) {
+                value = value.substring(0, 18);
+            }
+            e.target.value = value;
+        });
+
+        // 处理长期有效期选项
+        function toggleLongTerm() {
+            const validToInput = document.getElementById('validTo');
+            const isLongTerm = document.getElementById('isLongTerm').checked;
+            
+            if (isLongTerm) {
+                validToInput.disabled = true;
+                validToInput.style.backgroundColor = '#f8f9fa';
+                validToInput.style.color = '#6c757d';
+                validToInput.value = ''; // 清空截止日期
+            } else {
+                validToInput.disabled = false;
+                validToInput.style.backgroundColor = '';
+                validToInput.style.color = '';
+            }
+            
+            // 自动更新预览
+            updatePreview();
+        }
+
+        // 页面加载完成后的初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            initCanvas();
+            showMessage('身份证OCR图片生成器已就绪！', 'info');
+            
+            // 添加一些示例数据用于测试
+            if (window.location.hash === '#demo') {
+                document.getElementById('name').value = '张三';
+                document.getElementById('gender').value = '男';
+                document.getElementById('ethnicity').value = '汉';
+                document.getElementById('birthday').value = '1990-01-01';
+                document.getElementById('address').value = '北京市朝阳区某某街道123号';
+                document.getElementById('idnumber').value = '110101199001011234';
+                document.getElementById('issuer').value = '北京市公安局';
+                document.getElementById('validFrom').value = '2020-01-01';
+                document.getElementById('validTo').value = '2030-01-01';
+                updatePreview();
+            }
+        });
+    </script>
+</body>
+</html>
