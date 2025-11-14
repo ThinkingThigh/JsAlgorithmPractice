@@ -20,8 +20,10 @@
             let yachurl;
             if (type === 'workbench') {
                 yachurl = `yach://yach.zhiyinlou.com/workbench/tabopen?id=${id}&url=${encodeURIComponent(url)}&title=${title}`;
-            } else {
+            } else if (type === 'sidebar') {
                 yachurl = `yach://yach.zhiyinlou.com/session/webview?url=${encodeURIComponent(url)}&pc_slide=true&hide_title_bar=true`;
+            } else {
+                yachurl = `yach://yach.zhiyinlou.com/session/webview?url=${encodeURIComponent(url)}&single_webview=true&title=true`;
             }
             document.getElementById('yachlink').innerHTML = `<a href="${yachurl}">${yachurl}</a>`;
         }
@@ -31,7 +33,8 @@
 <body>
     <h3>生成工作台打开的链接</h3>
     <input type="radio" name="type" value="workbench" id="workbench" checked>工作台打开 
-    <input type="radio" name="type" value="session" id="session">会话打开
+    <input type="radio" name="type" value="session" id="session">独立窗口
+    <input type="radio" name="type" value="sidebar" id="sidebar">侧边栏打开
     <input type="text" id="url" value="" placeholder="请输入URL"> 
     <button onclick="getYachUrl(document.getElementById('url').value)">生成</button>
     <div id="yachlink">
