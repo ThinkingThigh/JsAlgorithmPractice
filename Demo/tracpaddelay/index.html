@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>鼠标按键时间间隔测试</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        .test-area {
+            width: 300px;
+            height: 200px;
+            background-color: #f0f0f0;
+            border: 2px solid #ccc;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            cursor: pointer;
+            user-select: none;
+            margin: 20px 0;
+        }
+        .test-area:hover {
+            background-color: #e0e0e0;
+        }
+        .test-area:active {
+            background-color: #d0d0d0;
+        }
+        .results {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+        }
+        .result-item {
+            margin: 10px 0;
+            padding: 8px;
+            border-left: 3px solid #007acc;
+            background-color: white;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: #007acc;
+            color: white;
+        }
+        button:hover {
+            background-color: #005999;
+        }
+        .clear-btn {
+            background-color: #dc3545;
+        }
+        .clear-btn:hover {
+            background-color: #c82333;
+        }
+    </style>
+</head>
+<body>
+    <h1>鼠标按键时间间隔测试</h1>
+    <p>请在下面的测试区域按下并释放鼠标按键，程序会记录每次按键的时间间隔。</p>
+
+    <div class="test-area" id="testArea">
+        点击并按住此处测试
+    </div>
+
+    <div>
+        <button onclick="clearResults()">清除结果</button>
+    </div>
+
+    <div class="results">
+        <h3>测试结果：</h3>
+        <div id="resultsList"></div>
+    </div>
+
+    <script>
+        let startTime = null;
+        let results = [];
+        const testArea = document.getElementById('testArea');
+        const resultsList = document.getElementById('resultsList');
+
+        // 鼠标按下事件
+        testArea.addEventListener('mousedown', function(e) {
+            if (e.button === 0) { // 只响应左键
+                startTime = Date.now();
+                testArea.textContent = '正在按住...';
+                testArea.style.backgroundColor = '#ffcccc';
+            }
+        });
+
+        // 鼠标释放事件
+        testArea.addEventListener('mouseup', function(e) {
+            if (e.button === 0 && startTime !== null) {
+                const endTime = Date.now();
+                const duration = endTime - startTime;
+
+                results.push({
+                    timestamp: new Date().toLocaleTimeString(),
+                    duration: duration
+                });
+
+                updateResults();
+                startTime = null;
+                testArea.textContent = '点击并按住此处测试';
+                testArea.style.backgroundColor = '#f0f0f0';
+            }
+        });
+
+        // 鼠标离开测试区域时重置
+        testArea.addEventListener('mouseleave', function() {
+            if (startTime !== null) {
+                testArea.textContent = '点击并按住此处测试';
+                testArea.style.backgroundColor = '#f0f0f0';
+                startTime = null;
+            }
+        });
+
+        function updateResults() {
+            resultsList.innerHTML = '';
+            results.forEach((result, index) => {
+                const resultDiv = document.createElement('div');
+                resultDiv.className = 'result-item';
+                resultDiv.innerHTML = `
+                    <strong>第 ${index + 1} 次测试:</strong><br>
+                    时间: ${result.timestamp}<br>
+                    按键时长: ${result.duration} 毫秒 (${(result.duration / 1000).toFixed(2)} 秒)
+                `;
+                resultsList.appendChild(resultDiv);
+            });
+
+            // 计算统计信息
+            if (results.length > 0) {
+                const durations = results.map(r => r.duration);
+                const avg = durations.reduce((a, b) => a + b) / durations.length;
+                const min = Math.min(...durations);
+                const max = Math.max(...durations);
+
+                const statsDiv = document.createElement('div');
+                statsDiv.className = 'result-item';
+                statsDiv.innerHTML = `
+                    <strong>统计信息:</strong><br>
+                    测试次数: ${results.length}<br>
+                    平均时长: ${avg.toFixed(0)} 毫秒 (${(avg / 1000).toFixed(2)} 秒)<br>
+                    最短时长: ${min} 毫秒 (${(min / 1000).toFixed(2)} 秒)<br>
+                    最长时长: ${max} 毫秒 (${(max / 1000).toFixed(2)} 秒)
+                `;
+                resultsList.appendChild(statsDiv);
+            }
+        }
+
+        function clearResults() {
+            results = [];
+            updateResults();
+        }
+
+        // 防止文本选择
+        testArea.addEventListener('selectstart', function(e) {
+            e.preventDefault();
+        });
+    </script>
+</body>
+</html>
