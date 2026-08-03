@@ -3,750 +3,300 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>浏览器UA查看及前端兼容性检测工具</title>
+    <title>UA 检测</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
-            backdrop-filter: blur(10px);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #f5f5f5;
+            color: #222;
+            padding: 24px;
+            font-size: 14px;
         }
 
         h1 {
-            text-align: center;
-            color: #333;
-            margin-bottom: 30px;
-            font-size: 2.5em;
-            background: linear-gradient(45deg, #667eea, #764ba2);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .section {
-            margin-bottom: 30px;
-            padding: 20px;
-            background: #f8f9fa;
-            border-radius: 15px;
-            border-left: 5px solid #667eea;
-        }
-
-        .section-title {
-            font-size: 1.5em;
-            color: #333;
-            margin-bottom: 15px;
+            font-size: 18px;
             font-weight: 600;
+            margin-bottom: 20px;
         }
 
-        .ua-display {
+        .ua-box {
             background: #fff;
-            padding: 15px;
-            border-radius: 10px;
-            font-family: 'Courier New', monospace;
-            font-size: 14px;
+            border: 1px solid #ddd;
+            padding: 12px 14px;
+            font-family: monospace;
+            font-size: 13px;
             line-height: 1.6;
             word-break: break-all;
-            border: 1px solid #e9ecef;
+            margin-bottom: 20px;
         }
 
-        .info-grid {
+        .cards {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-            margin-top: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px;
+            margin-bottom: 20px;
         }
 
-        .info-card {
+        .card {
             background: #fff;
-            padding: 20px;
-            border-radius: 10px;
-            border: 1px solid #e9ecef;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid #ddd;
+            padding: 16px;
         }
 
-        .info-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        .card h2 {
+            font-size: 13px;
+            font-weight: 600;
+            color: #555;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #eee;
         }
 
-        .info-card h3 {
-            color: #667eea;
-            margin-bottom: 10px;
-            font-size: 1.2em;
-        }
-
-        .info-item {
+        .row {
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            padding: 8px 0;
+            padding: 6px 0;
             border-bottom: 1px solid #f0f0f0;
         }
 
-        .info-item:last-child {
-            border-bottom: none;
-        }
+        .row:last-child { border-bottom: none; }
 
-        .info-label {
-            font-weight: 600;
-            color: #555;
-        }
+        .row-label { color: #666; }
+        .row-value { font-weight: 500; text-align: right; }
 
-        .info-value {
-            color: #333;
-            font-weight: 500;
-        }
-
-        .support-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-        }
-
-        .support-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 12px 15px;
+        .features {
             background: #fff;
-            border-radius: 8px;
-            border: 1px solid #e9ecef;
+            border: 1px solid #ddd;
         }
 
-        .support-label {
+        .features-header {
+            font-size: 13px;
             font-weight: 600;
             color: #555;
-        }
-
-        .support-status {
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
             text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 14px 16px;
+            border-bottom: 1px solid #eee;
         }
 
-        .supported {
-            background: #d4edda;
-            color: #155724;
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
         }
 
-        .partial {
-            background: #fff3cd;
-            color: #856404;
+        .feature-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 16px;
+            border-bottom: 1px solid #f0f0f0;
+            border-right: 1px solid #f0f0f0;
         }
 
-        .not-supported {
-            background: #f8d7da;
-            color: #721c24;
-        }
-
-        .unknown {
-            background: #e2e3e5;
-            color: #6c757d;
-        }
-
-        .recommendation {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 20px;
-            border-radius: 15px;
-            margin-top: 20px;
-        }
-
-        .recommendation h3 {
-            margin-bottom: 15px;
-            font-size: 1.3em;
-        }
-
-        .recommendation ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        .recommendation li {
-            margin-bottom: 10px;
-            padding-left: 20px;
-            position: relative;
-        }
-
-        .recommendation li::before {
-            content: "✓";
-            position: absolute;
-            left: 0;
-            color: #fff;
-            font-weight: bold;
-        }
-
-        .loading {
-            text-align: center;
-            padding: 20px;
-        }
-
-        .spinner {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #667eea;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 15px;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .refresh-btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 25px;
-            cursor: pointer;
-            font-size: 16px;
+        .badge {
+            font-size: 11px;
             font-weight: 600;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            margin: 20px auto;
-            display: block;
+            padding: 2px 8px;
+            border-radius: 2px;
         }
 
-        .refresh-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        .yes { background: #e6f4ea; color: #1a7f3c; }
+        .no  { background: #fce8e6; color: #c5221f; }
+
+        button {
+            margin-top: 16px;
+            padding: 7px 16px;
+            background: #fff;
+            border: 1px solid #ccc;
+            cursor: pointer;
+            font-size: 13px;
         }
 
-        @media (max-width: 768px) {
-            .container {
-                padding: 20px;
-                margin: 10px;
-            }
-            
-            h1 {
-                font-size: 2em;
-            }
-            
-            .info-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .support-grid {
-                grid-template-columns: 1fr;
-            }
+        button:hover { background: #f0f0f0; }
+
+        @media (max-width: 600px) {
+            body { padding: 14px; }
+            .cards { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>🔍 浏览器UA查看及前端兼容性检测工具</h1>
-        
-        <!-- UA信息显示 -->
-        <div class="section">
-            <div class="section-title">📱 User Agent 信息</div>
-            <div class="ua-display" id="userAgent">
-                <div class="loading">
-                    <div class="spinner"></div>
-                    正在获取浏览器信息...
-                </div>
-            </div>
-        </div>
+    <h1>UA 检测</h1>
 
-        <!-- 浏览器基本信息 -->
-        <div class="section">
-            <div class="section-title">🌐 浏览器详细信息</div>
-            <div class="info-grid" id="browserInfo">
-                <div class="loading">
-                    <div class="spinner"></div>
-                    正在分析浏览器信息...
-                </div>
-            </div>
-        </div>
+    <div class="ua-box" id="uaBox"></div>
 
-        <!-- 前端技术支持情况 -->
-        <div class="section">
-            <div class="section-title">⚡ 前端技术兼容性检测</div>
-            <div class="support-grid" id="featureSupport">
-                <div class="loading">
-                    <div class="spinner"></div>
-                    正在检测功能支持...
-                </div>
-            </div>
-        </div>
+    <div class="cards" id="cards"></div>
 
-        <!-- 优化建议 -->
-        <div class="recommendation" id="recommendations" style="display: none;">
-            <h3>💡 兼容性建议</h3>
-            <ul id="recommendationList">
-                <!-- 动态生成建议内容 -->
-            </ul>
-        </div>
-
-        <button class="refresh-btn" onclick="runDetection()">🔄 重新检测</button>
+    <div class="features">
+        <div class="features-header">兼容性</div>
+        <div class="feature-grid" id="featureGrid"></div>
     </div>
 
+    <button onclick="run()">重新检测</button>
+
     <script>
-        // 浏览器检测类
-        class BrowserDetector {
-            constructor() {
-                this.userAgent = navigator.userAgent;
-                this.init();
-            }
+        async function detect() {
+            const ua = navigator.userAgent;
 
-            init() {
-                this.detectBrowser();
-                this.detectOS();
-                this.detectDevice();
-                this.detectFeatures();
-                this.generateRecommendations();
-                this.displayResults();
-            }
+            const browser = detectBrowser(ua);
+            const os = await detectOS(ua);
+            const device = detectDevice(ua);
+            const screen_ = {
+                resolution: screen.width + ' × ' + screen.height,
+                viewport: window.innerWidth + ' × ' + window.innerHeight,
+                dpr: window.devicePixelRatio || 1
+            };
+            const features = detectFeatures();
 
-            // 检测浏览器类型和版本
-            detectBrowser() {
-                const ua = this.userAgent;
-                
-                // Chrome
-                if (ua.includes('Chrome') && !ua.includes('Edg') && !ua.includes('OPR')) {
-                    const match = ua.match(/Chrome\/(\d+)/);
-                    this.browser = {
-                        name: 'Chrome',
-                        version: match ? match[1] : 'Unknown',
-                        engine: 'Blink'
-                    };
-                }
-                // Edge
-                else if (ua.includes('Edg')) {
-                    const match = ua.match(/Edg\/(\d+)/);
-                    this.browser = {
-                        name: 'Microsoft Edge',
-                        version: match ? match[1] : 'Unknown',
-                        engine: 'Blink'
-                    };
-                }
-                // Firefox
-                else if (ua.includes('Firefox')) {
-                    const match = ua.match(/Firefox\/(\d+)/);
-                    this.browser = {
-                        name: 'Firefox',
-                        version: match ? match[1] : 'Unknown',
-                        engine: 'Gecko'
-                    };
-                }
-                // Safari
-                else if (ua.includes('Safari') && !ua.includes('Chrome')) {
-                    const match = ua.match(/Version\/(\d+)/);
-                    this.browser = {
-                        name: 'Safari',
-                        version: match ? match[1] : 'Unknown',
-                        engine: 'WebKit'
-                    };
-                }
-                // Opera
-                else if (ua.includes('OPR')) {
-                    const match = ua.match(/OPR\/(\d+)/);
-                    this.browser = {
-                        name: 'Opera',
-                        version: match ? match[1] : 'Unknown',
-                        engine: 'Blink'
-                    };
-                }
-                // Internet Explorer
-                else if (ua.includes('MSIE') || ua.includes('Trident')) {
-                    const match = ua.match(/MSIE (\d+)/) || ua.match(/rv:(\d+)/);
-                    this.browser = {
-                        name: 'Internet Explorer',
-                        version: match ? match[1] : 'Unknown',
-                        engine: 'Trident'
-                    };
-                }
-                else {
-                    this.browser = {
-                        name: 'Unknown',
-                        version: 'Unknown',
-                        engine: 'Unknown'
-                    };
-                }
-            }
+            return { ua, browser, os, device, screen_, features };
+        }
 
-            // 检测操作系统
-            detectOS() {
-                const ua = this.userAgent;
-                
-                if (ua.includes('Windows NT 10.0')) {
-                    this.os = { name: 'Windows', version: '10/11' };
-                } else if (ua.includes('Windows NT 6.3')) {
-                    this.os = { name: 'Windows', version: '8.1' };
-                } else if (ua.includes('Windows NT 6.2')) {
-                    this.os = { name: 'Windows', version: '8' };
-                } else if (ua.includes('Windows NT 6.1')) {
-                    this.os = { name: 'Windows', version: '7' };
-                } else if (ua.includes('Mac OS X')) {
-                    const match = ua.match(/Mac OS X (\d+[._]\d+)/);
-                    this.os = { 
-                        name: 'macOS', 
-                        version: match ? match[1].replace('_', '.') : 'Unknown' 
-                    };
-                } else if (ua.includes('Linux')) {
-                    this.os = { name: 'Linux', version: 'Unknown' };
-                } else if (ua.includes('Android')) {
-                    const match = ua.match(/Android (\d+[.\d]*)/);
-                    this.os = { 
-                        name: 'Android', 
-                        version: match ? match[1] : 'Unknown' 
-                    };
-                } else if (ua.includes('iOS') || ua.includes('iPhone') || ua.includes('iPad')) {
-                    const match = ua.match(/OS (\d+[_\d]*)/);
-                    this.os = { 
-                        name: 'iOS', 
-                        version: match ? match[1].replace(/_/g, '.') : 'Unknown' 
-                    };
-                } else {
-                    this.os = { name: 'Unknown', version: 'Unknown' };
-                }
+        function detectBrowser(ua) {
+            if (ua.includes('Chrome') && !ua.includes('Edg') && !ua.includes('OPR')) {
+                return { name: 'Chrome', version: (ua.match(/Chrome\/(\d+)/) || [])[1] || '-', engine: 'Blink' };
             }
-
-            // 检测设备类型
-            detectDevice() {
-                const ua = this.userAgent;
-                
-                if (ua.includes('Mobile') || ua.includes('Android')) {
-                    this.device = 'Mobile';
-                } else if (ua.includes('Tablet') || ua.includes('iPad')) {
-                    this.device = 'Tablet';
-                } else {
-                    this.device = 'Desktop';
-                }
+            if (ua.includes('Edg')) {
+                return { name: 'Edge', version: (ua.match(/Edg\/(\d+)/) || [])[1] || '-', engine: 'Blink' };
             }
-
-            // 检测前端技术支持
-            detectFeatures() {
-                this.features = {
-                    // HTML5 特性
-                    'HTML5 Canvas': !!document.createElement('canvas').getContext,
-                    'HTML5 Video': !!document.createElement('video').canPlayType,
-                    'HTML5 Audio': !!document.createElement('audio').canPlayType,
-                    'HTML5 LocalStorage': typeof localStorage !== 'undefined',
-                    'HTML5 SessionStorage': typeof sessionStorage !== 'undefined',
-                    'HTML5 Geolocation': !!navigator.geolocation,
-                    'HTML5 WebWorkers': typeof Worker !== 'undefined',
-                    
-                    // CSS3 特性
-                    'CSS3 Animations': this.checkCSSSupport('animation'),
-                    'CSS3 Transitions': this.checkCSSSupport('transition'),
-                    'CSS3 Transform': this.checkCSSSupport('transform'),
-                    'CSS3 Flexbox': this.checkCSSSupport('flexDirection'),
-                    'CSS3 Grid': this.checkCSSSupport('gridTemplateColumns'),
-                    'CSS3 Border Radius': this.checkCSSSupport('borderRadius'),
-                    'CSS3 Box Shadow': this.checkCSSSupport('boxShadow'),
-                    'CSS3 Text Shadow': this.checkCSSSupport('textShadow'),
-                    
-                    // JavaScript ES6+ 特性
-                    'ES6 Arrow Functions': this.checkES6ArrowFunctions(),
-                    'ES6 Classes': this.checkES6Classes(),
-                    'ES6 Promises': typeof Promise !== 'undefined',
-                    'ES6 Map/Set': typeof Map !== 'undefined' && typeof Set !== 'undefined',
-                    'ES6 Destructuring': this.checkES6Destructuring(),
-                    'ES2017 Async/Await': this.checkAsyncAwait(),
-                    
-                    // 现代 Web API
-                    'Fetch API': typeof fetch !== 'undefined',
-                    'WebSocket': typeof WebSocket !== 'undefined',
-                    'IndexedDB': typeof indexedDB !== 'undefined',
-                    'Service Workers': 'serviceWorker' in navigator,
-                    'Push Notifications': 'Notification' in window,
-                    'WebRTC': !!(navigator.getUserMedia || navigator.mediaDevices),
-                    'WebGL': this.checkWebGL(),
-                    'WebAssembly': typeof WebAssembly !== 'undefined',
-                    
-                    // 响应式设计
-                    'Media Queries': window.matchMedia && window.matchMedia('(min-width: 1px)').matches,
-                    'Viewport Meta': !!document.querySelector('meta[name="viewport"]'),
-                    'Touch Events': 'ontouchstart' in window || navigator.maxTouchPoints > 0,
-                    
-                    // 性能相关
-                    'Performance API': 'performance' in window,
-                    'Intersection Observer': 'IntersectionObserver' in window,
-                    'Mutation Observer': 'MutationObserver' in window
-                };
+            if (ua.includes('Firefox')) {
+                return { name: 'Firefox', version: (ua.match(/Firefox\/(\d+)/) || [])[1] || '-', engine: 'Gecko' };
             }
-
-            // 检查CSS属性支持
-            checkCSSSupport(property) {
-                const element = document.createElement('div');
-                return property in element.style;
+            if (ua.includes('Safari') && !ua.includes('Chrome')) {
+                return { name: 'Safari', version: (ua.match(/Version\/(\d+)/) || [])[1] || '-', engine: 'WebKit' };
             }
+            if (ua.includes('OPR')) {
+                return { name: 'Opera', version: (ua.match(/OPR\/(\d+)/) || [])[1] || '-', engine: 'Blink' };
+            }
+            if (ua.includes('MSIE') || ua.includes('Trident')) {
+                const m = ua.match(/MSIE (\d+)/) || ua.match(/rv:(\d+)/);
+                return { name: 'IE', version: m ? m[1] : '-', engine: 'Trident' };
+            }
+            return { name: '-', version: '-', engine: '-' };
+        }
 
-            // 检查ES6箭头函数支持
-            checkES6ArrowFunctions() {
+        async function detectOS(ua) {
+            if (navigator.userAgentData && navigator.userAgentData.getHighEntropyValues) {
                 try {
-                    eval('() => {}');
-                    return true;
-                } catch (e) {
-                    return false;
-                }
-            }
-
-            // 检查ES6类支持
-            checkES6Classes() {
-                try {
-                    eval('class Test {}');
-                    return true;
-                } catch (e) {
-                    return false;
-                }
-            }
-
-            // 检查ES6解构支持
-            checkES6Destructuring() {
-                try {
-                    eval('const {a} = {a: 1}');
-                    return true;
-                } catch (e) {
-                    return false;
-                }
-            }
-
-            // 检查async/await支持
-            checkAsyncAwait() {
-                try {
-                    eval('async function test() { await Promise.resolve(); }');
-                    return true;
-                } catch (e) {
-                    return false;
-                }
-            }
-
-            // 检查WebGL支持
-            checkWebGL() {
-                try {
-                    const canvas = document.createElement('canvas');
-                    return !!(canvas.getContext('webgl') || canvas.getContext('experimental-webgl'));
-                } catch (e) {
-                    return false;
-                }
-            }
-
-            // 生成兼容性建议
-            generateRecommendations() {
-                this.recommendations = [];
-                
-                // 基于浏览器版本的建议
-                if (this.browser.name === 'Internet Explorer') {
-                    this.recommendations.push('建议升级到现代浏览器（Chrome、Firefox、Edge、Safari）以获得更好的性能和安全性');
-                    this.recommendations.push('使用Polyfill或Babel转译代码以支持ES6+特性');
-                    this.recommendations.push('避免使用现代CSS特性，或提供降级方案');
-                }
-                
-                if (this.browser.name === 'Chrome' && parseInt(this.browser.version) < 80) {
-                    this.recommendations.push('建议更新Chrome浏览器到最新版本以获得最佳兼容性');
-                }
-                
-                if (this.browser.name === 'Firefox' && parseInt(this.browser.version) < 70) {
-                    this.recommendations.push('建议更新Firefox浏览器以支持最新的Web标准');
-                }
-                
-                // 基于功能支持的建议
-                if (!this.features['Service Workers']) {
-                    this.recommendations.push('当前浏览器不支持Service Workers，无法实现离线功能和推送通知');
-                }
-                
-                if (!this.features['CSS3 Grid']) {
-                    this.recommendations.push('建议使用Flexbox作为CSS Grid的降级方案');
-                }
-                
-                if (!this.features['ES6 Promises']) {
-                    this.recommendations.push('使用Promise polyfill以支持异步编程');
-                }
-                
-                if (!this.features['Fetch API']) {
-                    this.recommendations.push('使用XMLHttpRequest或axios库作为Fetch API的替代方案');
-                }
-                
-                // 移动端特定建议
-                if (this.device === 'Mobile') {
-                    this.recommendations.push('优化移动端性能：压缩图片、减少HTTP请求、使用懒加载');
-                    this.recommendations.push('确保触摸交互的友好性，按钮大小至少44px');
-                    if (!this.features['Touch Events']) {
-                        this.recommendations.push('当前设备可能不支持触摸事件，请提供鼠标事件的降级方案');
+                    const h = await navigator.userAgentData.getHighEntropyValues(['platform', 'platformVersion']);
+                    const p = h.platform;
+                    let v = h.platformVersion || '-';
+                    if (p === 'Windows') {
+                        const major = parseInt(v.split('.')[0]);
+                        v = major >= 13 ? '11' : major >= 1 ? '10' : v;
                     }
-                }
-                
-                // 性能建议
-                if (!this.features['Performance API']) {
-                    this.recommendations.push('无法使用Performance API进行性能监控，建议使用第三方性能监控工具');
-                }
-                
-                if (!this.features['Intersection Observer']) {
-                    this.recommendations.push('使用scroll事件监听作为Intersection Observer的降级方案');
-                }
+                    return { name: p || '-', version: v };
+                } catch (_) {}
             }
-
-            // 显示检测结果
-            displayResults() {
-                // 显示UA字符串
-                document.getElementById('userAgent').innerHTML = this.userAgent;
-                
-                // 显示浏览器信息
-                this.displayBrowserInfo();
-                
-                // 显示功能支持情况
-                this.displayFeatureSupport();
-                
-                // 显示建议
-                this.displayRecommendations();
+            // UA fallback（版本已被浏览器冻结，仅供参考）
+            if (ua.includes('Windows NT 10.0')) return { name: 'Windows', version: '10/11*' };
+            if (ua.includes('Windows NT 6.3'))  return { name: 'Windows', version: '8.1' };
+            if (ua.includes('Windows NT 6.1'))  return { name: 'Windows', version: '7' };
+            if (ua.includes('Mac OS X')) {
+                const m = ua.match(/Mac OS X (\d+[._]\d+[._]?\d*)/);
+                return { name: 'macOS', version: m ? m[1].replace(/_/g, '.') + '*' : '-' };
             }
-
-            displayBrowserInfo() {
-                const browserInfo = document.getElementById('browserInfo');
-                browserInfo.innerHTML = `
-                    <div class="info-card">
-                        <h3>🌐 浏览器信息</h3>
-                        <div class="info-item">
-                            <span class="info-label">浏览器：</span>
-                            <span class="info-value">${this.browser.name}</span>
-                        </div>
-                        <div class="info-item">
-                            <span class="info-label">版本：</span>
-                            <span class="info-value">${this.browser.version}</span>
-                        </div>
-                        <div class="info-item">
-                            <span class="info-label">内核：</span>
-                            <span class="info-value">${this.browser.engine}</span>
-                        </div>
-                    </div>
-                    <div class="info-card">
-                        <h3>💻 系统信息</h3>
-                        <div class="info-item">
-                            <span class="info-label">操作系统：</span>
-                            <span class="info-value">${this.os.name}</span>
-                        </div>
-                        <div class="info-item">
-                            <span class="info-label">系统版本：</span>
-                            <span class="info-value">${this.os.version}</span>
-                        </div>
-                        <div class="info-item">
-                            <span class="info-label">设备类型：</span>
-                            <span class="info-value">${this.device}</span>
-                        </div>
-                    </div>
-                    <div class="info-card">
-                        <h3>📱 设备信息</h3>
-                        <div class="info-item">
-                            <span class="info-label">屏幕分辨率：</span>
-                            <span class="info-value">${screen.width} × ${screen.height}</span>
-                        </div>
-                        <div class="info-item">
-                            <span class="info-label">视窗大小：</span>
-                            <span class="info-value">${window.innerWidth} × ${window.innerHeight}</span>
-                        </div>
-                        <div class="info-item">
-                            <span class="info-label">设备像素比：</span>
-                            <span class="info-value">${window.devicePixelRatio || 1}</span>
-                        </div>
-                    </div>
-                    <div class="info-card">
-                        <h3>🌍 网络信息</h3>
-                        <div class="info-item">
-                            <span class="info-label">语言：</span>
-                            <span class="info-value">${navigator.language}</span>
-                        </div>
-                        <div class="info-item">
-                            <span class="info-label">时区：</span>
-                            <span class="info-value">${Intl.DateTimeFormat().resolvedOptions().timeZone}</span>
-                        </div>
-                        <div class="info-item">
-                            <span class="info-label">Cookie启用：</span>
-                            <span class="info-value">${navigator.cookieEnabled ? '是' : '否'}</span>
-                        </div>
-                    </div>
-                `;
+            if (ua.includes('Android')) {
+                const m = ua.match(/Android (\d+[.\d]*)/);
+                return { name: 'Android', version: m ? m[1] : '-' };
             }
-
-            displayFeatureSupport() {
-                const featureSupport = document.getElementById('featureSupport');
-                let html = '';
-                
-                for (const [feature, supported] of Object.entries(this.features)) {
-                    const statusClass = supported ? 'supported' : 'not-supported';
-                    const statusText = supported ? '支持' : '不支持';
-                    
-                    html += `
-                        <div class="support-item">
-                            <span class="support-label">${feature}</span>
-                            <span class="support-status ${statusClass}">${statusText}</span>
-                        </div>
-                    `;
-                }
-                
-                featureSupport.innerHTML = html;
+            if (ua.includes('iPhone') || ua.includes('iPad')) {
+                const m = ua.match(/OS (\d+[_\d]*)/);
+                return { name: 'iOS', version: m ? m[1].replace(/_/g, '.') : '-' };
             }
-
-            displayRecommendations() {
-                if (this.recommendations.length > 0) {
-                    const recommendationElement = document.getElementById('recommendations');
-                    const recommendationList = document.getElementById('recommendationList');
-                    
-                    let html = '';
-                    this.recommendations.forEach(recommendation => {
-                        html += `<li>${recommendation}</li>`;
-                    });
-                    
-                    recommendationList.innerHTML = html;
-                    recommendationElement.style.display = 'block';
-                }
-            }
+            if (ua.includes('Linux')) return { name: 'Linux', version: '-' };
+            return { name: '-', version: '-' };
         }
 
-        // 运行检测
-        function runDetection() {
-            // 重置显示
-            document.getElementById('userAgent').innerHTML = `
-                <div class="loading">
-                    <div class="spinner"></div>
-                    正在获取浏览器信息...
-                </div>
-            `;
-            document.getElementById('browserInfo').innerHTML = `
-                <div class="loading">
-                    <div class="spinner"></div>
-                    正在分析浏览器信息...
-                </div>
-            `;
-            document.getElementById('featureSupport').innerHTML = `
-                <div class="loading">
-                    <div class="spinner"></div>
-                    正在检测功能支持...
-                </div>
-            `;
-            document.getElementById('recommendations').style.display = 'none';
-            
-            // 延迟执行以显示加载效果
-            setTimeout(() => {
-                new BrowserDetector();
-            }, 500);
+        function detectDevice(ua) {
+            if (ua.includes('Mobile') || (ua.includes('Android') && !ua.includes('Tablet'))) return 'Mobile';
+            if (ua.includes('Tablet') || ua.includes('iPad')) return 'Tablet';
+            return 'Desktop';
         }
 
-        // 页面加载完成后自动运行检测
-        document.addEventListener('DOMContentLoaded', function() {
-            setTimeout(runDetection, 100);
-        });
+        function detectFeatures() {
+            const css = p => p in document.createElement('div').style;
+            const es = code => { try { eval(code); return true; } catch { return false; } };
+            const webgl = () => { try { const c = document.createElement('canvas'); return !!(c.getContext('webgl') || c.getContext('experimental-webgl')); } catch { return false; } };
+
+            return {
+                'Canvas': !!document.createElement('canvas').getContext,
+                'Video': !!document.createElement('video').canPlayType,
+                'Audio': !!document.createElement('audio').canPlayType,
+                'LocalStorage': typeof localStorage !== 'undefined',
+                'SessionStorage': typeof sessionStorage !== 'undefined',
+                'Geolocation': !!navigator.geolocation,
+                'Web Workers': typeof Worker !== 'undefined',
+                'CSS Animations': css('animation'),
+                'CSS Transitions': css('transition'),
+                'CSS Transform': css('transform'),
+                'Flexbox': css('flexDirection'),
+                'Grid': css('gridTemplateColumns'),
+                'ES6 Arrow fn': es('()=>{}'),
+                'ES6 Classes': es('class T{}'),
+                'ES6 Promise': typeof Promise !== 'undefined',
+                'ES6 Map/Set': typeof Map !== 'undefined',
+                'ES6 Destructuring': es('const{a}={a:1}'),
+                'Async/Await': es('async function f(){await Promise.resolve()}'),
+                'Fetch API': typeof fetch !== 'undefined',
+                'WebSocket': typeof WebSocket !== 'undefined',
+                'IndexedDB': typeof indexedDB !== 'undefined',
+                'Service Worker': 'serviceWorker' in navigator,
+                'Notifications': 'Notification' in window,
+                'WebRTC': !!(navigator.getUserMedia || navigator.mediaDevices),
+                'WebGL': webgl(),
+                'WebAssembly': typeof WebAssembly !== 'undefined',
+                'Media Queries': !!(window.matchMedia),
+                'Touch Events': 'ontouchstart' in window || navigator.maxTouchPoints > 0,
+                'Performance API': 'performance' in window,
+                'Intersection Observer': 'IntersectionObserver' in window,
+                'Mutation Observer': 'MutationObserver' in window,
+            };
+        }
+
+        function row(label, value) {
+            return `<div class="row"><span class="row-label">${label}</span><span class="row-value">${value}</span></div>`;
+        }
+
+        async function run() {
+            const d = await detect();
+
+            document.getElementById('uaBox').textContent = d.ua;
+
+            document.getElementById('cards').innerHTML = `
+                <div class="card">
+                    <h2>浏览器</h2>
+                    ${row('名称', d.browser.name)}
+                    ${row('版本', d.browser.version)}
+                    ${row('内核', d.browser.engine)}
+                </div>
+                <div class="card">
+                    <h2>系统</h2>
+                    ${row('操作系统', d.os.name)}
+                    ${row('版本', d.os.version)}
+                    ${row('设备类型', d.device)}
+                </div>
+                <div class="card">
+                    <h2>屏幕</h2>
+                    ${row('分辨率', d.screen_.resolution)}
+                    ${row('视窗', d.screen_.viewport)}
+                    ${row('DPR', d.screen_.dpr)}
+                </div>
+            `;
+
+            const grid = document.getElementById('featureGrid');
+            grid.innerHTML = Object.entries(d.features).map(([k, v]) =>
+                `<div class="feature-item">
+                    <span>${k}</span>
+                    <span class="badge ${v ? 'yes' : 'no'}">${v ? '支持' : '不支持'}</span>
+                </div>`
+            ).join('');
+        }
+
+        run();
     </script>
 </body>
 </html>
