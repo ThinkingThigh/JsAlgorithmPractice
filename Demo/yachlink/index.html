@@ -1,44 +1,197 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>生成yach链接</title>
+    <title>生成 Yach 链接</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
-    <!-- 引入layui -->
-    <link rel="stylesheet" href="https://static.zhiyinlou.com/fe-tools/framework/layui-v2.9.10/layui/css/layui.css">
-    <script src="https://static.zhiyinlou.com/fe-tools/framework/layui-v2.9.10/layui/layui.js"></script>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-size: 14px;
+            color: #222;
+            background: #f5f5f5;
+            padding: 32px 24px;
+        }
+
+        h1 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .form {
+            background: #fff;
+            border: 1px solid #ddd;
+            padding: 20px;
+            max-width: 680px;
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 14px;
+        }
+
+        .radio-group label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .input-row {
+            display: flex;
+            gap: 8px;
+        }
+
+        input[type="text"] {
+            flex: 1;
+            padding: 7px 10px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+            outline: none;
+        }
+
+        input[type="text"]:focus { border-color: #888; }
+
+        button {
+            padding: 7px 16px;
+            border: 1px solid #ccc;
+            background: #fff;
+            font-size: 14px;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        button:hover { background: #f0f0f0; }
+
+        button.primary {
+            background: #1a1a1a;
+            color: #fff;
+            border-color: #1a1a1a;
+        }
+
+        button.primary:hover { background: #333; }
+
+        .result {
+            margin-top: 16px;
+            display: none;
+        }
+
+        .result-label {
+            font-size: 12px;
+            color: #888;
+            margin-bottom: 6px;
+        }
+
+        .result-box {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+        }
+
+        .result-url {
+            flex: 1;
+            padding: 8px 10px;
+            background: #f8f8f8;
+            border: 1px solid #ddd;
+            font-family: monospace;
+            font-size: 12px;
+            word-break: break-all;
+            line-height: 1.6;
+        }
+
+        .result-url a {
+            color: #1a6fc4;
+            text-decoration: none;
+        }
+
+        .result-url a:hover { text-decoration: underline; }
+
+        .copy-btn {
+            flex-shrink: 0;
+            padding: 7px 14px;
+        }
+
+        .copy-btn.copied {
+            color: #1a7f3c;
+            border-color: #1a7f3c;
+        }
+    </style>
+</head>
+<body>
+    <h1>生成 Yach 链接</h1>
+
+    <div class="form">
+        <div class="radio-group">
+            <label><input type="radio" name="type" value="workbench" checked> 工作台打开</label>
+            <label><input type="radio" name="type" value="session"> 独立窗口</label>
+            <label><input type="radio" name="type" value="sidebar"> 侧边栏</label>
+        </div>
+
+        <div class="input-row">
+            <input type="text" id="url" placeholder="请输入 URL">
+            <button class="primary" onclick="generate()">生成</button>
+        </div>
+
+        <div class="result" id="result">
+            <div class="result-label">生成的链接</div>
+            <div class="result-box">
+                <div class="result-url" id="yachlink"></div>
+                <button class="copy-btn" id="copyBtn" onclick="copyLink()">复制</button>
+            </div>
+        </div>
+    </div>
+
     <script>
-        function getYachUrl(url = '', title = 'test', id = 'test') {
+        let currentUrl = '';
+
+        function generate() {
+            const url = document.getElementById('url').value.trim();
             if (!url) {
-                alert('请输入url');
+                document.getElementById('url').focus();
                 return;
             }
+
             const type = document.querySelector('input[name="type"]:checked').value;
             let yachurl;
+
             if (type === 'workbench') {
-                yachurl = `yach://yach.zhiyinlou.com/workbench/tabopen?id=${id}&url=${encodeURIComponent(url)}&title=${title}`;
+                yachurl = `yach://yach.zhiyinlou.com/workbench/tabopen?id=test&url=${encodeURIComponent(url)}&title=test`;
             } else if (type === 'sidebar') {
                 yachurl = `yach://yach.zhiyinlou.com/session/webview?url=${encodeURIComponent(url)}&pc_slide=true&hide_title_bar=true`;
             } else {
                 yachurl = `yach://yach.zhiyinlou.com/session/webview?url=${encodeURIComponent(url)}&single_webview=true&title=true`;
             }
+
+            currentUrl = yachurl;
             document.getElementById('yachlink').innerHTML = `<a href="${yachurl}">${yachurl}</a>`;
+            document.getElementById('result').style.display = 'block';
+
+            const btn = document.getElementById('copyBtn');
+            btn.textContent = '复制';
+            btn.classList.remove('copied');
         }
+
+        function copyLink() {
+            if (!currentUrl) return;
+            navigator.clipboard.writeText(currentUrl).then(() => {
+                const btn = document.getElementById('copyBtn');
+                btn.textContent = '已复制';
+                btn.classList.add('copied');
+                setTimeout(() => {
+                    btn.textContent = '复制';
+                    btn.classList.remove('copied');
+                }, 2000);
+            });
+        }
+
+        document.getElementById('url').addEventListener('keydown', e => {
+            if (e.key === 'Enter') generate();
+        });
     </script>
-</head>
-
-<body>
-    <h3>生成工作台打开的链接</h3>
-    <input type="radio" name="type" value="workbench" id="workbench" checked>工作台打开 
-    <input type="radio" name="type" value="session" id="session">独立窗口
-    <input type="radio" name="type" value="sidebar" id="sidebar">侧边栏打开
-    <input type="text" id="url" value="" placeholder="请输入URL"> 
-    <button onclick="getYachUrl(document.getElementById('url').value)">生成</button>
-    <div id="yachlink">
-    </div>
 </body>
-
 </html>
